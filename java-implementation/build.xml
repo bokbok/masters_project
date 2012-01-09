@@ -3,6 +3,7 @@
     <target name="clean">
         <delete dir="build/classes" failonerror="false"/>
         <mkdir dir="build/classes"/>
+        <mkdir dir="results"/>
     </target>
 
     <target name="compile" depends="clean">
