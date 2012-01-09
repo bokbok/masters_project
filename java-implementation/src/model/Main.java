@@ -27,15 +27,10 @@ public class Main
                                          0.4, 0.8,
                                          0, 0, 0, 0,
                                          500, 500, -50, -50,
-                                         5, 5, 45, -90);
+                                         5, 5, 45, -90, "results/run.dat");
 
         RungeKutta integrator = new RungeKutta(20, 20 * 100000);
 
-        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("results/run.dat")));
         integrator.fourthOrder(solution, solution);
-
-        out.flush();
-        out.close();
-
     }
 }

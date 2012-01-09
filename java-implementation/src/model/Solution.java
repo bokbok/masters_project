@@ -61,7 +61,7 @@ public class Solution implements ODEGroup, ResultsOutput
                     double A_ee, double A_ei, double tor_e, double tor_i, double v,
                     double T_e, double T_i,
                     double p_ee, double p_ei, double p_ie, double p_ii, double s_e_max, double s_i_max,
-                    double mu_e, double mu_i, double sigma_e, double sigma_i, double h_e_eq, double h_i_eq) throws IOException
+                    double mu_e, double mu_i, double sigma_e, double sigma_i, double h_e_eq, double h_i_eq, String outFile) throws IOException
     {
 
         this.h_e_rest = h_e_rest;
@@ -101,7 +101,7 @@ public class Solution implements ODEGroup, ResultsOutput
         this.A_ee_2 = A_ee * A_ee;
         this.A_ei_2 = A_ei * A_ei;
 
-        this.out = new PrintWriter(new BufferedWriter(new FileWriter("c:\\temp\\run.dat")));
+        this.out = new PrintWriter(new BufferedWriter(new FileWriter(outFile)));
     }
 
     public double[] calculateStep(double[] state, double t)
