@@ -1,0 +1,17 @@
+<project name="masters_project">
+
+    <target name="clean">
+        <delete dir="build/classes" failonerror="false"/>
+        <mkdir dir="build/classes"/>
+    </target>
+
+    <target name="compile" depends="clean">
+        <javac srcdir="src" destdir="build/classes"></javac>
+    </target>
+
+    <target name="run_sim" depends="compile">
+        <java maxmemory="1024M" classpath="build/classes" classname="model.Main">
+
+        </java>
+    </target>
+</project>

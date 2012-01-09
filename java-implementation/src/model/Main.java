@@ -31,7 +31,7 @@ public class Main
 
         RungeKutta integrator = new RungeKutta(20, 20 * 100000);
 
-        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("c:\\temp\\run.dat")));
+        PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter("results/run.dat")));
         integrator.fourthOrder(solution, solution);
 
         out.flush();
