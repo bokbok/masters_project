@@ -29,7 +29,7 @@ public class Main
                                          500, 500, -50, -50,
                                          5, 5, 45, -90, "results/run.dat");
 
-        RungeKutta integrator = new RungeKutta(20, 20 * 100000);
+        RungeKutta integrator = new RungeKutta(5, 1e-5);
 
         integrator.fourthOrder(solution, solution);
     }

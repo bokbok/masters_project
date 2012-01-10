@@ -5,32 +5,37 @@ from numpy import sqrt
 from scipy.integrate import odeint
 import matplotlib.pyplot as plt
 import math
+from scipy import *
 
-from scipy.fftpack import fft
+from scipy.fftpack import rfft
 
 __author__="matt"
 __date__ ="$05/01/2012 11:28:23 PM$"
 
 if __name__ == "__main__":
     print "Hello World"
-    data = np.genfromtxt('c:\\temp\\run.dat', dtype=None, delimiter=':')
+    data = np.genfromtxt('../../results/run.dat', dtype=float, delimiter=':')
     h_e = []
     t = []
 
-    freq = np.linspace(0, 1e5, 1e5)
+    n = 100000
+    nyquist=1./2
     
     for item in data:
        #h_e.append( (item[4], item[5]) )
-       t.append( item[0] )
-       h_e.append( item[4] )
+       if item[0] >2:
+           t.append( item[0] )
+           h_e.append( item[4] )
     
 #    plt.plot(t, h_e)
 #    plt.xlabel('t')
 #    plt.ylabel('h_e')
-    
+    print h_e[0], h_e[1]
+    as_fft = abs(rfft(h_e))
+    as_fft[0] = 0
     plt.xlabel('f')
     plt.ylabel('H_e')
-    plt.plot(t, fft(h_e))
+    plt.plot(np.fft.fftfreq(len(h_e), d=1e-5), as_fft)
     
     plt.axis('normal')
     plt.title('Blah')
