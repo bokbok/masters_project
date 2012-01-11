@@ -63,6 +63,7 @@
                 <include name="**/*Test*.java"/>
                 <exclude name="**/AllTests.java"/>
             </fileset>
+             <formatter type="xml"/>
           </batchtest>
         </junit>
     </target>
