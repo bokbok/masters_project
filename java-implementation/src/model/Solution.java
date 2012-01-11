@@ -3,10 +3,7 @@ package model;
 import integration.ODEGroup;
 import integration.ResultsOutput;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 
 import static java.lang.Math.*;
 
@@ -43,7 +40,7 @@ public class Solution implements ODEGroup, ResultsOutput
     private double h_i_eq;
 
     public static final int NUM_INTEGRATE = 14;
-    public static final int X_STEPS = 500;
+    public static final int X_STEPS = 50;
     private static final int X_MAX = 50;
     private static final double DELTA_X = (double)X_MAX / (double)X_STEPS;
     private double delta_x_2;
@@ -53,6 +50,8 @@ public class Solution implements ODEGroup, ResultsOutput
     private double A_ee_2;
     private double A_ei_2;
     private PrintWriter out;
+    private double _xMax;
+    private int _xSteps;
 
     public Solution(double h_e_rest, double h_i_rest, double gamma_e, double gamma_i,
                     double N_beta_ee, double N_beta_ei,
@@ -61,7 +60,9 @@ public class Solution implements ODEGroup, ResultsOutput
                     double A_ee, double A_ei, double tor_e, double tor_i, double v,
                     double T_e, double T_i,
                     double p_ee, double p_ei, double p_ie, double p_ii, double s_e_max, double s_i_max,
-                    double mu_e, double mu_i, double sigma_e, double sigma_i, double h_e_eq, double h_i_eq, String outFile) throws IOException
+                    double mu_e, double mu_i, double sigma_e, double sigma_i, double h_e_eq, double h_i_eq,
+                    double xMax, int xSteps,
+                    OutputStream output) throws IOException
     {
 
         this.h_e_rest = h_e_rest;
@@ -100,8 +101,10 @@ public class Solution implements ODEGroup, ResultsOutput
         this.v_2 = v * v;
         this.A_ee_2 = A_ee * A_ee;
         this.A_ei_2 = A_ei * A_ei;
+        this._xMax = xMax;
+        this._xSteps = xSteps;
 
-        this.out = new PrintWriter(new BufferedWriter(new FileWriter(outFile)));
+        this.out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(output)));
     }
 
     public double[] calculateStep(double[] state, double t)
@@ -206,18 +209,11 @@ public class Solution implements ODEGroup, ResultsOutput
     {
         StringBuilder line = new StringBuilder();
         line.append(t);
-        line.append(':');
-        line.append(currentState[8]);
-        line.append(':');
-        line.append(currentState[100 * NUM_INTEGRATE + 8]);
-        line.append(':');
-        line.append(currentState[200 * NUM_INTEGRATE + 8]);
-        line.append(':');
-        line.append(currentState[300 * NUM_INTEGRATE + 8]);
-        line.append(':');
-        line.append(currentState[400 * NUM_INTEGRATE + 8]);
-        line.append(':');
-        line.append(currentState[499 * NUM_INTEGRATE + 8]);
+        for (double val : currentState)
+        {
+            line.append(':');
+            line.append(val);
+        }
         out.println(line);
     }
 
@@ -226,7 +222,6 @@ public class Solution implements ODEGroup, ResultsOutput
         out.flush();
         out.close();
     }
-
 
     private class XGroup
     {
@@ -273,8 +268,8 @@ public class Solution implements ODEGroup, ResultsOutput
 
         for (int step = 0; step < X_STEPS; step++)
         {
-            ic[8 + NUM_INTEGRATE * step] = h_e_rest; //* Math.random();
-            ic[9 + NUM_INTEGRATE * step] = h_i_rest; //* Math.random();
+            ic[8 + NUM_INTEGRATE * step] = h_e_rest;
+            ic[9 + NUM_INTEGRATE * step] = h_i_rest;
         }
         return ic;
     }

@@ -25,17 +25,17 @@ if __name__ == "__main__":
        #h_e.append( (item[4], item[5]) )
        if item[0] >2:
            t.append( item[0] )
-           h_e.append( item[4] )
+           h_e.append( item[5] )
     
 #    plt.plot(t, h_e)
 #    plt.xlabel('t')
 #    plt.ylabel('h_e')
     print h_e[0], h_e[1]
-    as_fft = abs(rfft(h_e))
-    as_fft[0] = 0
+    as_fft = log(abs(rfft(h_e))/10)
+    #as_fft[0] = 0
     plt.xlabel('f')
     plt.ylabel('H_e')
-    plt.plot(np.fft.fftfreq(len(h_e), d=1e-5), as_fft)
+    plt.plot(np.fft.fftfreq(len(h_e)*2, d=1e-5), as_fft)
     
     plt.axis('normal')
     plt.title('Blah')

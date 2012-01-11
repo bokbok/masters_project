@@ -1,9 +1,8 @@
 package model;
 
-import integration.RungeKutta;
+import integration.RungeKuttaIntegrator;
 
 import java.io.*;
-import java.util.Map;
 
 public class Main
 {
@@ -23,14 +22,14 @@ public class Main
                                          3034, 3034,
                                          536, 536,
                                          4000, 2000,
-                                         0.4, 0.4, 0.01, 0.01, 700,
+                                         0.4, 0.4, 0.11, 0.01, 700,
                                          0.4, 0.8,
                                          0, 0, 0, 0,
                                          500, 500, -50, -50,
-                                         5, 5, 45, -90, "results/run.dat");
+                                         5, 5, 45, -90, 50, 500, new FileOutputStream("results/run.dat"));
 
-        RungeKutta integrator = new RungeKutta(5, 1e-5);
+        RungeKuttaIntegrator integrator = new RungeKuttaIntegrator(0.01, 1e-5, false);
 
-        integrator.fourthOrder(solution, solution);
+        integrator.integrate(solution, solution);
     }
 }
