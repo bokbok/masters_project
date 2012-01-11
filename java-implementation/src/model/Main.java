@@ -28,7 +28,7 @@ public class Main
                                          500, 500, -50, -50,
                                          5, 5, 45, -90, 50, 500, new FileOutputStream("results/run.dat"));
 
-        RungeKuttaIntegrator integrator = new RungeKuttaIntegrator(0.01, 1e-5, false);
+        RungeKuttaIntegrator integrator = new RungeKuttaIntegrator(10, 1e-5, false);
 
         integrator.integrate(solution, solution);
     }
