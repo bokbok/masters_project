@@ -23,7 +23,7 @@ r'=(-2*gamma_i * r) - ((gamma_i ^ 2) * i_ie) + (T_i * gamma_i * exp(1) * ((N_bet
 s'=(-2*gamma_i * s) - ((gamma_i ^ 2) * i_ii) + (T_i * gamma_i * exp(1) * ((N_beta_ii * s_i(h_i)) + p_ii))
 
 h_e'=(1/tor_e) * ((h_e_rest - h_e) + (Y_e(h_e) * i_ee) + (Y_i(h_e) * i_ie))
-h_i'=(1/tor_i) * ((h_i_rest - h_i) + (Y_e(h_i) * i_ei) + (Y_i(h_i) * i_ii))
+h_i'=(1/tor_i) * ((h_i_rest - h_i) + (Y_e(h_i) * i_ei) + (Y_i(h_i) * i_ii)) 
 
 z_e' = (-2 * v * A_ee * z_e) - ( (v^2) * (A_ee ^ 2) * phi_e) + ((v^2) * (A_ee ^ 2) * N_alpha_ee * s_e(h_e))
 z_i' = (-2 * v * A_ee * z_i) - ( (v^2) * (A_ei ^ 2) * phi_i) + ((v^2) * (A_ei ^ 2) * N_alpha_ei * s_e(h_e))
@@ -34,5 +34,8 @@ init h_i=-70
 init I_ee=0
 init I_ei=0
 
+@ meth = euler, bound=1e100
+@ ylo = -50, yhi= -40
+@ dt=1e-5
 
 done
