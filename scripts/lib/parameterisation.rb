@@ -1,8 +1,9 @@
 require 'yaml'
 
 class Parameterisation
-    def initialize(parameterisation)
-        @name = parameterisation
+    def initialize(opts)
+        @name = opts[:parameterisation]
+	@model = opts[:model]
     end
 
     def run_xpp
@@ -14,7 +15,9 @@ class Parameterisation
     private
     def load_param
        yaml = {}
-       File.open("#{File.dirname(__FILE__)}/../../parameterisations/parameterisations.yml") { |yf| yaml = YAML::load( yf ) }
+       yaml_file = "#{File.dirname(__FILE__)}/../../parameterisations/parameterisations.yml"
+
+       File.open(yaml_file) { |yf| yaml = YAML::load( yf ) }
 
        baseline = yaml["baseline"]
        param = yaml[@name]
@@ -24,7 +27,9 @@ class Parameterisation
 
     def generate_ode(param)
        template = []
-       File.open("#{File.dirname(__FILE__)}/../../xppaut/liley_et_al_noisy.ode.template") do |f|
+       template_file = "#{File.dirname(__FILE__)}/../../xppaut/liley_et_al_#{@model}.ode.template"
+       raise "Unknown model #{@model}" unless File.exists?(template_file) 
+       File.open(template_file) do |f|
           f.each {|line| template << line}
        end
        template_contents = template.join("\n")

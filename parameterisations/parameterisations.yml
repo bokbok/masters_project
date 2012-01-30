@@ -1,6 +1,6 @@
 baseline:
-    h_e_rest: -70 
-    h_i_rest: -70 
+    h_e_rest: -70e-3 
+    h_i_rest: -70e-3 
     gamma_e: 300 
     gamma_i: 65 
     N_beta_ee: 3034 
@@ -14,20 +14,20 @@ baseline:
     tor_e: 0.01 
     tor_i: 0.01 
     v: 700 
-    T_e: 0.4 
-    T_i: 0.8 
+    T_e: 0.4e-3 
+    T_i: 0.8e-3 
     p_ee: 0 
     p_ie: 0 
     p_ei: 0 
     p_ii: 0 
     s_e_max: 500 
     s_i_max: 500 
-    mu_e: -50 
-    mu_i: -50 
-    sigma_e: 5 
-    sigma_i: 5 
-    h_e_eq: 45 
-    h_i_eq: -90
+    mu_e: -50e-3 
+    mu_i: -50e-3 
+    sigma_e: 5e-3 
+    sigma_i: 5e-3 
+    h_e_eq: 45e-3 
+    h_i_eq: -90e-3
 
 wave_spike:
     p_ee: 2975 
@@ -35,3 +35,12 @@ wave_spike:
     p_ei: 0 
     p_ii: 0 
 
+chaos_example:
+    gamma_e: 490
+    gamma_i: 592
+    tor_e: 0.009
+    tor_i: 0.039
+    p_ee: 7 
+    p_ei: 6 
+    T_e: 0.81e-3
+    T_i: 4.85e-3
