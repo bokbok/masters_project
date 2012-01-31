@@ -36,6 +36,6 @@ init h_i=-70e-3
 @ meth = euler, bound=1e100
 @ ylo=-60e-3, yhi=-80e-3
 @ dt=1e-5
-@ maxstor=500000
+@ maxstor=5000000
 
 done
