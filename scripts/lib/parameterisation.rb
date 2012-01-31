@@ -34,7 +34,9 @@ class Parameterisation
        end
        template_contents = template.join("\n")
        param.each { |name, val| template_contents= template_contents.gsub("@@#{name.upcase}@@", val.to_s) } 
-       file = "#{File.dirname(__FILE__)}/../../tmp/#{@name}.ode"
+       temp_dir = "#{File.dirname(__FILE__)}/../../tmp"
+       Dir.mkdir(temp_dir) unless File.exists?(temp_dir)
+       file = "#{temp_dir}/#{@name}.ode"
        File.open(file, 'w') do |f|
            f.puts(template_contents)
        end

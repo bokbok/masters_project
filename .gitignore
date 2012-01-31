@@ -2,3 +2,4 @@
 java-implementation/build/*
 java-implementation/results/*
 java-implementation/out/*
+tmp/*
