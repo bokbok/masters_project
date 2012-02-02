@@ -5,8 +5,6 @@ param T_e=@@T_E@@, T_i=@@T_I@@, p_ee=@@P_EE@@, p_ie=@@P_IE@@, p_ei=@@P_EI@@, p_i
 param s_e_max=@@S_E_MAX@@, s_i_max=@@S_I_MAX@@, mu_e=@@MU_E@@, mu_i=@@MU_I@@ 
 param sigma_e=@@SIGMA_E@@, sigma_i=@@SIGMA_I@@, h_e_eq=@@H_E_EQ@@, h_i_eq=@@H_I_EQ@@
 
-weiner noise
-
 s_e(h) = s_e_max / (1 + exp(-sqrt(2) * (h - mu_e) / sigma_e))
 s_i(h) = s_i_max / (1 + exp(-sqrt(2) * (h - mu_i) / sigma_i))
 
@@ -18,20 +16,19 @@ Y_i_h_i(h_i) = (h_i_eq - h_i) / abs(h_i_eq - h_i_rest)
 h_e'=(1/tor_e) * ((h_e_rest - h_e) + (Y_e_h_e(h_e) * i_ee) + (Y_i_h_e(h_e) * i_ie))
 h_i'=(1/tor_i) * ((h_i_rest - h_i) + (Y_e_h_i(h_i) * i_ei) + (Y_i_h_i(h_i) * i_ii)) 
 
-
 I_ee'=p
 I_ei'=q
 I_ie'=r
 I_ii'=s
 
-p'=(-2*gamma_e * p) - ((gamma_e * gamma_e) * i_ee) + (T_e * gamma_e * exp(1) * ((N_beta_ee * s_e(h_e)) + p_ee * noise))
-q'=(-2*gamma_e * q) - ((gamma_e * gamma_e) * i_ei) + (T_e * gamma_e * exp(1) * ((N_beta_ei * s_e(h_e)) + p_ei * noise))
-r'=(-2*gamma_i * r) - ((gamma_i * gamma_i) * i_ie) + (T_i * gamma_i * exp(1) * ((N_beta_ie * s_i(h_i)) + p_ie * noise))
-s'=(-2*gamma_i * s) - ((gamma_i * gamma_i) * i_ii) + (T_i * gamma_i * exp(1) * ((N_beta_ii * s_i(h_i)) + p_ii * noise))
+p'=(-2*gamma_e * p) - ((gamma_e * gamma_e) * i_ee) + (T_e * gamma_e * exp(1) * ((N_beta_ee * s_e(h_e)) + p_ee))
+q'=(-2*gamma_e * q) - ((gamma_e * gamma_e) * i_ei) + (T_e * gamma_e * exp(1) * ((N_beta_ei * s_e(h_e)) + p_ei))
+r'=(-2*gamma_i * r) - ((gamma_i * gamma_i) * i_ie) + (T_i * gamma_i * exp(1) * ((N_beta_ie * s_i(h_i)) + p_ie))
+s'=(-2*gamma_i * s) - ((gamma_i * gamma_i) * i_ii) + (T_i * gamma_i * exp(1) * ((N_beta_ii * s_i(h_i)) + p_ii))
 
 
-init h_e=-70e-3
-init h_i=-70e-3
+init h_e=@@H_E_REST@@
+init h_i=@@H_I_REST@@
 
 @ meth = euler, bound=1e100
 @ ylo=-60e-3, yhi=-80e-3

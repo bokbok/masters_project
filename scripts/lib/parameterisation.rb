@@ -30,7 +30,7 @@ class Parameterisation
        template_file = "#{File.dirname(__FILE__)}/../../xppaut/liley_et_al_#{@model}.ode.template"
        raise "Unknown model #{@model}" unless File.exists?(template_file) 
        File.open(template_file) do |f|
-          f.each {|line| template << line}
+          f.each {|line| template << line.strip}
        end
        template_contents = template.join("\n")
        param.each { |name, val| template_contents= template_contents.gsub("@@#{name.upcase}@@", val.to_s) } 
