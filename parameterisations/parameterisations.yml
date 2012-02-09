@@ -44,3 +44,8 @@ chaos_example:
     p_ei: 6 
     T_e: 0.81e-3
     T_i: 4.85e-3
+
+limit_cycle:
+    p_ee: 10000
+    p_ei: 5000
+    tor_e: 0.05
