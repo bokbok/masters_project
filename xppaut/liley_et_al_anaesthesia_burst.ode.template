@@ -7,7 +7,7 @@ param sigma_e=@@SIGMA_E@@, sigma_i=@@SIGMA_I@@, h_ee_eq=@@H_EE_EQ@@, h_ie_eq=@@H
 param r_abs=@@R_ABS@@
 param phi_ie=0, phi_ii=0
 
-param mu_ii=0.8
+param mu_ii=0.3
 
 s_e(h) = s_e_max / (1 + (1 - r_abs * s_e_max) * exp(-sqrt(2) * (h - mu_e) / sigma_e))
 s_i(h) = s_i_max / (1 + (1 - r_abs * s_i_max) * exp(-sqrt(2) * (h - mu_i) / sigma_i))
@@ -34,13 +34,13 @@ I_ei'=q
 I_ie_o'=r
 I_ii_o'=s
 
-I_ie=(mu_ii) * (1 + sin(t)) + i_ie_o
-I_ii=(mu_ii) * (1 + sin(t)) + i_ii_o
+I_ie=-(mu_ii) * sin(t) + i_ie_o
+I_ii=-(mu_ii) * sin(t) + i_ii_o
 
 p'=-(2*gamma_ee * p) - ((gamma_ee * gamma_ee) * i_ee) + (T_ee * gamma_ee * exp(1) * (N_beta_ee * s_e(h_e) + phi_ee + p_ee))
 q'=-(2*gamma_ei * q) - ((gamma_ei * gamma_ei) * i_ei) + (T_ei * gamma_ei * exp(1) * (N_beta_ei * s_e(h_e) + phi_ei + p_ei))
-r'=-(2*gamma_ie * r) - ((gamma_ie * gamma_ie) * i_ie) + (T_ie * gamma_ie * exp(1) * (N_beta_ie * s_i(h_i) + phi_ie + p_ie))
-s'=-(2*gamma_ii * s) - ((gamma_ii * gamma_ii) * i_ii) + (T_ii * gamma_ii * exp(1) * (N_beta_ii * s_i(h_i) + phi_ii + p_ii))
+r'=-(2*gamma_ie * r) - ((gamma_ie * gamma_ie) * i_ie_o) + (T_ie * gamma_ie * exp(1) * (N_beta_ie * s_i(h_i) + phi_ie + p_ie))
+s'=-(2*gamma_ii * s) - ((gamma_ii * gamma_ii) * i_ii_o) + (T_ii * gamma_ii * exp(1) * (N_beta_ii * s_i(h_i) + phi_ii + p_ii))
 
 
 z_ee' = -(2 * v * A_ee * z_ee) + (v * v) * (A_ee * A_ee) * (N_alpha_ee * s_e(h_e) - phi_ee)
