@@ -1,34 +1,5 @@
 baseline:
-    h_e_rest: -70e-3 
-    h_i_rest: -70e-3 
-    gamma_e: 300 
-    gamma_i: 65 
-    N_beta_ee: 3034 
-    N_beta_ei: 3034 
-    N_beta_ie: 536 
-    N_beta_ii: 536 
-    N_alpha_ee: 4000 
-    N_alpha_ei: 2000 
-    A_ee: 0.4 
-    A_ei: 0.4 
-    tor_e: 0.01 
-    tor_i: 0.01 
-    v: 700 
-    T_e: 0.4e-3 
-    T_i: 0.8e-3 
-    p_ee: 0 
-    p_ie: 0 
-    p_ei: 0 
-    p_ii: 0 
-    s_e_max: 500 
-    s_i_max: 500 
-    mu_e: -50e-3 
-    mu_i: -50e-3 
-    sigma_e: 5e-3 
-    sigma_i: 5e-3 
-    h_e_eq: 45e-3 
-    h_i_eq: -90e-3
-
+    base: 0
 wave_spike:
     p_ee: 2975 
     p_ie: 992 
@@ -89,4 +60,30 @@ biphasic:
     r_abs: 0
     
 
-    
+chaos:    
+    h_e_rest: -70.0e-3
+    h_i_rest: -70.0e-3
+    tor_e: 66.0e-3
+    tor_i: 24.0e-3
+    h_e_eq: 45.0e-3
+    h_i_eq: -90.0e-3
+    T_e: 0.24e-3
+    T_i: 3.76e-3
+    gamma_e: 40.176
+    gamma_i: 151.74
+    N_beta_ee: 3034
+    N_beta_ei: 3500
+    N_beta_ie: 536
+    N_beta_ii: 536
+    S_e_max: 500
+    S_i_max: 500
+    mu_e: -41.0e-3
+    mu_i: -49.0e-3
+    sigma_e: 1.0e-3
+    sigma_i: 1.5e-3
+    p_ee: 24523
+    p_ie: 0
+    p_ei: 2299
+    p_ii: 0
+    r_abs: 0
+ 
