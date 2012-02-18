@@ -23,8 +23,8 @@ Y_e_h_i(h_i) = (h_ei_eq - h_i) / abs(h_ei_eq - h_i_rest)
 Y_i_h_e(h_e) = (h_ie_eq - h_e) / abs(h_ie_eq - h_e_rest)
 Y_i_h_i(h_i) = (h_ii_eq - h_i) / abs(h_ii_eq - h_i_rest)
 
-h_e'=(1/tor_e) * (-(h_e - h_e_rest) + (Y_e_h_e(h_e) * i_ee) + (Y_i_h_e(h_e) * i_ie) + slow)
-h_i'=(1/tor_i) * (-(h_i - h_i_rest) + (Y_e_h_i(h_i) * i_ei) + (Y_i_h_i(h_i) * i_ii) + slow)
+h_e'=(1/tor_e) * (-(h_e - h_e_rest) + (Y_e_h_e(h_e) * i_ee) + (Y_i_h_e(h_e) * i_ie) + slow_e)
+h_i'=(1/tor_i) * (-(h_i - h_i_rest) + (Y_e_h_i(h_i) * i_ei) + (Y_i_h_i(h_i) * i_ii) + slow_i)
 
 phi_ee'=z_ee
 phi_ei'=z_ei
@@ -36,7 +36,8 @@ I_ii'=s
 
 #slow=-0.01 * (2 + sin(t)) / 5
 
-slow'=(1/tor_slow) * (mu_slow * (h_e_rest - h_e) - nu_slow * slow)
+slow_e'=(1/tor_slow) * (mu_slow * (h_e_rest - h_e) - nu_slow * slow_e)
+slow_i'=(1/tor_slow) * (mu_slow * (h_i_rest - h_i) - nu_slow * slow_i)
 
 p'=-(2*gamma_ee * p) - ((gamma_ee * gamma_ee) * i_ee) + (T_ee * gamma_ee * exp(1) * (N_beta_ee * s_e(h_e) + phi_ee + p_ee))
 q'=-(2*gamma_ei * q) - ((gamma_ei * gamma_ei) * i_ei) + (T_ei * gamma_ei * exp(1) * (N_beta_ei * s_e(h_e) + phi_ei + p_ei))
