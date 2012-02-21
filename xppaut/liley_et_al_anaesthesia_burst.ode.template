@@ -10,8 +10,12 @@ param phi_ie=0, phi_ii=0
 #param mu_ii=0.001
 #param mu_ie=0.001
 
-param mu_slow=0.01
-param nu_slow=0.02
+param mu_slow_e=0.01
+param nu_slow_e=0.02
+
+param mu_slow_i=0.04
+param nu_slow_i=0.08
+
 
 param mu_ie=0.05
 param nu_ie=0.01
@@ -45,8 +49,8 @@ I_ii'=I_ii_t
 
 #slow=0.005 * (2 + cos(t)) / 5
 slow = 0
-slow_e'=(1/tor_slow) * (mu_slow * (h_e_rest - h_e) - nu_slow * slow_e)
-slow_i'=(1/tor_slow) * (mu_slow * (h_i_rest - h_i) - nu_slow * slow_i)
+slow_e'=(1/tor_slow) * (mu_slow_e * (h_e_rest - h_e) - nu_slow_e * slow_e)
+slow_i'=(1/tor_slow) * (mu_slow_i * (h_i_rest - h_i) - nu_slow_i * slow_i)
 
 #slow_e=0
 #slow_i=0
