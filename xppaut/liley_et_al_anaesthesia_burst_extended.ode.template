@@ -7,22 +7,15 @@ param sigma_e=@@SIGMA_E@@, sigma_i=@@SIGMA_I@@, h_ee_eq=@@H_EE_EQ@@, h_ie_eq=@@H
 param r_abs=@@R_ABS@@
 param phi_ie=0, phi_ii=0
 
-#param mu_ii=0.001
-#param mu_ie=0.001
+param e_ii=0.00000001
+param e_ie=0.00000001
+param e_ei=0.00000001
+param e_ee=0.00000001
 
-param mu_slow=0.01
-param nu_slow=0.02
-
-param mu_ie=0.05
-param nu_ie=0.01
-
-param mu_ii=0.05
-param nu_ii=0.01
-
-param tor_slow=@@TOR_E@@
-param tor_ie=@@TOR_E@@
-param tor_ii=@@TOR_E@@
-
+_gamma_ii=(e_ii * gamma_ii) /(exp(e_ii) - 1)
+_gamma_ie=(e_ie * gamma_ie) /(exp(e_ie) - 1)
+_gamma_ei=(e_ei * gamma_ei) /(exp(e_ei) - 1)
+_gamma_ee=(e_ee * gamma_ee) /(exp(e_ee) - 1)
 
 s_e(h) = s_e_max / (1 + (1 - r_abs * s_e_max) * exp(-sqrt(2) * (h - mu_e) / sigma_e))
 s_i(h) = s_i_max / (1 + (1 - r_abs * s_i_max) * exp(-sqrt(2) * (h - mu_i) / sigma_i))
@@ -32,8 +25,8 @@ Y_e_h_i(h_i) = (h_ei_eq - h_i) / abs(h_ei_eq - h_i_rest)
 Y_i_h_e(h_e) = (h_ie_eq - h_e) / abs(h_ie_eq - h_e_rest)
 Y_i_h_i(h_i) = (h_ii_eq - h_i) / abs(h_ii_eq - h_i_rest)
 
-h_e'=(1/tor_e) * (-(h_e - h_e_rest) + (Y_e_h_e(h_e) * i_ee) + (Y_i_h_e(h_e) * (i_ie + slow)) + slow_e)
-h_i'=(1/tor_i) * (-(h_i - h_i_rest) + (Y_e_h_i(h_i) * i_ei) + (Y_i_h_i(h_i) * (i_ii + slow)) + slow_i)
+h_e'=(1/tor_e) * (-(h_e - h_e_rest) + (Y_e_h_e(h_e) * i_ee) + (Y_i_h_e(h_e) * i_ie))
+h_i'=(1/tor_i) * (-(h_i - h_i_rest) + (Y_e_h_i(h_i) * i_ei) + (Y_i_h_i(h_i) * i_ii))
 
 phi_ee'=phi_ee_t
 phi_ei'=phi_ei_t
@@ -43,24 +36,10 @@ I_ei'=I_ei_t
 I_ie'=I_ie_t
 I_ii'=I_ii_t
 
-#slow=0.005 * (2 + cos(t)) / 5
-slow = 0
-slow_e'=(1/tor_slow) * (mu_slow * (h_e_rest - h_e) - nu_slow * slow_e)
-slow_i'=(1/tor_slow) * (mu_slow * (h_i_rest - h_i) - nu_slow * slow_i)
-
-#slow_e=0
-#slow_i=0
-
-i_ee_t'=-(2*gamma_ee * i_ee_t) - ((gamma_ee * gamma_ee) * i_ee) + (T_ee * gamma_ee * exp(1) * (N_beta_ee * s_e(h_e) + phi_ee + p_ee)) 
-i_ei_t'=-(2*gamma_ei * i_ei_t) - ((gamma_ei * gamma_ei) * i_ei) + (T_ei * gamma_ei * exp(1) * (N_beta_ei * s_e(h_e) + phi_ei + p_ei))
-i_ie_t'=-(2*gamma_ie * i_ie_t) - ((gamma_ie * gamma_ie) * i_ie) + (T_ie * gamma_ie * exp(1) * (N_beta_ie * s_i(h_i) + phi_ie + p_ie)) - 6000 * i_ie_slow
-i_ii_t'=-(2*gamma_ii * i_ii_t) - ((gamma_ii * gamma_ii) * i_ii) + (T_ii * gamma_ii * exp(1) * (N_beta_ii * s_i(h_i) + phi_ii + p_ii)) - 3000 * i_ii_slow
-
-
-#i_ie_slow'=(1/tor_ie) * (mu_ie * i_ie - nu_ie * i_ie_slow)
-#i_ii_slow'=(1/tor_ii) * (mu_ii * i_ii - nu_ii * i_ii_slow)
-i_ie_slow = 0
-i_ii_slow = 0
+i_ee_t'=-(_gamma_ee * (1 + exp(e_ee)) * i_ee_t) - (_gamma_ee * _gamma_ee * exp(e_ee) * i_ee) + (T_ee * _gamma_ee * exp((_gamma_ee/gamma_ee) + e_ee) * (N_beta_ee * s_e(h_e) + phi_ee + p_ee)) 
+i_ei_t'=-(_gamma_ei * (1 + exp(e_ei)) * i_ei_t) - (_gamma_ei * _gamma_ei * exp(e_ei) * i_ei) + (T_ei * _gamma_ei * exp((_gamma_ei/gamma_ei) + e_ei) * (N_beta_ei * s_e(h_e) + phi_ei + p_ei))
+i_ie_t'=-(_gamma_ie * (1 + exp(e_ie)) * i_ie_t) - (_gamma_ie * _gamma_ie * exp(e_ie) * i_ie) + (T_ie * _gamma_ie * exp((_gamma_ie/gamma_ie) + e_ie) * (N_beta_ie * s_i(h_i) + phi_ie + p_ie))
+i_ii_t'=-(_gamma_ii * (1 + exp(e_ii)) * i_ii_t) - (_gamma_ii * _gamma_ii * exp(e_ii) * i_ii) + (T_ii * _gamma_ii * exp((_gamma_ii/gamma_ii) + e_ii) * (N_beta_ii * s_i(h_i) + phi_ii + p_ii))
 
 
 phi_ee_t' = -(2 * v * A_ee * phi_ee_t) + (v * v) * (A_ee * A_ee) * (N_alpha_ee * s_e(h_e) - phi_ee)
@@ -74,6 +53,6 @@ init phi_ei=0
 @ meth=euler, bound=1e100
 @ ylo=-0.060, yhi=-0.080
 @ dt=1e-5
-@ maxstor=500000000
+@ maxstor=5000000
 
 done
