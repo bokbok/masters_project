@@ -21,6 +21,44 @@ limit_cycle:
     p_ei: 5000
     tor_e: 0.05
 
+burst:
+    h_e_rest: -62.226e-3
+    h_i_rest: -65.666e-3
+    tor_e: 132.55e-3
+    tor_i: 135.91e-3
+    h_ee_eq: -18.038e-3
+    h_ei_eq: -16.554e-3 
+    h_ie_eq: -81.976e-3
+    h_ii_eq: -78.995e-3
+    T_ee: 0.10631e-3
+    T_ei: 0.10631e-3
+    T_ie: 0.46477e-3
+    T_ii: 0.28663e-3
+    gamma_ee: 291.5
+    gamma_ei: 697.76
+    gamma_ie: 458.67
+    gamma_ii: 82.33
+    N_beta_ee: 2185.8
+    N_beta_ei: 3749.8
+    N_beta_ie: 466.30
+    N_beta_ii: 160.69
+    N_alpha_ee: 4611.6
+    N_alpha_ei: 1372.4
+    A_ee: 0.0092809
+    A_ei: 0.0092809
+    v: 0.0068424
+    S_e_max: 196.08
+    S_i_max: 454.40
+    mu_e: -45.104e-3
+    mu_i: -43.91e-3
+    sigma_e: 3.842e-3
+    sigma_i: 4.573e-3
+    p_ee: 6603.4
+    p_ie: 0
+    p_ei: 2625.7
+    p_ii: 0
+    r_abs: 0
+ 
 biphasic:
     h_e_rest: -62.226e-3
     h_i_rest: -65.666e-3

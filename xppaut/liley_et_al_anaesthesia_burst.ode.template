@@ -1,7 +1,7 @@
 param h_e_rest=@@H_E_REST@@, h_i_rest=@@H_I_REST@@, gamma_ee=@@GAMMA_EE@@, gamma_ie=@@GAMMA_IE@@, gamma_ei=@@GAMMA_EI@@, gamma_ii=@@GAMMA_II@@ 
 param N_beta_ee=@@N_BETA_EE@@, N_beta_ei=@@N_BETA_EI@@, N_beta_ie=@@N_BETA_IE@@, N_beta_ii=@@N_BETA_II@@, N_alpha_ee=@@N_ALPHA_EE@@, N_alpha_ei=@@N_ALPHA_EI@@ 
 param A_ee=@@A_EE@@, A_ei=@@A_EI@@, tor_e=@@TOR_E@@, tor_i=@@TOR_I@@, v=@@V@@ 
-param T_ee=@@T_EE@@, T_ie=@@T_IE@@, T_ei=@@T_EE@@, T_ii=@@T_II@@, p_ee=@@P_EE@@, p_ie=@@P_IE@@, p_ei=@@P_EI@@, p_ii=@@P_II@@ 
+param T_ee=@@T_EE@@, T_ie=@@T_IE@@, T_ei=@@T_EI@@, T_ii=@@T_II@@, p_ee=@@P_EE@@, p_ie=@@P_IE@@, p_ei=@@P_EI@@, p_ii=@@P_II@@ 
 param s_e_max=@@S_E_MAX@@, s_i_max=@@S_I_MAX@@, mu_e=@@MU_E@@, mu_i=@@MU_I@@ 
 param sigma_e=@@SIGMA_E@@, sigma_i=@@SIGMA_I@@, h_ee_eq=@@H_EE_EQ@@, h_ie_eq=@@H_IE_EQ@@, h_ei_eq=@@H_EI_EQ@@, h_ii_eq=@@H_II_EQ@@
 param r_abs=@@R_ABS@@
@@ -78,6 +78,6 @@ init phi_ei=0
 @ meth=euler, bound=1e100
 @ ylo=-0.060, yhi=-0.080
 @ dt=1e-5
-@ maxstor=500000000
+@ maxstor=5000000
 
 done
