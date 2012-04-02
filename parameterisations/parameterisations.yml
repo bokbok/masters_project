@@ -21,38 +21,83 @@ limit_cycle:
     p_ei: 5000
     tor_e: 0.05
 
+alpha:
+    h_e_rest: -60.0e-3
+    h_i_rest: -60.0e-3
+    tor_e: 10.0e-3
+    tor_i: 10.0e-3
+    h_ee_eq: 0
+    h_ei_eq: 0 
+    h_ie_eq: -70.0e-3
+    h_ii_eq: -70.0e-3
+    T_ee: 0.4e-3
+    T_ei: 0.4e-3
+    T_ie: 0.8e-3
+    T_ii: 0.8e-3
+    gamma_ee: 300
+    gamma_ei: 300
+    gamma_ie: 65
+    gamma_ii: 65
+    N_beta_ee: 3034
+    N_beta_ei: 3034
+    N_beta_ie: 536
+    N_beta_ii: 536
+    N_alpha_ee: 4000
+    N_alpha_ei: 2000
+    A_ee: 0.4
+    A_ei: 0.4
+    v: 700
+    S_e_max: 100
+    S_i_max: 100
+    mu_e: -50.0e-3
+    mu_i: -50.0e-3
+    sigma_e: 5.0e-3
+    sigma_i: 5.0e-3
+    p_ee: 0
+    p_ie: 0
+    p_ei: 0
+    p_ii: 0
+    r_abs: 0
+    burst_e: 100
+    burst_i: 110
+    mu_slow_e: 0.002
+    nu_slow_e: 0.004
+    mu_slow_i: 0.08
+    nu_slow_i: 0.08
+    tor_slow: 66.0e-3
+ 
 burst:
     h_e_rest: -62.226e-3
     h_i_rest: -65.666e-3
-    tor_e: 132.55e-3
-    tor_i: 135.91e-3
-    h_ee_eq: -18.038e-3
-    h_ei_eq: -16.554e-3 
-    h_ie_eq: -81.976e-3
-    h_ii_eq: -78.995e-3
-    T_ee: 0.10631e-3
-    T_ei: 0.10631e-3
-    T_ie: 0.46477e-3
-    T_ii: 0.28663e-3
-    gamma_ee: 291.5
-    gamma_ei: 697.76
-    gamma_ie: 458.67
-    gamma_ii: 82.33
-    N_beta_ee: 2185.8
-    N_beta_ei: 3749.8
-    N_beta_ie: 466.30
-    N_beta_ii: 160.69
+    tor_e: 66.55e-3
+    tor_i: 24.91e-3
+    h_ee_eq: 45.038e-3
+    h_ei_eq: 45.554e-3 
+    h_ie_eq: -90.976e-3
+    h_ii_eq: -90.995e-3
+    T_ee: 0.40631e-3
+    T_ei: 0.40631e-3
+    T_ie: 0.86477e-3
+    T_ii: 0.88663e-3
+    gamma_ee: 40.5
+    gamma_ei: 40.76
+    gamma_ie: 151.67
+    gamma_ii: 151.33
+    N_beta_ee: 3000
+    N_beta_ei: 3000
+    N_beta_ie: 500
+    N_beta_ii: 500
     N_alpha_ee: 4611.6
     N_alpha_ei: 1372.4
-    A_ee: 0.0092809
-    A_ei: 0.0092809
-    v: 0.0068424
-    S_e_max: 196.08
-    S_i_max: 454.40
+    A_ee: 0.4
+    A_ei: 0.4
+    v: 684.24
+    S_e_max: 500.08
+    S_i_max: 500.40
     mu_e: -45.104e-3
     mu_i: -43.91e-3
-    sigma_e: 3.842e-3
-    sigma_i: 4.573e-3
+    sigma_e: 5.842e-3
+    sigma_i: 5.573e-3
     p_ee: 6603.4
     p_ie: 0
     p_ei: 2625.7
@@ -68,10 +113,10 @@ biphasic:
     h_ei_eq: -16.554e-3 
     h_ie_eq: -81.976e-3
     h_ii_eq: -78.995e-3
-    T_ee: 0.10631e-3
-    T_ei: 0.64105e-3
-    T_ie: 0.46477e-3
-    T_ii: 0.28663e-3
+    T_ee: 0.24631e-3
+    T_ei: 0.44105e-3
+    T_ie: 3.46477e-3
+    T_ii: 3.28663e-3
     gamma_ee: 291.5
     gamma_ei: 697.76
     gamma_ie: 458.67
@@ -96,6 +141,13 @@ biphasic:
     p_ei: 2625.7
     p_ii: 0
     r_abs: 0
+    burst_e: 1
+    burst_i: 1
+    mu_slow_e: 0.04
+    nu_slow_e: 0.02
+    mu_slow_i: 0.08
+    nu_slow_i: 0.08
+    tor_slow: 132.0e-3
  
 biphasic_burst:
     h_e_rest: -62.226e-3
@@ -120,9 +172,9 @@ biphasic_burst:
     N_beta_ii: 160.69
     N_alpha_ee: 4611.6
     N_alpha_ei: 1372.4
-    A_ee: 0.0092809
-    A_ei: 0.0092809
-    v: 0.0068424
+    A_ee: 0.92809
+    A_ei: 0.92809
+    v: 0.68424
     S_e_max: 196.08
     S_i_max: 454.40
     mu_e: -45.104e-3
@@ -143,16 +195,24 @@ chaos:
     h_i_rest: -70.0e-3
     tor_e: 66.0e-3
     tor_i: 24.0e-3
-    h_e_eq: 45.0e-3
-    h_i_eq: -90.0e-3
-    T_e: 0.24e-3
-    T_i: 3.76e-3
-    gamma_e: 40.176
-    gamma_i: 151.74
+    h_ee_eq: 45.0e-3
+    h_ei_eq: 45.0e-3
+    h_ie_eq: -90.0e-3
+    h_ii_eq: -90.0e-3
+    T_ee: 0.24e-3
+    T_ei: 0.24e-3
+    T_ie: 3.76e-3
+    T_ii: 3.76e-3
+    gamma_ee: 40.176
+    gamma_ei: 40.176
+    gamma_ie: 151.74
+    gamma_ii: 151.74
     N_beta_ee: 3034
     N_beta_ei: 3500
     N_beta_ie: 536
     N_beta_ii: 536
+    N_alpha_ee: 400
+    N_alpha_ei: 200
     S_e_max: 500
     S_i_max: 500
     mu_e: -41.0e-3
@@ -164,4 +224,7 @@ chaos:
     p_ei: 2299
     p_ii: 0
     r_abs: 0
+    A_ee: 0.40
+    A_ei: 0.40
+    v: 700
  
