@@ -47,8 +47,8 @@ alpha:
     A_ee: 0.4
     A_ei: 0.4
     v: 700
-    S_e_max: 100
-    S_i_max: 100
+    s_e_max: 100
+    s_i_max: 100
     mu_e: -50.0e-3
     mu_i: -50.0e-3
     sigma_e: 5.0e-3
@@ -58,13 +58,15 @@ alpha:
     p_ei: 0
     p_ii: 0
     r_abs: 0
-    burst_e: 100
-    burst_i: 110
+    burst_e: 22
+    burst_i: 25
     mu_slow_e: 0.002
-    nu_slow_e: 0.004
+    nu_slow_e: 0.0005
     mu_slow_i: 0.08
-    nu_slow_i: 0.08
+    nu_slow_i: 0.005
     tor_slow: 66.0e-3
+    phi_ie: 0
+    phi_ii: 0
  
 burst:
     h_e_rest: -62.226e-3
