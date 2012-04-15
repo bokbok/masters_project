@@ -15,8 +15,13 @@ path = os.path.dirname(os.path.abspath(__file__))
 params = load(file(path + '/../parameterisations/parameterisations.yml', 'r'))
 
 burst = LileyWithBurst(params = params[sys.argv[1]])
-run2 = burst.run([0, 17]).freeze(['slow_e', 'slow_i', 'phi_ee', 'phi_ei', 'phi_ee_t', 'phi_ei_t'])
-run2.run([0, 10])
-run2.display()
+run2 = burst.run([0, 15]).freeze(['slow_e', 'slow_i', 'phi_ee', 'phi_ei', 'phi_ee_t', 'phi_ei_t'])
+cont = run2.searchForBifurcations('slow_i', 'h_i', dir = '+')
+cont.display()
+cont.follow('H1', 10000, dir = '+').display()
+cont.showAll()
+
+
+#burst.display(['slow_e', 'slow_i', 'h_e', 'h_i'])
 
 #burst.display()

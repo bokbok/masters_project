@@ -131,9 +131,9 @@ biphasic:
     N_alpha_ei: 1372.4
     A_ee: 0.0092809
     A_ei: 0.0092809
-    v: 0.0068424
-    S_e_max: 196.08
-    S_i_max: 454.40
+    v: 0
+    s_e_max: 196.08
+    s_i_max: 454.40
     mu_e: -45.104e-3
     mu_i: -43.91e-3
     sigma_e: 3.842e-3
@@ -150,6 +150,10 @@ biphasic:
     mu_slow_i: 0.08
     nu_slow_i: 0.08
     tor_slow: 132.0e-3
+    phi_ie: 0
+    phi_ii: 0
+    #phi_ee: 0
+    #phi_ei: 0
  
 biphasic_burst:
     h_e_rest: -62.226e-3
