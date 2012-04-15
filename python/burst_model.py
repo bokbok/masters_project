@@ -13,7 +13,7 @@ params = load(file(path + '/../parameterisations/parameterisations.yml', 'r'))
 
 modelParams = params[sys.argv[1]]
 
-print "Using model params: " 
+print "Using model params: "
 print modelParams
 
 h_e_t='(1/tor_e) * (-(h_e - h_e_rest) + (Y_e_h_e(h_e) * i_ee) + (Y_i_h_e(h_e) * (i_ie)) + burst_e * slow_e)'
@@ -22,7 +22,7 @@ h_i_t='(1/tor_i) * (-(h_i - h_i_rest) + (Y_e_h_i(h_i) * i_ei) + (Y_i_h_i(h_i) * 
 slow_e_t='(1/tor_slow) * (mu_slow_e * (h_e_rest - h_e) - nu_slow_e * slow_e)'
 slow_i_t='(1/tor_slow) * (mu_slow_i * (h_i_rest - h_i) - nu_slow_i * slow_i)'
 
-i_ee_tt='-2*gamma_ee * i_ee_t - (gamma_ee * gamma_ee) * i_ee + T_ee * gamma_ee * exp(1) * (N_beta_ee * s_e(h_e) + phi_ee + p_ee)' 
+i_ee_tt='-2*gamma_ee * i_ee_t - (gamma_ee * gamma_ee) * i_ee + T_ee * gamma_ee * exp(1) * (N_beta_ee * s_e(h_e) + phi_ee + p_ee)'
 i_ei_tt='-2*gamma_ei * i_ei_t - (gamma_ei * gamma_ei) * i_ei + T_ei * gamma_ei * exp(1) * (N_beta_ei * s_e(h_e) + phi_ei + p_ei)'
 i_ie_tt='-2*gamma_ie * i_ie_t - (gamma_ie * gamma_ie) * i_ie + T_ie * gamma_ie * exp(1) * (N_beta_ie * s_i(h_i) + phi_ie + p_ie)'
 i_ii_tt='-2*gamma_ii * i_ii_t - (gamma_ii * gamma_ii) * i_ii + T_ii * gamma_ii * exp(1) * (N_beta_ii * s_i(h_i) + phi_ii + p_ii)'
@@ -47,10 +47,14 @@ auxFunctions = { 'Y_e_h_e' : (['h_e'], Y_e_h_e),
 's_i' : (['h'], s_i)
 }
 
+#varspecs = { 'phi_ee' : 'phi_ee_t', 'phi_ei' : 'phi_ei_t',
+#'phi_ei_t' : phi_ei_tt, 'phi_ee_t' : phi_ee_tt,
+#'i_ee' : 'i_ee_t', 'i_ei' : 'i_ei_t', 'i_ie' : 'i_ie_t', 'i_ii' : 'i_ii_t',
+#'i_ee_t' : i_ee_tt, 'i_ei_t' : i_ei_tt, 'i_ie_t' : i_ie_tt, 'i_ii_t' : i_ii_tt,
+#'h_e' : h_e_t, 'h_i' : h_i_t, 'slow_e' : slow_e_t, 'slow_i' : slow_i_t }
 
-varspecs = { 'phi_ee' : 'phi_ee_t', 'phi_ei' : 'phi_ei_t', 
-'phi_ei_t' : phi_ei_tt, 'phi_ee_t' : phi_ee_tt, 
-'i_ee' : 'i_ee_t', 'i_ei' : 'i_ei_t', 'i_ie' : 'i_ie_t', 'i_ii' : 'i_ii_t',
+
+varspecs = { 'i_ee' : 'i_ee_t', 'i_ei' : 'i_ei_t', 'i_ie' : 'i_ie_t', 'i_ii' : 'i_ii_t',
 'i_ee_t' : i_ee_tt, 'i_ei_t' : i_ei_tt, 'i_ie_t' : i_ie_tt, 'i_ii_t' : i_ii_tt,
 'h_e' : h_e_t, 'h_i' : h_i_t, 'slow_e' : slow_e_t, 'slow_i' : slow_i_t }
 
@@ -61,19 +65,84 @@ DSargs.checklevel = 2
 #DSargs.ics={'w':-1.0}
 DSargs.tdata=[0, 300]
 DSargs.pars = modelParams
-DSargs.ics = { 'phi_ee' : 0, 'phi_ee_t' : 0, 'phi_ei' : 0, 'phi_ei_t' : 0, 'i_ee' : 0, 'i_ee_t' : 0, 'i_ei' : 0, 'i_ei_t' : 0, 'i_ie' : 0, 'i_ie_t' : 0, 'i_ii' : 0, 'i_ii_t' : 0, 'h_e' : 0, 'h_i' : 0, 'slow_e' : 0, 'slow_i' : 0 }
+#DSargs.ics = { 'phi_ee' : 0, 'phi_ee_t' : 0, 'phi_ei' : 0, 'phi_ei_t' : 0, 'i_ee' : 0, 'i_ee_t' : 0, 'i_ei' : 0, 'i_ei_t' : 0, 'i_ie' : 0, 'i_ie_t' : 0, 'i_ii' : 0, 'i_ii_t' : 0, 'h_e' : 0, 'h_i' : 0, 'slow_e' : 0, 'slow_i' : 0 }
+DSargs.ics = { 'i_ee' : 0, 'i_ee_t' : 0, 'i_ei' : 0, 'i_ei_t' : 0, 'i_ie' : 0, 'i_ie_t' : 0, 'i_ii' : 0, 'i_ii_t' : 0, 'h_e' : 0, 'h_i' : 0, 'slow_e' : 0, 'slow_i' : 0 }
 
 #odeSystem = Vode_ODEsystem(DSargs)
 odeSystem = Radau_ODEsystem(DSargs)
+
 
 print "Running...."
 traj = odeSystem.compute('run')
 points = traj.sample()
 print "Done."
 
-plot(points['t'], points['h_e'], label='h_e')
-plot(points['t'], points['h_i'], label='h_i')
+#set up ICs based on end equilibrium of above run
+
+contIcs = {}
+
+for k, v in points.iteritems():
+ contIcs[k] = v[len(v) - 1]
+
+
+print contIcs
+DSargs.ics = contIcs
+
+cont = ContClass(odeSystem)
+
+# EP-C = equilibrium point curve
+PCargs = args(name='test', type='EP-C')
+PCargs.freepars = ['p_ee']
+PCargs.StepSize = 1
+PCargs.MaxNumPoints = 8000
+PCargs.MaxStepSize = 1
+PCargs.verbosity = 2
+PCargs.LocBifPoints = ['LP', 'H']
+
+# Declare a new curve based on the above criteria
+cont.newCurve(PCargs)
+
+# Do path following in the 'forward' direction. Max points is large enough
+# to ensure we go right around the ellipse (PyCont automatically stops when
+# we return to the initial point - unless MaxNumPoints is reached first.)
+cont['test'].backward()
+
+sol = cont['test'].sol
+
+print "There were %i points computed" % len(sol)
+print cont['test'].info()
+
+cont.display(('p_ee', 'h_e'), stability = True)
+
+
+#plot(points['t'], points['h_e'], label='h_e')
+#plot(points['t'], points['h_i'], label='h_i')
+#show()
+
+PCargs.name = "HOPF"
+PCargs.type = 'LC-C'
+PCargs.initpoint = 'test:H2'
+
+PCargs.StepSize = 0.1
+PCargs.MaxStepSize = 1
+PCargs.LocBifPoints = 'all'
+PCargs.FuncTol = 1e-3
+PCargs.VarTol = 1e-3
+PCargs.SolutionMeasures = 'all'
+PCargs.MaxNumPoints = 10000
+PCargs.SaveJacobian = True
+PCargs.NumSPOut = 150
+
+cont.newCurve(PCargs)
+
+cont['HOPF'].forward()
+#cont['HOPF'].backward()
+
+cont.plot.toggleAll('off', ['P', 'MX'])
+
+cont['HOPF'].display(('p_ee', 'h_e'))
+
+cont['HOPF'].plot_cycles(cycles = ['NS1'], figure='fig2', coords=('h_e', 'h_i'))
+
 show()
-
-
 
