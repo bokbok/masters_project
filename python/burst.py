@@ -30,9 +30,10 @@ class LileyWithBurst:
                 'i_ee_t' : 0, 'i_ei' : 0, 'i_ei_t' : 0, 'i_ie' : 0, 'i_ie_t' : 0,
                 'i_ii' : 0, 'i_ii_t' : 0, 'h_e' : 0, 'h_i' : 0, 'slow_e' : 0, 'slow_i' : 0 }
 
-    def __init__(self, params, ics = None, name="LileyBurstBase", equations = None):
+    def __init__(self, params, ics = None, name="LileyBurstBase", equations = None, points = None):
         self.params = params
         self.name = name
+        self.points = points
         if equations == None:
             self.equations = { 'phi_ee' : 'phi_ee_t', 'phi_ei' : 'phi_ei_t',
                                'phi_ei_t' : LileyWithBurst.phi_ei_tt, 'phi_ee_t' : LileyWithBurst.phi_ee_tt,
@@ -51,13 +52,15 @@ class LileyWithBurst:
 
         if ics == None:
             self.ics = LileyWithBurst.zeroIcs
+            self.ics['h_e'] = params['h_e_rest']
+            self.ics['h_i'] = params['h_i_rest']
         else:
             self.ics = ics
 
     def run(self, timeRange):
         self.DSargs = args(varspecs = self.equations, fnspecs = self.auxFunctions, name=self.name)
         self.DSargs.tdomain = timeRange
-        self.DSargs.algparams = {'init_step':0.00001, 'atol': 1e-12, 'rtol': 1e-13, 'max_pts' : 10000000}
+        self.DSargs.algparams = {'init_step':1e-4, 'atol': 1e-12, 'rtol': 1e-13, 'max_pts' : 10000000}
         self.DSargs.checklevel = 2
         self.DSargs.tdata=timeRange
         self.DSargs.pars = self.params
@@ -66,22 +69,24 @@ class LileyWithBurst:
         self.odeSystem = Radau_ODEsystem(self.DSargs)
 
 
-        print "Running...."
+        print "Running....", self.params
         self.traj = self.odeSystem.compute('run')
-        self.points = self.traj.sample()
+        points = self.traj.sample()
+        print points
         print "Done."
 
         #set up ICs based on end equilibrium of above run
 
         contIcs = {}
 
-        for k, v in self.points.iteritems():
+        for k, v in points.iteritems():
+         print k, v
          contIcs[k] = v[len(v) - 1]
 
 
         print contIcs
 
-        return LileyWithBurst(params = self.params, ics = contIcs, name = self.name)
+        return LileyWithBurst(params = self.params, ics = contIcs, name = self.name, points = points)
 
     def freeze(self, vars):
         params = self.params.copy()
@@ -92,7 +97,7 @@ class LileyWithBurst:
             del equations[var]
             params[var] = self.ics[var]
             del ics[var]
-        name = self.name + "_freeze_" + str(hash("".join(vars)))
+        name = self.name + "_freeze_" + str(abs(hash("-".join(vars))))
         return LileyWithBurst(params = params, ics = ics, name = name, equations = equations)
 
     def searchForBifurcations(self, freeVar, displayVar, steps = 1000, dir = '+'):
@@ -112,7 +117,8 @@ class LileyWithBurst:
 
         cont = ContClass(odeSystem)
 
-        PCargs = args(name=self.name, type='EP-C')
+        contName = self.name + "_cont"
+        PCargs = args(name=contName, type='EP-C')
         PCargs.freepars = [freeVar]
         PCargs.StepSize = 1e-6 * dirMod
         PCargs.MaxNumPoints = steps
@@ -129,14 +135,16 @@ class LileyWithBurst:
         # Do path following in the 'forward' direction. Max points is large enough
         # to ensure we go right around the ellipse (PyCont automatically stops when
         # we return to the initial point - unless MaxNumPoints is reached first.)
-        cont[self.name].forward()
+        cont[contName].forward()
 
-        sol = cont[self.name].sol
+        sol = cont[contName].sol
 
-        print "There were %i points computed" % len(sol)
-        print cont[self.name].info()
-
-        return Continuation(odeSystem, cont, sol, self.name, self.name + "_cont", displayVar, freeVar)
+        return Continuation(odeSystem = odeSystem,
+                            cont = cont,
+                            sol = sol,
+                            name = contName,
+                            displayVar = displayVar,
+                            freeVar = freeVar)
 
 
     def display(self, vars, fig = "1"):
@@ -150,13 +158,12 @@ class LileyWithBurst:
 
 class Continuation:
 
-    def __init__(self, odeSystem, cont, sol, parentName, name, displayVar, freeVar, point = None):
+    def __init__(self, odeSystem, cont, sol, name, displayVar, freeVar, point = None):
         self.odeSystem = odeSystem
         self.cont = cont
         self.sol = sol
         self.displayVar = displayVar
         self.name = name
-        self.parentName = parentName
         self.freeVar = freeVar
         self.point = point
 
@@ -172,8 +179,8 @@ class Continuation:
         else:
             dirMod = 1
 
-        newName = self.name + "_cont"
-        fullPointName = self.parentName + ':' + point
+        newName = self.name + "_cont_" + point
+        fullPointName = self.name + ':' + point
         PCargs = args(name=newName, type='LC-C')
 
         PCargs.initpoint = fullPointName
@@ -193,13 +200,17 @@ class Continuation:
 
         self.cont[newName].forward()
 
-        self.cont.plot.toggleAll('off', ['P', 'MX', 'RG'])
+        return Continuation(odeSystem = self.odeSystem,
+                            cont = self.cont,
+                            sol = self.cont[newName].sol,
+                            name = newName,
+                            displayVar = self.displayVar,
+                            freeVar = self.freeVar,
+                            point = fullPointName)
 
-        return Continuation(self.odeSystem, self.cont, self.cont[newName].sol, self.name, newName, self.displayVar, self.freeVar, fullPointName)
-
-    def showCycles(self, coords, fig = "2"):
+    def showCycles(self, coords, point, fig = "2"):
         figure(fig)
-        self.cont[self.name].plot_cycles(cycles = [self.point], coords=coords)
+        self.cont[self.name].plot_cycles(cycles = [self.name + ":" + point], coords=coords)
         return self
 
     def showAll(self):
