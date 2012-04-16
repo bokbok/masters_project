@@ -1,5 +1,5 @@
 from PyDSTool import *
-from pylab import plot, show
+from pylab import plot, show, figure
 
 
 class LileyWithBurst:
@@ -139,17 +139,18 @@ class LileyWithBurst:
         return Continuation(odeSystem, cont, sol, self.name, self.name + "_cont", displayVar, freeVar)
 
 
-    def display(self, vars):
+    def display(self, vars, fig = "1"):
         if self.points == None:
             raise Error("Not run")
 
         for var in vars:
+            figure(fig)
             plot(self.points['t'], self.points[var], label=var)
         show()
 
 class Continuation:
 
-    def __init__(self, odeSystem, cont, sol, parentName, name, displayVar, freeVar):
+    def __init__(self, odeSystem, cont, sol, parentName, name, displayVar, freeVar, point = None):
         self.odeSystem = odeSystem
         self.cont = cont
         self.sol = sol
@@ -157,9 +158,12 @@ class Continuation:
         self.name = name
         self.parentName = parentName
         self.freeVar = freeVar
+        self.point = point
 
-    def display(self):
+    def display(self, fig = "1"):
+        figure(fig)
         self.cont.display((self.freeVar, self.displayVar), stability = True)
+        return self
 
 
     def follow(self, point, steps = 500, dir = '+'):
@@ -168,9 +172,11 @@ class Continuation:
         else:
             dirMod = 1
 
-        PCargs = args(name=self.name, type='LC-C')
+        newName = self.name + "_cont"
+        fullPointName = self.parentName + ':' + point
+        PCargs = args(name=newName, type='LC-C')
 
-        PCargs.initpoint = self.parentName + ':' + point
+        PCargs.initpoint = fullPointName
 
         PCargs.StepSize = 1e-3 * dirMod
         PCargs.MaxStepSize = 1e-2
@@ -185,14 +191,20 @@ class Continuation:
 
         self.cont.newCurve(PCargs)
 
-        self.cont[self.name].forward()
+        self.cont[newName].forward()
 
         self.cont.plot.toggleAll('off', ['P', 'MX', 'RG'])
 
-        return Continuation(self.odeSystem, self.cont, self.cont[self.name].sol, self.name, self.name + "_cont", self.displayVar, self.freeVar)
+        return Continuation(self.odeSystem, self.cont, self.cont[newName].sol, self.name, newName, self.displayVar, self.freeVar, fullPointName)
+
+    def showCycles(self, coords, fig = "2"):
+        figure(fig)
+        self.cont[self.name].plot_cycles(cycles = [self.point], coords=coords)
+        return self
 
     def showAll(self):
         show()
+        return self
 
 
 
