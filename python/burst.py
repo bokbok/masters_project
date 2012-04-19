@@ -1,5 +1,6 @@
 from PyDSTool import *
 from pylab import plot, show, figure
+from PyDSTool.Toolbox import phaseplane as pp
 
 
 class LileyWithBurst:
@@ -35,6 +36,7 @@ class LileyWithBurst:
         self.name = name
         self.points = points
         if equations == None:
+            print "No eqns for " + name
             self.equations = { 'phi_ee' : 'phi_ee_t', 'phi_ei' : 'phi_ei_t',
                                'phi_ei_t' : LileyWithBurst.phi_ei_tt, 'phi_ee_t' : LileyWithBurst.phi_ee_tt,
                                'i_ee' : 'i_ee_t', 'i_ei' : 'i_ei_t', 'i_ie' : 'i_ie_t', 'i_ii' : 'i_ii_t',
@@ -57,22 +59,20 @@ class LileyWithBurst:
         else:
             self.ics = ics
 
+    def displayNullclines(self, x, y, fig = "4"):
+        odes = self._odeSystem([0, 30])
+        subdomain = { x : (-10, 10), y : (-10, 10) }
+        for k, v in self.ics.iteritems():
+            subdomain[k] = (-10, 10)
+
+        #fp_coord = pp.find_fixedpoints(odes, subdomain=None, n=len(subdomain), eps=1e-8, maxsearch = 30000)
+        #print fp_coord
+        pp.find_nullclines(odes, x, y, n=3, eps=1e-8,
+                                      max_step=0.2, subdomain = subdomain)
     def run(self, timeRange):
-        self.DSargs = args(varspecs = self.equations, fnspecs = self.auxFunctions, name=self.name)
-        self.DSargs.tdomain = timeRange
-        self.DSargs.algparams = {'init_step':1e-4, 'atol': 1e-12, 'rtol': 1e-13, 'max_pts' : 10000000}
-        self.DSargs.checklevel = 2
-        self.DSargs.tdata=timeRange
-        self.DSargs.pars = self.params
-        self.DSargs.ics = self.ics
-
-        self.odeSystem = Radau_ODEsystem(self.DSargs)
-
-
         print "Running....", self.params
-        self.traj = self.odeSystem.compute('run')
+        self.traj = self._odeSystem(timeRange).compute('run')
         points = self.traj.sample()
-        print points
         print "Done."
 
         #set up ICs based on end equilibrium of above run
@@ -86,7 +86,19 @@ class LileyWithBurst:
 
         print contIcs
 
-        return LileyWithBurst(params = self.params, ics = contIcs, name = self.name, points = points)
+        return LileyWithBurst(params = self.params, ics = contIcs, name = self.name, points = points, equations = self.equations)
+
+    def _odeSystem(self, timeRange):
+        self.DSargs = args(varspecs = self.equations, fnspecs = self.auxFunctions, name=self.name)
+        self.DSargs.tdomain = timeRange
+        self.DSargs.algparams = {'init_step':1e-4, 'atol': 1e-12, 'rtol': 1e-13, 'max_pts' : 10000000}
+        self.DSargs.checklevel = 2
+        self.DSargs.tdata=timeRange
+        self.DSargs.pars = self.params
+        self.DSargs.ics = self.ics
+
+        return Radau_ODEsystem(self.DSargs)
+
 
     def freeze(self, vars):
         params = self.params.copy()
@@ -98,6 +110,7 @@ class LileyWithBurst:
             params[var] = self.ics[var]
             del ics[var]
         name = self.name + "_freeze_" + str(abs(hash("-".join(vars))))
+        print "Freeze ", equations.keys()
         return LileyWithBurst(params = params, ics = ics, name = name, equations = equations)
 
     def searchForBifurcations(self, freeVar, displayVar, steps = 1000, dir = '+'):
@@ -154,7 +167,7 @@ class LileyWithBurst:
         for var in vars:
             figure(fig)
             plot(self.points['t'], self.points[var], label=var)
-        show()
+        return self
 
 class Continuation:
 
@@ -183,6 +196,8 @@ class Continuation:
         fullPointName = self.name + ':' + point
         PCargs = args(name=newName, type='LC-C')
 
+        print fullPointName
+        print newName
         PCargs.initpoint = fullPointName
 
         PCargs.StepSize = 1e-3 * dirMod
@@ -208,9 +223,10 @@ class Continuation:
                             freeVar = self.freeVar,
                             point = fullPointName)
 
-    def showCycles(self, coords, point, fig = "2"):
+
+    def showCycles(self, coords, fig = "2"):
         figure(fig)
-        self.cont[self.name].plot_cycles(cycles = [self.name + ":" + point], coords=coords)
+        self.cont[self.name].plot_cycles(coords=coords, figure = fig)
         return self
 
     def showAll(self):

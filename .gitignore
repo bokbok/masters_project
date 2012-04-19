@@ -3,4 +3,14 @@ java-implementation/build/*
 java-implementation/results/*
 java-implementation/out/*
 tmp/*
+*_temp
+_radau*
+_auto*
+auto*
+radau*
+fort.*
+python/**/*.pyc
+**/*.swp
+
+*.pyc
 *.swp
