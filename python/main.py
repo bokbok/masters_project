@@ -22,7 +22,8 @@ burst = LileyWithBurst(params = params[sys.argv[1]])
 #run = burst.run([0, 156.8])
 #run = burst.run([0, 156.7925])
 run = burst.run([0, 14.025]).display(['h_e', 'h_i', 'i_ee', 'i_ei'], fig = "2")
-
+run.displayPhasePlane2D('h_e', 'h_i', fig = "3")
+run.displayPhasePlane2D('slow_e', 'h_e', fig = "4")
 frozen = run.freeze(['phi_ee', 'phi_ei', 'phi_ee_t', 'phi_ei_t', 'slow_e', 'slow_i'])
 run2 = frozen.run([0, 100])
 
@@ -30,9 +31,8 @@ run2 = frozen.run([0, 100])
 #f = frozen.run([0, 100])
 #f.display(['h_e', 'h_i', 'i_ee', 'i_ei'], fig = "2")
 
-print run2.equations.keys()
-cont = frozen.searchForBifurcations('slow_i', 'h_i', dir = '+', steps = 2000)
-cont.display(fig = "1")
+#cont = frozen.searchForBifurcations('slow_i', 'h_i', dir = '+', steps = 2000)
+#cont.display(fig = "1")
 #h1 = cont.follow('H1', 5000, dir = '+').display(fig = "1")
 #pd1 = h1.follow('PD1', 1000, dir = '+').display(fig = "1")
 

@@ -169,6 +169,14 @@ class LileyWithBurst:
             plot(self.points['t'], self.points[var], label=var)
         return self
 
+    def displayPhasePlane2D(self, x, y, fig = "1"):
+        if self.points == None:
+            raise Error("Not run")
+
+        figure(fig)
+        plot(self.points[x], self.points[y], label=x + " - " + y)
+        return self
+
 class Continuation:
 
     def __init__(self, odeSystem, cont, sol, name, displayVar, freeVar, point = None):
