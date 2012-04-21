@@ -110,7 +110,6 @@ class LileyWithBurst:
             params[var] = self.ics[var]
             del ics[var]
         name = self.name + "_freeze_" + str(abs(hash("-".join(vars))))
-        print "Freeze ", equations.keys()
         return LileyWithBurst(params = params, ics = ics, name = name, equations = equations)
 
     def searchForBifurcations(self, freeVar, displayVar, steps = 1000, dir = '+'):
@@ -204,8 +203,6 @@ class Continuation:
         fullPointName = self.name + ':' + point
         PCargs = args(name=newName, type='LC-C')
 
-        print fullPointName
-        print newName
         PCargs.initpoint = fullPointName
 
         PCargs.StepSize = 1e-3 * dirMod
