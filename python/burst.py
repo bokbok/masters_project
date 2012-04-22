@@ -1,6 +1,7 @@
 from PyDSTool import *
-from pylab import plot, show, figure
+from pylab import plot, show, figure, draw
 from PyDSTool.Toolbox import phaseplane as pp
+from mpl_toolkits.mplot3d import Axes3D
 
 
 class LileyWithBurst:
@@ -61,13 +62,13 @@ class LileyWithBurst:
 
     def displayNullclines(self, x, y, fig = "4"):
         odes = self._odeSystem([0, 30])
-        subdomain = { x : (-10, 10), y : (-10, 10) }
+        subdomain = {}
         for k, v in self.ics.iteritems():
             subdomain[k] = (-10, 10)
 
         #fp_coord = pp.find_fixedpoints(odes, subdomain=None, n=len(subdomain), eps=1e-8, maxsearch = 30000)
         #print fp_coord
-        pp.find_nullclines(odes, x, y, n=3, eps=1e-8,
+        pp.find_nullclines(odes, x, y, n=2, eps=1e-8,
                                       max_step=0.2, subdomain = subdomain)
     def run(self, timeRange):
         print "Running....", self.params
@@ -176,8 +177,18 @@ class LileyWithBurst:
         plot(self.points[x], self.points[y], label=x + " - " + y)
         return self
 
-class Continuation:
+    def displayPhasePlane3D(self, x, y, z, fig = "5"):
+        figr = figure(fig)
+        axes = Axes3D(figr)
+        axes.plot(self.points[x], self.points[y], self.points[z], 'go', label='3D')
+        axes.legend()
+        axes.set_xlabel(x)
+        axes.set_ylabel(y)
+        axes.set_zlabel(z)
+        draw()
+        return self
 
+class Continuation:
     def __init__(self, odeSystem, cont, sol, name, displayVar, freeVar, point = None):
         self.odeSystem = odeSystem
         self.cont = cont
@@ -193,7 +204,7 @@ class Continuation:
         return self
 
 
-    def follow(self, point, steps = 500, dir = '+'):
+    def followHopf(self, point, steps = 500, dir = '+'):
         if dir == '-':
             dirMod = -1
         else:
@@ -202,6 +213,41 @@ class Continuation:
         newName = self.name + "_cont_" + point
         fullPointName = self.name + ':' + point
         PCargs = args(name=newName, type='LC-C')
+
+        PCargs.initpoint = fullPointName
+
+        PCargs.StepSize = 1e-3 * dirMod
+        PCargs.MaxStepSize = 1e-2
+        PCargs.LocBifPoints = 'all'
+        PCargs.FuncTol = 1e-6
+        PCargs.VarTol = 1e-6
+        PCargs.SolutionMeasures = 'all'
+        PCargs.MaxNumPoints = steps
+        PCargs.SaveJacobian = True
+        PCargs.NumSPOut = steps
+        PCargs.freepars = [self.freeVar]
+
+        self.cont.newCurve(PCargs)
+
+        self.cont[newName].forward()
+
+        return Continuation(odeSystem = self.odeSystem,
+                            cont = self.cont,
+                            sol = self.cont[newName].sol,
+                            name = newName,
+                            displayVar = self.displayVar,
+                            freeVar = self.freeVar,
+                            point = fullPointName)
+
+    def followSaddleNode(self, point, steps = 500, dir = '+'):
+        if dir == '-':
+            dirMod = -1
+        else:
+            dirMod = 1
+
+        newName = self.name + "_cont_" + point
+        fullPointName = self.name + ':' + point
+        PCargs = args(name=newName, type='LP-C')
 
         PCargs.initpoint = fullPointName
 
