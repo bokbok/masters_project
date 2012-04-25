@@ -180,7 +180,7 @@ class LileyWithBurst:
     def displayPhasePlane3D(self, x, y, z, fig = "5"):
         figr = figure(fig)
         axes = Axes3D(figr)
-        axes.plot(self.points[x], self.points[y], self.points[z], 'go', label='3D')
+        axes.plot(self.points[x], self.points[y], self.points[z], label='3D')
         axes.legend()
         axes.set_xlabel(x)
         axes.set_ylabel(y)
@@ -265,7 +265,6 @@ class Continuation:
         self.cont.newCurve(PCargs)
 
         self.cont[newName].forward()
-
         return Continuation(odeSystem = self.odeSystem,
                             cont = self.cont,
                             sol = self.cont[newName].sol,
@@ -277,7 +276,7 @@ class Continuation:
 
     def showCycles(self, coords, fig = "2"):
         figure(fig)
-        self.cont[self.name].plot_cycles(coords=coords, figure = fig)
+        self.cont[self.name].plot_cycles(coords=coords, figure = fig, method = 'highlight')
         return self
 
     def showAll(self):
