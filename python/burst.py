@@ -218,6 +218,7 @@ class Continuation:
 
         PCargs.StepSize = 1e-3 * dirMod
         PCargs.MaxStepSize = 1e-2
+        PCargs.MinStepSize = 1e-5
         PCargs.LocBifPoints = 'all'
         PCargs.FuncTol = 1e-6
         PCargs.VarTol = 1e-6
