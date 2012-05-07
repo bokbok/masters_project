@@ -72,8 +72,8 @@ class LileyWithBurst:
                                       max_step=0.2, subdomain = subdomain)
     def run(self, timeRange):
         print "Running....", self.params
-        self.traj = self._odeSystem(timeRange).compute('run')
-        points = self.traj.sample()
+        traj = self._odeSystem(timeRange).compute('run')
+        points = traj.sample()
         print "Done."
 
         #set up ICs based on end equilibrium of above run
@@ -174,7 +174,7 @@ class LileyWithBurst:
             raise Error("Not run")
 
         figure(fig)
-        plot(self.points[x], self.points[y], label=x + " - " + y)
+        plot(self.points[x][0::10], self.points[y][0::10], label=x + " - " + y)
         return self
 
     def displayPhasePlane3D(self, x, y, z, fig = "5"):
