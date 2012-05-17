@@ -149,6 +149,7 @@ class LileyWithBurst:
         # to ensure we go right around the ellipse (PyCont automatically stops when
         # we return to the initial point - unless MaxNumPoints is reached first.)
         cont[contName].forward()
+        cont[contName].backward()
 
         sol = cont[contName].sol
 
@@ -158,7 +159,6 @@ class LileyWithBurst:
                             name = contName,
                             displayVar = displayVar,
                             freeVar = freeVar)
-
 
     def display(self, vars, fig = "1"):
         if self.points == None:
@@ -198,9 +198,25 @@ class Continuation:
         self.freeVar = freeVar
         self.point = point
 
-    def display(self, fig = "1"):
+    def display(self, displayVar = None, fig = "1"):
+        if displayVar == None:
+            displayVar = self.displayVar
+
         figure(fig)
-        self.cont.display((self.freeVar, self.displayVar), stability = True)
+        self.cont[self.name].display((self.freeVar, displayVar), stability = True)
+        return self
+
+    def displayMinMax(self, displayVar = None, fig = "1"):
+        if displayVar == None:
+            displayVar = self.displayVar
+
+        figure(fig)
+        print self.sol.coordnames
+        print self.cont[self.name].sol.coordnames
+        print 'h_e_max' in self.sol.coordnames
+        self.cont[self.name].display(coords = (self.freeVar, displayVar), stability = True)
+        self.cont[self.name].display(coords = (self.freeVar, displayVar + "_max"), stability = True)
+        self.cont[self.name].display(coords = (self.freeVar, displayVar + "_min"), stability = True)
         return self
 
 
@@ -213,6 +229,45 @@ class Continuation:
         newName = self.name + "_cont_" + point
         fullPointName = self.name + ':' + point
         PCargs = args(name=newName, type='LC-C')
+        #PCargs = args(name=newName, type='H-C2')
+
+        PCargs.initpoint = fullPointName
+
+        PCargs.StepSize = 1e-3 * dirMod
+        PCargs.MaxStepSize = 1e-2
+        PCargs.MinStepSize = 1e-5
+        PCargs.LocBifPoints = 'all'
+        PCargs.FuncTol = 1e-6
+        PCargs.VarTol = 1e-6
+        PCargs.SolutionMeasures = 'all'
+        PCargs.MaxNumPoints = steps
+        PCargs.SaveJacobian = True
+        PCargs.SaveEigen = True
+        PCargs.NumSPOut = steps
+        PCargs.freepars = [self.freeVar]
+        PCargs.NumCollocation = 6
+
+        self.cont.newCurve(PCargs)
+
+        self.cont[newName].forward()
+
+        return Continuation(odeSystem = self.odeSystem,
+                            cont = self.cont,
+                            sol = self.cont[newName].sol,
+                            name = newName,
+                            displayVar = self.displayVar,
+                            freeVar = self.freeVar,
+                            point = fullPointName)
+
+    def followHopfCD2(self, point, additionalFreeVar, steps = 500, dir = '+'):
+        if dir == '-':
+            dirMod = -1
+        else:
+            dirMod = 1
+
+        newName = self.name + "_cont_" + point
+        fullPointName = self.name + ':' + point
+        PCargs = args(name=newName, type='H-C2')
 
         PCargs.initpoint = fullPointName
 
@@ -226,11 +281,48 @@ class Continuation:
         PCargs.MaxNumPoints = steps
         PCargs.SaveJacobian = True
         PCargs.NumSPOut = steps
-        PCargs.freepars = [self.freeVar]
+        PCargs.freepars = [self.freeVar, additionalFreeVar]
 
         self.cont.newCurve(PCargs)
 
         self.cont[newName].forward()
+
+        return Continuation(odeSystem = self.odeSystem,
+                            cont = self.cont,
+                            sol = self.cont[newName].sol,
+                            name = newName,
+                            displayVar = self.displayVar,
+                            freeVar = self.freeVar,
+                            point = fullPointName)
+
+    def followHopf2(self, point, additionalFreeVar, steps = 500, dir = '+'):
+        if dir == '-':
+            dirMod = -1
+        else:
+            dirMod = 1
+
+        newName = self.name + "_cont_" + point
+        fullPointName = self.name + ':' + point
+        PCargs = args(name=newName, type='H-C1')
+
+        PCargs.initpoint = fullPointName
+
+        PCargs.StepSize = 1e-3 * dirMod
+        PCargs.MaxStepSize = 1e-2
+        PCargs.MinStepSize = 1e-5
+        PCargs.LocBifPoints = 'all'
+        PCargs.FuncTol = 1e-6
+        PCargs.VarTol = 1e-6
+        PCargs.SolutionMeasures = 'all'
+        PCargs.MaxNumPoints = steps
+        PCargs.SaveJacobian = True
+        PCargs.NumSPOut = steps
+        PCargs.freepars = [self.freeVar, additionalFreeVar]
+
+        self.cont.newCurve(PCargs)
+
+        self.cont[newName].forward()
+        self.cont[newName].backward()
 
         return Continuation(odeSystem = self.odeSystem,
                             cont = self.cont,

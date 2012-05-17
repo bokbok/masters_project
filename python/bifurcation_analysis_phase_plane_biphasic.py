@@ -19,25 +19,26 @@ params = load(file(path + '/../parameterisations/parameterisations.yml', 'r'))
 
 burst = LileyWithBurst(params = params['biphasic_burst']).freeze(['phi_ee', 'phi_ei', 'phi_ee_t', 'phi_ei_t'])
 
-run = burst.run([0, 3]).run([0, 6.56])
+run = burst.run([0, 6.56])
+#run.display(['h_e', 'slow_e'])
 gc.collect()
 #show()
-print "PP"
-run.displayPhasePlane2D('slow_e', 'h_e', fig = "2")
-print "Done"
 
 frozen = run.freeze(['slow_e']).run([0, 10])
-run = None
 gc.collect()
 
 print "Cont"
-cont2f = frozen.searchForBifurcations('slow_e', 'h_e', dir = '+', steps = 2000).display(fig = "2")
+cont2f = frozen.searchForBifurcations('slow_e', 'h_i', dir = '+', steps = 200).display(fig = "2")
 print "done - forward"
 gc.collect()
-cont2r = frozen.searchForBifurcations('slow_e', 'h_e', dir = '-', steps = 40).display(fig = "2")
+#cont2r = frozen.searchForBifurcations('slow_e', 'h_e', dir = '-', steps = 40).display(fig = "2")
 print "done - rev"
 
 
-h1b = cont2f.followHopf('H1', 10000, dir = '+').display(fig = '2')
+h1b = cont2f.followHopf('H1', 2000, dir = '+').displayMinMax(fig = '2')
+#h1b = cont2f.followHopf2('H1', 'slow_i', 100, dir = '+').display(fig = '2')
+print "PP"
+run.displayPhasePlane2D('slow_e', 'h_i', fig = "2")
+print "Done"
 
 show()

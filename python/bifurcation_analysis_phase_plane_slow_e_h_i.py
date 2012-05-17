@@ -19,20 +19,16 @@ params = load(file(path + '/../parameterisations/parameterisations.yml', 'r'))
 
 burst = LileyWithBurst(params = params['alpha'])
 
-run = burst.run([0, 16.5])#.freeze(['phi_ee', 'phi_ei', 'phi_ee_t', 'phi_ei_t'])
+run = burst.run([0, 16.5])
 gc.collect()
 #show()
 print "PP"
-pp = run.run([0, 100])
-pp.displayPhasePlane2D('slow_e', 'h_i', fig = "2")
-pp.displayPhasePlane2D('slow_i', 'h_i', fig = "3")
-pp.display(['h_i', 'slow_e', 'slow_i'], fig = "4")
+run.displayPhasePlane2D('slow_e', 'h_i', fig = "2")
 
-show()
 print "Done"
 
 gc.collect()
-frozen = run.freeze(['slow_i', 'slow_e', 'phi_ei', 'phi_ei_t', 'phi_ee', 'phi_ee_t']).run([0, 10])
+frozen = run.freeze(['slow_e', 'phi_ei', 'phi_ei_t', 'phi_ee', 'phi_ee_t']).run([0, 10])
 run = None
 gc.collect()
 

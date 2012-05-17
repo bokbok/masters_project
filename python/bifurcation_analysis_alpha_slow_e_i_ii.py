@@ -23,24 +23,25 @@ run = burst.run([0, 16.5])
 gc.collect()
 #show()
 print "PP"
-run.displayPhasePlane2D('slow_i', 'h_e', fig = "2")
-run.run([0, 10]).displayPhasePlane2D('slow_i', 'h_e', fig = "2")
+run.displayPhasePlane2D('slow_e', 'i_ii', fig = "2")
+
 print "Done"
 
 gc.collect()
-frozen = run.freeze(['slow_i', 'phi_ei', 'phi_ei_t', 'phi_ee', 'phi_ee_t']).run([0, 10])
+frozen = run.freeze(['slow_e', 'phi_ei', 'phi_ei_t', 'phi_ee', 'phi_ee_t']).run([0, 10])
 run = None
 gc.collect()
 
 print "Cont"
-cont2f = frozen.searchForBifurcations('slow_i', 'h_e', dir = '+', steps = 100).display(fig = "2")
+cont2f = frozen.searchForBifurcations('slow_e', 'i_ii', dir = '+', steps = 3000).display(fig = "2")
 print "done - forward"
 gc.collect()
+cont2r = frozen.searchForBifurcations('slow_e', 'i_ii', dir = '-', steps = 50).display(fig = "2")
+print "done - rev"
 
 
 #h1r = cont2r.followHopf('H1', 10000, dir = '+').display(fig = '2')
 
-h1b = cont2f.followHopf('H1', 5000, dir = '+').displayMinMax(fig = '2')
-h1b.displayMinMax(displayVar = 'slow_e', fig = '3')
+h1b = cont2f.followHopf('H1', 50000, dir = '+').display(fig = '2')
 
 show()
