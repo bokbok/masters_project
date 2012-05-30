@@ -3,7 +3,6 @@ from pylab import plot, show, figure, draw
 from PyDSTool.Toolbox import phaseplane as pp
 from mpl_toolkits.mplot3d import Axes3D
 
-
 class LileyWithBurst:
     h_e_t='(1/tor_e) * (-(h_e - h_e_rest) + (Y_e_h_e(h_e) * i_ee) + (Y_i_h_e(h_e) * (i_ie)) + burst_e * slow_e)'
     h_i_t='(1/tor_i) * (-(h_i - h_i_rest) + (Y_e_h_i(h_i) * i_ei) + (Y_i_h_i(h_i) * (i_ii)) + burst_i * slow_i)'
@@ -32,7 +31,9 @@ class LileyWithBurst:
                 'i_ee_t' : 0, 'i_ei' : 0, 'i_ei_t' : 0, 'i_ie' : 0, 'i_ie_t' : 0,
                 'i_ii' : 0, 'i_ii_t' : 0, 'h_e' : 0, 'h_i' : 0, 'slow_e' : 0, 'slow_i' : 0 }
 
-    def __init__(self, params, ics = None, name="LileyBurstBase", equations = None, points = None):
+    odeSystems = {}
+
+    def __init__(self, params, ics = None, name="LileyBurstBase", equations = None, points = None, odeSystem = None):
         self.params = params
         self.name = name
         self.points = points
@@ -60,19 +61,19 @@ class LileyWithBurst:
         else:
             self.ics = ics
 
-    def displayNullclines(self, x, y, fig = "4"):
-        odes = self._odeSystem([0, 30])
-        subdomain = {}
-        for k, v in self.ics.iteritems():
-            subdomain[k] = (-10, 10)
+        if odeSystem == None:
+            self.odes = self._odeSystem()
+        else:
+            self.odes = odeSystem
 
-        #fp_coord = pp.find_fixedpoints(odes, subdomain=None, n=len(subdomain), eps=1e-8, maxsearch = 30000)
-        #print fp_coord
-        pp.find_nullclines(odes, x, y, n=2, eps=1e-8,
-                                      max_step=0.2, subdomain = subdomain)
     def run(self, timeRange):
         print "Running....", self.params
-        traj = self._odeSystem(timeRange).compute('run')
+        #self.odes.cleanupMemory()
+        self.odes.set(tdomain = timeRange)
+        self.odes.set(tdata = timeRange)
+        self.odes.set(ics = self.ics)
+        self.odes.set(pars = self.params)
+        traj = self.odes.compute('run')
         points = traj.sample()
         print "Done."
 
@@ -81,25 +82,25 @@ class LileyWithBurst:
         contIcs = {}
 
         for k, v in points.iteritems():
-         print k, v
          contIcs[k] = v[len(v) - 1]
 
 
-        print contIcs
+        #print contIcs
+        #self.odes.cleanupMemory()
+        return LileyWithBurst(params = self.params, ics = contIcs, name = self.name, points = points, equations = self.equations, odeSystem = self.odes)
 
-        return LileyWithBurst(params = self.params, ics = contIcs, name = self.name, points = points, equations = self.equations)
+    def _odeSystem(self, timeRange = [0, 10]):
+        if not LileyWithBurst.odeSystems.has_key(self.name):
+            DSargs = args(varspecs = self.equations, fnspecs = self.auxFunctions, name=self.name)
+            DSargs.tdomain = timeRange
+            DSargs.algparams = {'init_step':1e-4, 'atol': 1e-12, 'rtol': 1e-13, 'max_pts' : 1000000}
+            DSargs.checklevel = 2
+            DSargs.tdata=timeRange
+            DSargs.pars = self.params
+            DSargs.ics = self.ics
+            LileyWithBurst.odeSystems[self.name] = Radau_ODEsystem(DSargs)
 
-    def _odeSystem(self, timeRange):
-        self.DSargs = args(varspecs = self.equations, fnspecs = self.auxFunctions, name=self.name)
-        self.DSargs.tdomain = timeRange
-        self.DSargs.algparams = {'init_step':1e-4, 'atol': 1e-12, 'rtol': 1e-13, 'max_pts' : 10000000}
-        self.DSargs.checklevel = 2
-        self.DSargs.tdata=timeRange
-        self.DSargs.pars = self.params
-        self.DSargs.ics = self.ics
-
-        return Radau_ODEsystem(self.DSargs)
-
+        return LileyWithBurst.odeSystems[self.name]
 
     def freeze(self, vars):
         params = self.params.copy()
@@ -118,19 +119,10 @@ class LileyWithBurst:
             dirMod = -1
         else:
             dirMod = 1
-        odeArgs = args(varspecs = self.equations, fnspecs = self.auxFunctions, name=self.name)
-        odeArgs.tdomain = [0, 30]
-        odeArgs.algparams = {'init_step':0.00001, 'atol': 1e-12, 'rtol': 1e-13, 'max_pts' : 10000000}
-        odeArgs.checklevel = 2
-        odeArgs.tdata=[0, 30]
-        odeArgs.pars = self.params
-        odeArgs.ics = self.ics
 
-        odeSystem = Radau_ODEsystem(odeArgs)
+        cont = ContClass(self.odes)
 
-        cont = ContClass(odeSystem)
-
-        contName = self.name + "_cont"
+        contName = self.name + "_cont_" + freeVar
         PCargs = args(name=contName, type='EP-C')
         PCargs.freepars = [freeVar]
         PCargs.StepSize = 1e-6 * dirMod
@@ -153,7 +145,7 @@ class LileyWithBurst:
 
         sol = cont[contName].sol
 
-        return Continuation(odeSystem = odeSystem,
+        return Continuation(odeSystem = self.odes,
                             cont = cont,
                             sol = sol,
                             name = contName,
@@ -187,6 +179,8 @@ class LileyWithBurst:
         axes.set_zlabel(z)
         draw()
         return self
+    def vals(self, axis):
+        return self.points[axis]
 
 class Continuation:
     def __init__(self, odeSystem, cont, sol, name, displayVar, freeVar, point = None):
@@ -197,23 +191,38 @@ class Continuation:
         self.name = name
         self.freeVar = freeVar
         self.point = point
+        #self.odeSystem.cleanupMemory()
 
-    def display(self, displayVar = None, fig = "1"):
+    def display(self, displayVar = None, additionalVar = None, fig = "1"):
         if displayVar == None:
             displayVar = self.displayVar
+        if additionalVar == None:
+            coords = (self.freeVar, displayVar)
+        else:
+            coords = (self.freeVar, displayVar, additionalVar)
 
         figure(fig)
-        self.cont[self.name].display((self.freeVar, displayVar), stability = True)
+        self.cont[self.name].display(coords, stability = True)
         return self
+
+    def displayMinMax3D(self, x, y, z, fig = "7"):
+        figr = figure(fig)
+        axes = Axes3D(figr)
+        axes.plot(self.cont[self.name].sol[x], self.cont[self.name].sol[y + "_min"], self.cont[self.name].sol[z + "_min"], label='3D')
+        axes.plot(self.cont[self.name].sol[x], self.cont[self.name].sol[y + "_max"], self.cont[self.name].sol[z + "_max"], label='3D')
+        axes.legend()
+        axes.set_xlabel(x)
+        axes.set_ylabel(y)
+        axes.set_zlabel(z)
+        draw()
+        return self
+
 
     def displayMinMax(self, displayVar = None, fig = "1"):
         if displayVar == None:
             displayVar = self.displayVar
 
         figure(fig)
-        print self.sol.coordnames
-        print self.cont[self.name].sol.coordnames
-        print 'h_e_max' in self.sol.coordnames
         self.cont[self.name].display(coords = (self.freeVar, displayVar), stability = True)
         self.cont[self.name].display(coords = (self.freeVar, displayVar + "_max"), stability = True)
         self.cont[self.name].display(coords = (self.freeVar, displayVar + "_min"), stability = True)
@@ -225,6 +234,10 @@ class Continuation:
             dirMod = -1
         else:
             dirMod = 1
+
+        if self.cont[self.name].getSpecialPoint(point) == None:
+            print "No point " + point + " for " + self.name
+            return None
 
         newName = self.name + "_cont_" + point
         fullPointName = self.name + ':' + point
@@ -246,6 +259,8 @@ class Continuation:
         PCargs.NumSPOut = steps
         PCargs.freepars = [self.freeVar]
         PCargs.NumCollocation = 6
+        PCargs.StopAtPoints = 'B'
+
 
         self.cont.newCurve(PCargs)
 
@@ -267,7 +282,8 @@ class Continuation:
 
         newName = self.name + "_cont_" + point
         fullPointName = self.name + ':' + point
-        PCargs = args(name=newName, type='H-C2')
+        print "Following " + fullPointName
+        PCargs = args(name=newName, type='LP-C')
 
         PCargs.initpoint = fullPointName
 
@@ -301,16 +317,16 @@ class Continuation:
         else:
             dirMod = 1
 
-        newName = self.name + "_cont_" + point
+        newName = self.name + "_cont_" + point + "_ch2_"
         fullPointName = self.name + ':' + point
-        PCargs = args(name=newName, type='H-C1')
+        PCargs = args(name=newName, type='H-C2')
 
         PCargs.initpoint = fullPointName
 
         PCargs.StepSize = 1e-3 * dirMod
         PCargs.MaxStepSize = 1e-2
         PCargs.MinStepSize = 1e-5
-        PCargs.LocBifPoints = 'all'
+        PCargs.LocBifPoints = ['GH','BT','ZH']
         PCargs.FuncTol = 1e-6
         PCargs.VarTol = 1e-6
         PCargs.SolutionMeasures = 'all'
@@ -371,6 +387,9 @@ class Continuation:
         figure(fig)
         self.cont[self.name].plot_cycles(coords=coords, figure = fig, method = 'highlight')
         return self
+
+    def vals(self, val):
+        return self.cont[self.name].sol[val]
 
     def showAll(self):
         show()
