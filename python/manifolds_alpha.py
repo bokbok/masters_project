@@ -25,7 +25,7 @@ pp = burst.run([0, 100])
 
 manifoldDisplay.add3DPhasePlane(pp)
 
-for end in [21, 21.5]:
+for end in [20.5, 21.5]:
     for step in range(0, 6):
 
         run1 = burst.run([0, end + step * 0.1])
@@ -40,8 +40,8 @@ for end in [21, 21.5]:
 
         print "Cont"
         print step
-        cont_i1 = frozen1.searchForBifurcations('slow_i', 'h_e', dir = '+', steps = 2000)
-        cont_e1 = frozen1.searchForBifurcations('slow_e', 'h_e', dir = '+', steps = 2000)
+        cont_i1 = frozen1.searchForBifurcations('slow_i', 'h_e', dir = '+', steps = 5000)
+        cont_e1 = frozen1.searchForBifurcations('slow_e', 'h_e', dir = '+', steps = 5000)
         print "done - forward"
         gc.collect()
 

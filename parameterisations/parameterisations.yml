@@ -200,7 +200,6 @@ magic:
     nu_slow_i: 0.08
     tor_slow: 132.0e-3
 
- 
 biphasic_burst:
     h_e_rest: -62.226e-3
     h_i_rest: -65.666e-3
@@ -238,6 +237,149 @@ biphasic_burst:
     p_ei: 2625.7
     p_ii: 0
     r_abs: 0
+    burst_e: 1
+    burst_i: 1
+    mu_slow_e: 0.01
+    nu_slow_e: 0.02
+    mu_slow_i: 0.04
+    nu_slow_i: 0.08
+    tor_slow: 132.55e-3
+    phi_ie: 0
+    phi_ii: 0
+
+
+biphasic_burst_alt:
+    h_e_rest: -62.226e-3
+    h_i_rest: -65.666e-3
+    tor_e: 132.55e-3
+    tor_i: 135.91e-3
+    h_ee_eq: -18.038e-3
+    h_ei_eq: -16.554e-3 
+    h_ie_eq: -81.976e-3
+    h_ii_eq: -78.995e-3
+    T_ee: 0.10631e-3
+    T_ei: 0.10631e-3
+    T_ie: 0.46477e-3
+    T_ii: 0.28663e-3
+    gamma_ee: 291.5
+    gamma_ei: 697.76
+    gamma_ie: 458.67
+    gamma_ii: 82.33
+    N_beta_ee: 2185.8
+    N_beta_ei: 3749.8
+    N_beta_ie: 466.30
+    N_beta_ii: 160.69
+    N_alpha_ee: 4611.6
+    N_alpha_ei: 1372.4
+    A_ee: 0.92809
+    A_ei: 0.92809
+    v: 0.00068424
+    s_e_max: 196.08
+    s_i_max: 454.40
+    mu_e: -45.104e-3
+    mu_i: -43.91e-3
+    sigma_e: 3.842e-3
+    sigma_i: 4.573e-3
+    p_ee: 6603.4
+    p_ie: 0
+    p_ei: 2625.7
+    p_ii: 0
+    r_abs: 0
+    burst_e: 1.0
+    burst_i: 1.0
+    mu_slow_e: 0.04
+    nu_slow_e: 0.02
+    mu_slow_i: 0.08
+    nu_slow_i: 0.08
+    tor_slow: 132.55e-3
+    phi_ie: 0
+    phi_ii: 0
+
+biphasic_1:
+    h_e_rest: -70.152e-3
+    h_i_rest: -65.557e-3
+    tor_e: 126.05e-3
+    tor_i: 131.15e-3
+    h_ee_eq: -16.422e-3
+    h_ei_eq: -18.587e-3 
+    h_ie_eq: -83.601e-3
+    h_ii_eq: -77.778e-3
+    T_ee: 1.1204e-3
+    T_ei: 1.79011e-3
+    T_ie: 1.6079e-3
+    T_ii: 0.38521e-3
+    gamma_ee: 536.71
+    gamma_ei: 950.75
+    gamma_ie: 470.98
+    gamma_ii: 112.12
+    N_beta_ee: 2495.0
+    N_beta_ei: 4425.7
+    N_beta_ie: 523.75
+    N_beta_ii: 519.43
+    N_alpha_ee: 4169.6
+    N_alpha_ei: 2099.0
+    A_ee: 0.74744
+    A_ei: 0.74744
+    v: 648.82
+    s_e_max: 73.134
+    s_i_max: 182.39
+    mu_e: -43.383
+    mu_i: -46.960
+    sigma_e: 4.2840
+    sigma_i: 2.9594
+    p_ee: 2258.1
+    p_ie: 0
+    p_ei: 1139.6
+    p_ii: 0
+    r_abs: 0
+    burst_e: 1
+    burst_i: 1
+    mu_slow_e: 0.05
+    nu_slow_e: 0.1
+    mu_slow_i: 0.05
+    nu_slow_i: 0.1
+    tor_slow: 132.55e-3
+    phi_ie: 0
+    phi_ii: 0
+
+    
+biphasic_burst_attempt:
+    h_e_rest: -62.226e-3
+    h_i_rest: -65.666e-3
+    tor_e: 132.55e-3
+    tor_i: 135.91e-3
+    h_ee_eq: -18.038e-3
+    h_ei_eq: -16.554e-3 
+    h_ie_eq: -81.976e-3
+    h_ii_eq: -78.995e-3   
+    T_ee: 0.40631e-3
+    T_ei: 0.40631e-3
+    T_ie: 0.86477e-3
+    T_ii: 0.88663e-3
+    gamma_ee: 291.5
+    gamma_ei: 697.76
+    gamma_ie: 458.67
+    gamma_ii: 82.33
+    N_beta_ee: 2185.8
+    N_beta_ei: 3749.8
+    N_beta_ie: 466.30
+    N_beta_ii: 160.69
+    N_alpha_ee: 4611.6
+    N_alpha_ei: 1372.4
+    A_ee: 0.92809
+    A_ei: 0.92809
+    v: 70
+    s_e_max: 196.08
+    s_i_max: 454.40
+    mu_e: -45.104e-3
+    mu_i: -43.91e-3
+    sigma_e: 3.842e-3
+    sigma_i: 4.573e-3
+    p_ee: 6603.4
+    p_ie: 0
+    p_ei: 2625.7
+    p_ii: 0
+    r_abs: 0
     burst_e: 1.1
     burst_i: 1.1
     mu_slow_e: 0.05
@@ -249,6 +391,7 @@ biphasic_burst:
     phi_ii: 0
 
     
+
 
   
 
