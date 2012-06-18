@@ -21,6 +21,111 @@ limit_cycle:
     p_ei: 5000
     tor_e: 0.05
 
+alpha_exp:
+    h_e_rest: -60.0e-3
+    h_i_rest: -60.0e-3
+    tor_e: 10.0e-3
+    tor_i: 30.0e-3
+    h_ee_eq: 0
+    h_ei_eq: 0 
+    h_ie_eq: -70.0e-3
+    h_ii_eq: -70.0e-3
+    T_ee: 0.4e-3
+    T_ei: 0.4e-3
+    T_ie: 0.8e-3
+    T_ii: 0.8e-3
+    gamma_ee: 300
+    gamma_ei: 90.1745
+    gamma_ie: 65
+    gamma_ii: 65
+    N_beta_ee: 3034
+    N_beta_ei: 3034
+    N_beta_ie: 536
+    N_beta_ii: 536
+    N_alpha_ee: 4000
+    N_alpha_ei: 2000
+    A_ee: 0.4
+    A_ei: 0.4
+    v: 700
+    s_e_max: 100
+    s_i_max: 100
+    mu_e: -50.0e-3
+    mu_i: -50.0e-3
+    sigma_e: 5.0e-3
+    sigma_i: 5.0e-3
+    p_ee: 0
+    p_ie: 0
+    p_ei: 0
+    p_ii: 0
+    r_abs: 0
+    burst_e: 22
+    burst_i: 25
+    mu_slow_e: 0.002
+    nu_slow_e: 0.0005
+    mu_slow_i: 0.08
+    nu_slow_i: 0.005
+    tor_slow: 66.0e-3
+    phi_ie: 0
+    phi_ii: 0
+    weight_e: 1 
+    weight_i: 1
+    bias_i: 0.0
+ 
+alpha_exp_2:
+    h_e_rest: -60.0e-3
+    h_i_rest: -60.0e-3
+    tor_e: 50.0e-3
+    tor_i: 70.0e-3
+    h_ee_eq: 0
+    h_ei_eq: 0 
+    h_ie_eq: -70.0e-3
+    h_ii_eq: -70.0e-3
+    T_ee: 0.4e-3
+    T_ei: 0.4e-3
+    T_ie: 0.8e-3
+    T_ii: 0.8e-3
+    gamma_ee: 300
+    gamma_ei: 300
+    gamma_ie: 65
+    gamma_ii: 65
+    N_beta_ee: 3034
+    N_beta_ei: 3034
+    N_beta_ie: 536
+    N_beta_ii: 536
+    N_alpha_ee: 4000
+    N_alpha_ei: 2000
+    A_ee: 0.4
+    A_ei: 0.4
+    v: 700
+    s_e_max: 100
+    s_i_max: 100
+    mu_e: -50.0e-3
+    mu_i: -50.0e-3
+    sigma_e: 5.0e-3
+    sigma_i: 5.0e-3
+    p_ee: 0
+    p_ie: 0
+    p_ei: 0
+    p_ii: 0
+    r_abs: 0
+    burst_e: 22
+    burst_i: 25
+    mu_slow_e: 0.002
+    nu_slow_e: 0.0005
+    mu_slow_i: 0.08
+    nu_slow_i: 0.005
+    tor_slow: 66.0e-3
+    phi_ie: 0
+    phi_ii: 0
+    weight_i: 0.01
+    weight_e: 1
+    bias_i: 0.1
+    k_slow_e: 1
+    k_slow_i: 1
+    weight_slow_e: 0.0
+    weight_slow_i: 0.05
+ 
+
 alpha:
     h_e_rest: -60.0e-3
     h_i_rest: -60.0e-3
@@ -67,6 +172,9 @@ alpha:
     tor_slow: 66.0e-3
     phi_ie: 0
     phi_ii: 0
+    weight_i: 0.5
+    weight_e: 1
+    bias_i: -0.2
  
 burst:
     h_e_rest: -62.226e-3
@@ -246,6 +354,8 @@ biphasic_burst:
     tor_slow: 132.55e-3
     phi_ie: 0
     phi_ii: 0
+    weight_e: 1
+    weight_i: 0.01
 
 
 biphasic_burst_alt:
@@ -273,7 +383,7 @@ biphasic_burst_alt:
     N_alpha_ei: 1372.4
     A_ee: 0.92809
     A_ei: 0.92809
-    v: 0.00068424
+    v: 0.05
     s_e_max: 196.08
     s_i_max: 454.40
     mu_e: -45.104e-3
