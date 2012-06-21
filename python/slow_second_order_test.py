@@ -1,4 +1,4 @@
-from model import LileyWith2ndOrderSlow, LileyBase
+from model import LileyWith2ndOrderSlow
 from pylab import show
 import gc
 
@@ -19,20 +19,12 @@ params = load(file(path + '/../parameterisations/parameterisations.yml', 'r'))
 
 
 burst = LileyWith2ndOrderSlow(params = params[sys.argv[1]])
-base = LileyBase(params = params[sys.argv[1]])
 
 
-run = burst.freeze(['phi_ee', 'phi_ee_t', 'phi_ei', 'phi_ei_t']).run([0, 16.5])
+run = burst.freeze(['phi_ee', 'phi_ei', 'phi_ee_t', 'phi_ei_t']).run([0, 100])
 
-base_run = base.freeze(['phi_ee', 'phi_ee_t', 'phi_ei', 'phi_ei_t']).run([0, 16.5])
-
-base_run.display(['h_e', 'h_i'], fig = "4")
-
-
-
-without_transient = run.run([0, 10])
-without_transient.display(['h_e', 'h_i'])
-without_transient.display(['slow_i', 'slow_e'], fig = "9")
+run.display(['h_e', 'h_i'])
+run.display(['slow_e', 'slow_i'], fig = "9")
 
 gc.collect()
 

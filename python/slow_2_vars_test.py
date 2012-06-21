@@ -1,10 +1,10 @@
-from model import LileyWithBurst
-from pylab import plot, show, figure
-
+from model import LileyWithBurst, LileyBase
+from pylab import show
+import gc
 
 import os, sys, inspect
 cmd_folder = os.path.abspath(os.path.split(inspect.getfile( inspect.currentframe() ))[0])
-from yaml import load, dump
+from yaml import load
 
 try:
     from yaml import CLoader as Loader, CDumper as Dumper
@@ -17,10 +17,20 @@ except ImportError:
 path = os.path.dirname(os.path.abspath(__file__))
 params = load(file(path + '/../parameterisations/parameterisations.yml', 'r'))
 
+
 burst = LileyWithBurst(params = params[sys.argv[1]])
-run = burst.run([0, 100])
-run.display(['h_e', 'h_i', 'slow_e', 'slow_i'], fig = "2")
-run.displayPhasePlane3D('h_i', 'slow_e', 'slow_i', fig = "3")
+#base = LileyBase(params = params[sys.argv[1]])
+
+
+run = burst.run([0, 200])
+
+#base_run = base.freeze(['phi_ee', 'phi_ee_t', 'phi_ei', 'phi_ei_t']).run([0, 100])
+
+#base_run.display(['h_e', 'h_i'], fig = "4")
+run.run([0, 10]).performFFT('slow_i').display()
+run.display(['h_e', 'h_i'])
+run.display(['slow_e', 'slow_i'], fig = "9")
+
+gc.collect()
 
 show()
-

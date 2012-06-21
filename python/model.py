@@ -3,6 +3,8 @@ from pylab import plot, show, figure, draw
 from PyDSTool.Toolbox import phaseplane as pp
 from mpl_toolkits.mplot3d import Axes3D
 
+from analysis import FFT
+
 class LileyBase(object):
     h_e_t='(1/tor_e) * (-(h_e - h_e_rest) + (Y_e_h_e(h_e) * i_ee) + (Y_i_h_e(h_e) * (i_ie)))'
     h_i_t='(1/tor_i) * (-(h_i - h_i_rest) + (Y_e_h_i(h_i) * i_ei) + (Y_i_h_i(h_i) * (i_ii)))'
@@ -34,7 +36,6 @@ class LileyBase(object):
         self.params = params
         self.name = name
         self.points = points
-        print equations
         print ics
         print self.name
         if equations == None:
@@ -67,6 +68,14 @@ class LileyBase(object):
             self.odes = odeSystem
 
         print equations
+
+    def performFFT(self, axis):
+        deltaT = (self.points["t"][1] - self.points["t"][0])
+
+        fft = FFT(self.points[axis], deltaT, axis)
+        fft.compute()
+
+        return fft
 
     def run(self, timeRange):
         print "Running....", self.params
@@ -130,7 +139,7 @@ class LileyBase(object):
         contName = self.name + "_cont_" + freeVar
         PCargs = args(name=contName, type='EP-C')
         PCargs.freepars = [freeVar]
-        PCargs.StepSize = 1e-6 * dirMod
+        PCargs.StepSize = 1e-6
         PCargs.MaxNumPoints = steps
         PCargs.MaxStepSize = maxStepSize
         PCargs.MinStepSize = 1e-6
@@ -146,9 +155,15 @@ class LileyBase(object):
         # Do path following in the 'forward' direction. Max points is large enough
         # to ensure we go right around the ellipse (PyCont automatically stops when
         # we return to the initial point - unless MaxNumPoints is reached first.)
-        cont[contName].forward()
         if bidirectional:
+            cont[contName].forward()
             cont[contName].backward()
+        else:
+            if dir == '+':
+                cont[contName].forward()
+            else:
+                cont[contName].backward()
+
 
         sol = cont[contName].sol
 
@@ -201,7 +216,7 @@ class LileyWithBurst(LileyBase):
                 'i_ee_t' : 0, 'i_ei' : 0, 'i_ei_t' : 0, 'i_ie' : 0, 'i_ie_t' : 0,
                 'i_ii' : 0, 'i_ii_t' : 0, 'h_e' : 0, 'h_i' : 0, 'slow_e' : 0, 'slow_i' : 0 }
 
-    def __init__(self, params, ics = None, name="LileyBurstBase", equations = None, points = None, odeSystem = None):
+    def __init__(self, params, ics = None, name="LileyWithBurst", equations = None, points = None, odeSystem = None):
         if equations == None:
             print "No eqns for " + name
             equations = { 'phi_ee' : 'phi_ee_t', 'phi_ei' : 'phi_ei_t',
@@ -214,24 +229,6 @@ class LileyWithBurst(LileyBase):
 
         if ics == None:
             ics = LileyWithBurst.zeroIcs
-        LileyBase.__init__(self, params = params, ics = ics, name = name, equations = equations, points = points, odeSystem = odeSystem)
-
-class LileyWithWeightedCoupling(LileyBase):
-    h_e_t='(1/tor_e) * (-(h_e - h_e_rest) + (Y_e_h_e(h_e) * i_ee) + (weight_e * Y_i_h_e(h_e) * (i_ie)))'
-    h_i_t='(1/tor_i) * (-(h_i - h_i_rest) + (Y_e_h_i(h_i) * (bias_i + weight_i * i_ei)) + (Y_i_h_i(h_i) * (i_ii)))'
-
-
-    def __init__(self, params, ics = None, name="LileyWithWeightedCoupling", equations = None, points = None, odeSystem = None):
-        if equations == None:
-            print "Here " + name
-            equations = { 'phi_ee' : 'phi_ee_t', 'phi_ei' : 'phi_ei_t',
-                               'phi_ei_t' : LileyBase.phi_ei_tt, 'phi_ee_t' : LileyBase.phi_ee_tt,
-                               'i_ee' : 'i_ee_t', 'i_ei' : 'i_ei_t', 'i_ie' : 'i_ie_t', 'i_ii' : 'i_ii_t',
-                               'i_ee_t' : LileyBase.i_ee_tt, 'i_ei_t' : LileyBase.i_ei_tt, 'i_ie_t' : LileyBase.i_ie_tt, 'i_ii_t' : LileyBase.i_ii_tt,
-                               'h_e' : LileyWithWeightedCoupling.h_e_t, 'h_i' : LileyWithWeightedCoupling.h_i_t}
-        else:
-            equations = equations
-
         LileyBase.__init__(self, params = params, ics = ics, name = name, equations = equations, points = points, odeSystem = odeSystem)
 
 class LileyWith2ndOrderSlow(LileyBase):
@@ -261,6 +258,33 @@ class LileyWith2ndOrderSlow(LileyBase):
 
         if ics == None:
             ics = LileyWith2ndOrderSlow.zeroIcs
+        LileyBase.__init__(self, params = params, ics = ics, name = name, equations = equations, points = points, odeSystem = odeSystem)
+
+class LileyWithSingle1stOrderSlow(LileyBase):
+    h_e_t='(1/tor_e) * (-(h_e - h_e_rest) + (Y_e_h_e(h_e) * i_ee) + (Y_i_h_e(h_e) * (i_ie))) + weight_slow_e * slow'
+    h_i_t='(1/tor_i) * (-(h_i - h_i_rest) + (Y_e_h_i(h_i) * i_ei) + (Y_i_h_i(h_i) * (i_ii))) + weight_slow_i * slow'
+
+    slow_t='(1/tor_slow) * (mu_slow * ((h_e_rest - h_e) + (h_i_rest - h_i)) - nu_slow * slow)'
+
+
+    zeroIcs = { 'phi_ee' : 0, 'phi_ee_t' : 0, 'phi_ei' : 0, 'phi_ei_t' : 0, 'i_ee' : 0,
+                'i_ee_t' : 0, 'i_ei' : 0, 'i_ei_t' : 0, 'i_ie' : 0, 'i_ie_t' : 0,
+                'i_ii' : 0, 'i_ii_t' : 0, 'h_e' : 0, 'h_i' : 0, 'slow' : 0 }
+
+    def __init__(self, params, ics = None, name="LileyWithSingle1stOrderSlow", equations = None, points = None, odeSystem = None):
+        if equations == None:
+            print "No eqns for " + name
+            equations = { 'phi_ee' : 'phi_ee_t', 'phi_ei' : 'phi_ei_t',
+                               'phi_ei_t' : LileyBase.phi_ei_tt, 'phi_ee_t' : LileyBase.phi_ee_tt,
+                               'i_ee' : 'i_ee_t', 'i_ei' : 'i_ei_t', 'i_ie' : 'i_ie_t', 'i_ii' : 'i_ii_t',
+                               'i_ee_t' : LileyBase.i_ee_tt, 'i_ei_t' : LileyBase.i_ei_tt, 'i_ie_t' : LileyBase.i_ie_tt, 'i_ii_t' : LileyBase.i_ii_tt,
+                               'h_e' : LileyWithSingle1stOrderSlow.h_e_t, 'h_i' : LileyWithSingle1stOrderSlow.h_i_t,
+                               'slow' : LileyWithSingle1stOrderSlow.slow_t }
+        else:
+            equations = equations
+
+        if ics == None:
+            ics = LileyWithSingle1stOrderSlow.zeroIcs
         LileyBase.__init__(self, params = params, ics = ics, name = name, equations = equations, points = points, odeSystem = odeSystem)
 
 

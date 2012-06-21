@@ -1,4 +1,4 @@
-from burst import LileyWithBurst
+from model import LileyWithBurst
 from display import Display
 from pylab import plot, show, figure
 from PyDSTool import restart

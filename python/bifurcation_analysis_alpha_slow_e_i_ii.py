@@ -1,4 +1,4 @@
-from burst import LileyWithBurst
+from model import LileyWithBurst
 from pylab import plot, show, figure
 import gc
 
