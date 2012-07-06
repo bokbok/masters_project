@@ -130,17 +130,21 @@ alpha_slow:
     h_i_rest: -60.0e-3
     tor_e: 10.0e-3
 #    tor_i: 25.81563735e-3
-    tor_i: 20.0e-3
+    tor_i: 10.0e-3
     h_ee_eq: 0
     h_ei_eq: 0 
     h_ie_eq: -70.0e-3
     h_ii_eq: -70.0e-3
+    T_e: 0.4e-3
     T_ee: 0.4e-3
     T_ei: 0.4e-3
+    T_i: 0.8e-3
     T_ie: 0.8e-3
     T_ii: 0.8e-3
+    gamma_e: 300
     gamma_ee: 300
     gamma_ei: 300
+    gamma_i: 30
     gamma_ie: 65
     gamma_ii: 65
     N_beta_ee: 3034

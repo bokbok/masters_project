@@ -107,7 +107,7 @@ class LileyBase(object):
             DSargs.algparams = {'init_step':1e-4,
                                 'atol': 1e-12,
                                 'rtol': 1e-13,
-                                'max_pts' : 2000000}
+                                'max_pts' : 4000000}
             DSargs.checklevel = 2
             DSargs.tdata = timeRange
             DSargs.pars = self.params
@@ -231,6 +231,34 @@ class LileyWithBurst(LileyBase):
             ics = LileyWithBurst.zeroIcs
         LileyBase.__init__(self, params = params, ics = ics, name = name, equations = equations, points = points, odeSystem = odeSystem)
 
+class LileyWithBurstSimplifiedParamSpace(LileyBase):
+    i_ee_tt='-2*gamma_e * i_ee_t - (gamma_e * gamma_e) * i_ee + T_e * gamma_e * exp(1) * (N_beta_ee * s_e(h_e) + phi_ee + p_ee)'
+    i_ei_tt='-2*gamma_e * i_ei_t - (gamma_e * gamma_e) * i_ei + T_e * gamma_e * exp(1) * (N_beta_ei * s_e(h_e) + phi_ei + p_ei)'
+    i_ie_tt='-2*gamma_i * i_ie_t - (gamma_i * gamma_i) * i_ie + T_i * gamma_i * exp(1) * (N_beta_ie * s_i(h_i) + phi_ie + p_ie)'
+    i_ii_tt='-2*gamma_i * i_ii_t - (gamma_i * gamma_i) * i_ii + T_i * gamma_i * exp(1) * (N_beta_ii * s_i(h_i) + phi_ii + p_ii)'
+
+
+    zeroIcs = { 'phi_ee' : 0, 'phi_ee_t' : 0, 'phi_ei' : 0, 'phi_ei_t' : 0, 'i_ee' : 0,
+                'i_ee_t' : 0, 'i_ei' : 0, 'i_ei_t' : 0, 'i_ie' : 0, 'i_ie_t' : 0,
+                'i_ii' : 0, 'i_ii_t' : 0, 'h_e' : 0, 'h_i' : 0, 'slow_e' : 0, 'slow_i' : 0 }
+
+    def __init__(self, params, ics = None, name="LileyWithBurstSimplifiedParamSpace", equations = None, points = None, odeSystem = None):
+        if equations == None:
+            print "No eqns for " + name
+            equations = { 'phi_ee' : 'phi_ee_t', 'phi_ei' : 'phi_ei_t',
+                          'phi_ei_t' : LileyBase.phi_ei_tt, 'phi_ee_t' : LileyBase.phi_ee_tt,
+                          'i_ee' : 'i_ee_t', 'i_ei' : 'i_ei_t', 'i_ie' : 'i_ie_t', 'i_ii' : 'i_ii_t',
+                          'i_ee_t' : LileyWithBurstSimplifiedParamSpace.i_ee_tt, 'i_ei_t' : LileyWithBurstSimplifiedParamSpace.i_ei_tt,
+                          'i_ie_t' : LileyWithBurstSimplifiedParamSpace.i_ie_tt, 'i_ii_t' : LileyWithBurstSimplifiedParamSpace.i_ii_tt,
+                          'h_e' : LileyWithBurst.h_e_t, 'h_i' : LileyWithBurst.h_i_t,
+                          'slow_e' : LileyWithBurst.slow_e_t, 'slow_i' : LileyWithBurst.slow_i_t }
+        else:
+            equations = equations
+
+        if ics == None:
+            ics = LileyWithBurst.zeroIcs
+        LileyBase.__init__(self, params = params, ics = ics, name = name, equations = equations, points = points, odeSystem = odeSystem)
+
 class LileyWith2ndOrderSlow(LileyBase):
     h_e_t='(1/tor_e) * (-(h_e - h_e_rest) + (Y_e_h_e(h_e) * i_ee) + (Y_i_h_e(h_e) * (i_ie))) + weight_slow_e * slow_e'
     h_i_t='(1/tor_i) * (-(h_i - h_i_rest) + (Y_e_h_i(h_i) * i_ei) + (Y_i_h_i(h_i) * (i_ii))) + weight_slow_i * slow_i'
@@ -264,7 +292,7 @@ class LileyWithSingle1stOrderSlow(LileyBase):
     h_e_t='(1/tor_e) * (-(h_e - h_e_rest) + (Y_e_h_e(h_e) * i_ee) + (Y_i_h_e(h_e) * (i_ie))) + weight_slow_e * slow'
     h_i_t='(1/tor_i) * (-(h_i - h_i_rest) + (Y_e_h_i(h_i) * i_ei) + (Y_i_h_i(h_i) * (i_ii))) + weight_slow_i * slow'
 
-    slow_t='(1/tor_slow) * (mu_slow * ((h_e_rest - h_e) + (h_i_rest - h_i)) - nu_slow * slow)'
+    slow_t='(1/tor_slow) * (mu_slow * (h_e_rest - h_e) - nu_slow * slow)'
 
 
     zeroIcs = { 'phi_ee' : 0, 'phi_ee_t' : 0, 'phi_ei' : 0, 'phi_ei_t' : 0, 'i_ee' : 0,
@@ -307,8 +335,8 @@ class Continuation:
         else:
             coords = (self.freeVar, displayVar, additionalVar)
 
-        figure(fig)
-        self.cont[self.name].display(coords, stability = True)
+        #figure(fig)
+        self.cont[self.name].display(coords, stability = True, figure = fig)
         return self
 
     def displayMinMax3D(self, x, y, z, fig = "7"):
@@ -417,13 +445,13 @@ class Continuation:
                             freeVar = self.freeVar,
                             point = fullPointName)
 
-    def followHopf2(self, point, additionalFreeVar, steps = 500, dir = '+'):
+    def followHopf2(self, point, additionalFreeVar, steps = 500, maxStepSize = 1e-2, dir = '+'):
         if dir == '-':
             dirMod = -1
         else:
             dirMod = 1
 
-        newName = self.name + "_cont_" + point + "_ch2_"
+        newName = self.name + "_cont_" + point + "_ch2_" + additionalFreeVar
         fullPointName = self.name + ':' + point
         PCargs = args(name=newName, type='H-C2')
 
