@@ -1,0 +1,29 @@
+#
+# Initial conditions
+#
+he(0)=-70
+hi(0)=-70
+iee(0)=0,ieeaux(0)=0
+iie(0)=0,iieaux(0)=0
+iei(0)=0,ieiaux(0)=0
+iii(0)=0,iiiaux(0)=0
+#
+phiee(0)=0,phieeaux(0)=0
+phiei(0)=0,phieiaux(0)=0
+#
+#
+@ MAXSTOR=1000000
+@ BACK=White
+#
+# Integrate 
+#
+@ TOTAL=10000, DT=0.025, NOUT=200000, BOUND=1000000
+@ XP=T, YP=HE
+@ XLO=0, YLO=-100, XHI=10000, YHI=0
+#
+# AUTO parameters
+@ NMAX=20000, PARMIN=0, PARMAX=1.0, NORMMIN=-1e8, NORMMAX=1e8
+@ AUTOXMIN=0, AUTOXMAX=1.0, AUTOYMIN=-100, AUTOYMAX=-20
+#
+# Done.
+done

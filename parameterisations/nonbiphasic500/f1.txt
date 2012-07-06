@@ -1,0 +1,34 @@
+C----------------------------------------------------------------------
+C----------------------------------------------------------------------
+C   Anaesthesia14dCNS.f : Investigating effects of concentration
+C----------------------------------------------------------------------
+C----------------------------------------------------------------------
+C
+      SUBROUTINE FUNC(NDIM,U,ICP,PAR,IJAC,F,DFDU,DFDP)
+C     ---------- ----
+C
+C Evaluates the algebraic equations or ODE right hand side
+C
+C Input arguments :
+C      NDIM   :   Dimension of the algebraic or ODE system 
+C      U      :   State variables
+C      ICP    :   Array indicating the free parameter(s)
+C      PAR    :   Equation parameters
+C
+C Values to be returned :
+C      F      :   Equation or ODE right hand side values
+C
+C Normally unused Jacobian arguments : IJAC, DFDU, DFDP (see manual)
+C
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      DOUBLE PRECISION naee, naei, nbee, nbei, nbie, nbii, imax
+      DOUBLE PRECISION lambdaee, lambdaei
+      DIMENSION U(NDIM), PAR(*), F(NDIM), ICP(*)
+      DIMENSION DFDU(NDIM,NDIM),DFDP(NDIM,*)
+C
+C Parameters
+C Note: PAR(1)=R, PAR(2)=cci
+C       PAR(3)=pee, PAR(4)=pei
+C       PAR(5)=gii, PAR(6)=gie
+C       PAR(7)=epsilon [anaesthesia]   
+C

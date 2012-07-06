@@ -1,0 +1,129 @@
+#====================================================================
+# AUTO Script for equilibria, orbits and 2 parameters continuation
+#====================================================================
+
+# Load libraries
+import os
+import shutil
+
+# Load initial data
+data=sl('init')
+ 
+# initial variables count and countt set to zero
+count=0
+countt=0
+
+#Run through solutions
+for solution in data:
+    if solution["Type name"] == "UZ":
+
+        count=count+1
+        dirname = "UZ-" + str(count)
+        if not os.path.isdir("./" + dirname + "/"):
+            os.mkdir("./" + dirname + "/")
+
+# Load files for epsilon slicing
+        ld(e='An14d',c='epsilon',s='init')
+
+# Compute epsilon slice for that particular UZ label in init        
+        print "\n********* Computing epsilon slices for solution label UZ-" + str(count) + " *************"
+        run(IRS=solution["Label"])
+        sv('sliceeps')
+        rl('sliceeps')
+        shutil.copy("s.sliceeps",dirname)
+        shutil.copy("d.sliceeps",dirname)
+        shutil.copy("b.sliceeps",dirname)
+
+# Parse epsilon solution file
+        dataa=sl('sliceeps')
+        dl('sliceeps')
+
+# Copy files to UZ directory
+        shutil.copy('An14d.f',dirname)
+        shutil.copy('c.An14d.1',dirname)
+        shutil.copy('c.An14d.2',dirname)
+        shutil.copy('c.An14d.3',dirname)
+
+# Enter UZ directory
+        os.chdir(dirname)
+# Zero the counter
+        countt=0
+# Second loop over epsilon
+        for solution in dataa:
+            if solution["Type name"] == "UZ":
+
+# Load files before entering UZ directory       
+                ld(e='An14d',c='An14d.1',s='sliceeps')
+
+# Create EPS directory inside UZ directory
+                countt=countt+1
+                dirnamee = "EPS-" + str(countt)
+                if not os.path.isdir("./" + dirnamee + "/"):
+                    os.mkdir("./" + dirnamee + "/")
+
+# Compute equilibria for EPS points
+                print "\n********* Computing equilibria for EPS-" + str(countt) + " in UZ-" + str(count) + " in p_{ee} *************"
+                run(IRS=solution["Label"])
+                sv('par1')
+                run(DS='-',IRS=solution["Label"])
+                ap('par1')
+                rl('par1')
+
+                print "\n********* Equilibria for UZ-" + str(count) + " in UZ-" + str(count) + " in p_{ee} computed ! *************"
+
+#Move and copy files to the appropriate directories, compute two paramaters
+#plots and periodic orbits
+                shutil.copy("s.par1",dirnamee)
+                shutil.copy("d.par1",dirnamee)
+                shutil.copy("b.par1",dirnamee)
+                shutil.copy('An14d.f',dirnamee)
+                shutil.copy('c.An14d.2',dirnamee)
+                shutil.copy('c.An14d.3',dirnamee)
+                dl('par1')
+                cl()
+
+#                print "\n********* Two parameter computation in p_{ee} and \epsilon is DISABLED ! *********"
+
+                print "\n********* Computing two parameter plot for EPS-" + str(countt) + " in UZ-" + str(count) + " in p_{ee} and \epsilon *************"
+
+# Enter Eps directory
+                os.chdir(dirnamee)
+# little trick to create an empty par2 file to which all the rest will be appended
+#                sv('par2')
+# end of the trick
+                ld(e='An14d',c='An14d.3',s='par1')
+                twostart=sl('par1')
+                for solution in twostart:
+                    if solution["Type name"] == "LP":
+                        run(IRS=solution["Label"])
+                        ap('par2')
+                        run(IRS=solution["Label"],DS='-')
+                        ap('par2')
+                    if solution["Type name"] == "HB":
+                        run(IRS=solution["Label"])
+                        ap('par2')
+                        run(IRS=solution["Label"],DS='-')
+                        ap('par2')
+                rl('par2')
+                print "\n********* Two parameter plot for EPS-" + str(countt) + " in UZ-" + str(count) + " in p_{ee} and \epsilon computed ! *************"
+                cl()
+
+#                print "\n********* Orbits computation for EPS-" + str(countt) + " in UZ-" + str(count) + " is DISABLED ! *************"
+
+                print "\n********* Computing periodic orbits for EPS-" + str(countt) + " in UZ-" + str(count) + " *************"
+
+                ld(e='An14d',c='An14d.2',s='par1')
+                insol=sl('par1')
+                for solution in insol:
+                    if solution["Type name"] == "HB":
+                        run(IRS=solution["Label"])
+                        ap('par1')
+                rl('par1')
+                cl()
+                os.chdir("../")
+        os.chdir("../")
+        dirnamee= "EPS-"
+dirname= "UZ-"
+
+
+

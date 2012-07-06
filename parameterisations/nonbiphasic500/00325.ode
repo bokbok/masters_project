@@ -1,0 +1,99 @@
+# ODE file for XPPAUT
+#
+# User defined functions - enlin and inlin
+#
+t1e(x)=1+exp(-sqrt(2)*(x-te)/se)
+enlin(x)=(emax*(1/(t1e(x))))
+t1i(x)=1+exp(-sqrt(2)*(x-ti)/si)
+inlin(x)=(imax*(1/(t1i(x))))
+#
+# The (corrected) ODEs
+#
+he'=(1/taue)*((her-he) + (((heqee-he)*iee)/abs(heqee-her)) + (((heqie-he)*iie)/abs(heqie-her)))
+hi'=(1/taui)*((hir-hi) + (((heqei-hi)*iei)/abs(heqei-hir)) + (((heqii-hi)*iii)/abs(heqii-hir)))
+iee'=ieeaux
+ieeaux'=gee*aee*exp(1)*(nbee*enlin(he) + pee + phiee) - (gee^2)*iee - 2*gee*ieeaux
+iie'=iieaux
+iieaux'=R*gie*aie*exp(1)*(nbie*inlin(hi) + pie) - (gie^2)*iie -2*gie*iieaux
+iei'=ieiaux
+ieiaux'=gei*aei*exp(1)*(nbei*enlin(he) + pei + phiei) - (gei^2)*iei - 2*gei*ieiaux
+iii'=iiiaux
+iiiaux'=R*gii*aii*exp(1)*(k*nbii*inlin(hi) + pii) - (gii^2)*iii -2*gii*iiiaux
+#
+# Augment with time dependent equations for long range cortico-cortical fibres
+#
+phiee'=phieeaux
+phieeaux'=naee*(lambdaee^2)*(vbar^2)*enlin(he)-(2*vbar*lambdaee*phieeaux)-(vbar^2)*(lambdaee^2)*phiee
+phiei'=phieiaux
+phieiaux'=naei*(lambdaei^2)*(vbar^2)*enlin(he)-(2*vbar*lambdaei*phieiaux)-(vbar^2)*(lambdaei^2)*phiei
+#
+# Parameters (all in millivolts, milliseconds, centimetres)
+# (from column 3 table V Bojak and Liley (2005)
+#
+param R=1
+param k=0.25
+param her=-76.635236790
+param hir=-69.636246320
+param heqee=-14.587725170
+param heqei=7.502129864
+param heqie=-89.571469500
+param heqii=-86.096704790
+param naee=4561.822926000
+param naei=2965.461967000
+param nbee=4978.516721000
+param nbei=3490.026109000
+param nbie=670.990934000
+param nbii=749.621125100
+param lambdaee=0.819620775
+param lambdaei=0.819620775
+param vbar=0.23061
+param aee=0.359860716
+param aei=0.655490503
+param aie=0.955294140
+param aii=0.587552222
+param gee=0.732908
+param gei=0.126975
+param gie=0.185735
+param gii=0.0546216
+param taue=104.517
+param taui=102.612
+param te=-49.423250860
+param ti=-46.899515660
+param rabs=0.0000
+param emax=0.484019
+param imax=0.0500681
+param pee=-200.0
+param pei=200.0
+param pie=0
+param pii=0
+param se=5.142244277
+param si=5.377561119
+#
+# Initial conditions
+#
+he(0)=-70
+hi(0)=-70
+iee(0)=0,ieeaux(0)=0
+iie(0)=0,iieaux(0)=0
+iei(0)=0,ieiaux(0)=0
+iii(0)=0,iiiaux(0)=0
+#
+phiee(0)=0,phieeaux(0)=0
+phiei(0)=0,phieiaux(0)=0
+#
+#
+@ MAXSTOR=1000000
+@ BACK=White
+#
+# Integrate 
+#
+@ TOTAL=10000, DT=0.025, NOUT=200000, BOUND=1000000
+@ XP=T, YP=HE
+@ XLO=0, YLO=-100, XHI=10000, YHI=0
+#
+# AUTO parameters
+@ NMAX=20000, PARMIN=0, PARMAX=1.0, NORMMIN=-1e8, NORMMAX=1e8
+@ AUTOXMIN=0, AUTOXMAX=1.0, AUTOYMIN=-100, AUTOYMAX=-20
+#
+# Done.
+done

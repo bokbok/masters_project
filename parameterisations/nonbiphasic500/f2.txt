@@ -1,0 +1,179 @@
+      E=DEXP(1D0)
+      ROOT2=DSQRT(2D0)
+      SIGE=emax/(1D0+DEXP(-ROOT2/se*(U(1)-te)))
+      SIGI=imax/(1D0+DEXP(-ROOT2/si*(U(2)-ti)))     
+C      
+C     Functions for Epsilon, GAs
+
+      G1=DEXP(PAR(7) + PAR(7)/(-1 + DEXP(PAR(7))))*PAR(7)/(-1 
+     $     + DEXP(PAR(7)))
+      G2=(1 + DEXP(PAR(7)))*PAR(7)/(-1 + DEXP(PAR(7)))
+      G3=(DEXP(PAR(7))*PAR(7)**2)/(-1 + DEXP(PAR(7)))**2
+
+
+c      DG1=DEXP(PAR(7) + PAR(7)/(-1 + EE))/(-1 + EE) 
+c     $     - (DEXP(2D0*PAR(7) + PAR(7)/(-1 + EE))*PAR(7))/(-1 + EE)**2
+c     $     - (DEXP(PAR(7) + PAR(7)/(-1 + EE))*PAR(7)*(1 + 1/(-1 + EE) 
+c     $     - (EE*PAR(7))/(-1 + EE)**2))/(-1 + EE)
+c
+c      DG2=(1 + EE)/(-1 + EE) + (EE*PAR(7))/(-1 + EE)
+c     $     - (EE*(1 + EE)*PAR(7))/(-1 + EE)**2
+c      
+c      DG3=(2D0*EE*PAR(7))/(-1 + EE)**2 
+c    $     - (2D0*DEXP(2D0*PAR(7))*PAR(7)**2)/(-1 + EE)**3 
+c     $     + (EE*PAR(7)**2)/(-1 + EE)**2
+C
+C
+C
+      F(1)=((her-U(1)) + (heqee-U(1))*U(3)/DABS(heqee-her) 
+     $    + (heqie-U(1))*U(5)/DABS(heqie-her))/taue
+      F(2)=((hir-U(2)) + (heqei-U(2))*U(7)/DABS(heqei-hir)
+     $    + (heqii-U(2))*U(9)/DABS(heqii-hir))/taui
+      F(3)=U(4)
+      F(4)=gee*aee*E*(nbee*SIGE + U(11) + PAR(3)) - (gee**2)*U(3) 
+     $    - 2D0*gee*U(4)
+      F(5)=U(6)
+      F(6)=G1*PAR(6)*PAR(1)*aie*(nbie*SIGI + pie) 
+     $     - G3*(PAR(6)**2)*U(5) - G2*PAR(6)*U(6)
+      F(7)=U(8)
+      F(8)=gei*aei*E*(nbei*SIGE + U(13) + PAR(4)) - (gei**2)*U(7) 
+     $    - 2D0*gei*U(8)
+      F(9)=U(10)
+      F(10)=G1*PAR(5)*PAR(1)*aii*(PAR(2)*nbii*SIGI + pii) 
+     $     - G3*(PAR(5)**2)*U(9) - G2*PAR(5)*U(10)
+      F(11)=U(12)
+      F(12)=naee*lambdaee**2*vbar**2*SIGE - 2D0*vbar*lambdaee*U(12) 
+     $     - vbar**2*lambdaee**2*U(11)
+      F(13)=U(14)
+      F(14)=naei*lambdaei**2*vbar**2*SIGE - 2D0*vbar*lambdaei*U(14) 
+     $     - vbar**2*lambdaei**2*U(13) 
+C      
+      IF(IJAC.EQ.0)RETURN
+      DO 1 i=1,NDIM
+         DO 2 j=1,NDIM
+            DFDU(i,j)=0D0
+ 2        CONTINUE
+ 1    CONTINUE
+C      
+      DSIGE=emax/((1D0+DEXP(-ROOT2/se*(U(1)-te)))**2)
+     $     * ROOT2/se*DEXP(-ROOT2/se*(U(1)-te))
+      DSIGI=imax/((1D0+DEXP(-ROOT2/si*(U(2)-ti)))**2)
+     $     * ROOT2/si*DEXP(-ROOT2/si*(U(2)-ti))
+C
+c      G1=(E**(PAR(7) + PAR(7)/(-1 + E**PAR(7)))*PAR(7))/(-1 + E**PAR(7))
+c      G2=((1 + E**PAR(7))*PAR(7))/(-1 + E**PAR(7))
+c      G3=(E**PAR(7)*PAR(7)**2)/(-1 + E**PAR(7))**2
+
+      DFDU(1,1)=(-1D0-U(3)/DABS(-heqee+her)-U(5)/DABS(-heqie+her))/taue
+      DFDU(1,3)=(heqee-U(1))/DABS(-heqee+her)/taue
+      DFDU(1,5)=(heqie-U(1))/DABS(-heqie+her)/taue
+      DFDU(2,2)=(-1D0-U(7)/DABS(-heqei+hir)-U(9)/DABS(-heqii+hir))/taui
+      DFDU(2,7)=(heqei-U(2))/DABS(-heqei+hir)/taui
+      DFDU(2,9)=(heqii-U(2))/DABS(-heqii+hir)/taui
+      DFDU(3,4)=1D0
+      DFDU(4,1)=gee*aee*E*nbee*DSIGE
+      DFDU(4,3)=-gee**2
+      DFDU(4,4)=-2D0*gee
+      DFDU(4,11)=gee*aee*E
+      DFDU(5,6)=1D0
+      DFDU(6,2)=G1*PAR(6)*PAR(1)*aie*nbie*DSIGI
+      DFDU(6,5)=-G3*PAR(6)**2
+      DFDU(6,6)=-G2*PAR(6)
+      DFDU(7,8)=1D0
+      DFDU(8,1)=gei*aei*E*nbei*DSIGE
+      DFDU(8,7)=-gei**2
+      DFDU(8,8)=-2D0*gei
+      DFDU(8,13)=gei*aei*E
+      DFDU(9,10)=1D0
+      DFDU(10,2)=G1*PAR(5)*PAR(1)*aii*PAR(2)*nbii*DSIGI
+      DFDU(10,9)=-G3*PAR(5)**2
+      DFDU(10,10)=-G2*PAR(5)
+      DFDU(11,12)=1D0
+      DFDU(12,1)=naee*lambdaee**2*vbar**2*DSIGE
+      DFDU(12,11)=-vbar**2*lambdaee**2
+      DFDU(12,12)=-2D0*vbar*lambdaee
+      DFDU(13,14)=1D0
+      DFDU(14,1)=naei*lambdaei**2*vbar**2*DSIGE
+      DFDU(14,13)=-vbar**2*lambdaei**2
+      DFDU(14,14)=-2D0*vbar*lambdaei
+C      
+      IF(IJAC.EQ.1)RETURN
+C      
+C     *Parameter derivatives      
+C      
+      DO 11 i=1,NDIM
+         DFDP(i,1)=0D0
+         DFDP(i,2)=0D0
+         DFDP(i,3)=0D0
+         DFDP(i,4)=0D0
+         DFDP(i,5)=0D0
+         DFDP(i,6)=0D0
+	 DFDP(i,7)=0D0
+
+ 11   CONTINUE
+
+      DG1=E**(PAR(7) + PAR(7)/(-1 + E**PAR(7)))/(-1 + E**PAR(7))
+     $     -(E**(2*PAR(7)+PAR(7)/(-1+E**PAR(7)))*PAR(7))/(-1  
+     $     + E**PAR(7))**2 -(E**(PAR(7) + PAR(7)/(-1
+     $     +E**PAR(7)))*PAR(7)*(1+1/(-1 + E**PAR(7)) 
+     $     -(E**PAR(7)*PAR(7))/(-1 + E**PAR(7))**2))/(-1 + E**PAR(7))
+C
+      DG2=(1+E**PAR(7))/(-1+E**PAR(7))+(E**PAR(7)*PAR(7))/(-1
+     $     +E**PAR(7))-(E**PAR(7)*(1 + E**PAR(7))*PAR(7))/(-1 
+     $     + E**PAR(7))**2
+C
+      DG3=(2*E**PAR(7)*PAR(7))/(-1 + E**PAR(7))**2 
+     $     -(2*E**(2*PAR(7))*PAR(7)**2)/(-1 + E**PAR(7))**3 
+     $     +(E**PAR(7)*PAR(7)**2)/(-1 + E**PAR(7))**2
+C
+      DFDP(4,3)=gee*aee*E
+c      
+      DFDP(6,1)=G1*PAR(6)*aie*(nbie*SIGI + pie)
+      DFDP(6,6)=G1*PAR(1)*aie*(nbie*SIGI + pie)
+     $     -2D0*G3*PAR(6)*U(5)-G2*U(6)
+      DFDP(6,7)=DG1*PAR(6)*PAR(1)*aie*(nbie*SIGI + pie) 
+     $     - DG3*(PAR(6)**2)*U(5) - DG2*PAR(6)*U(6)
+C
+      DFDP(8,4)=gei*aei*E
+C
+      DFDP(10,1)=G1*PAR(5)*aii*(PAR(2)*nbii*SIGI + pii)
+      DFDP(10,2)=G1*PAR(5)*PAR(1)*aii*nbii*SIGI
+      DFDP(10,5)=G1*PAR(1)*aii*(PAR(2)*nbii*SIGI + pii) 
+     $     -2D0*G3*PAR(5)*U(9)-G2*U(10)
+      DFDP(10,7)=DG1*PAR(5)*PAR(1)*aii*(PAR(2)*nbii*SIGI + pii) 
+     $     - DG3*(PAR(5)**2)*U(9) - DG2*PAR(5)*U(10)
+C
+C
+C
+C
+C      
+      RETURN
+      END
+      
+C----------------------------------------------------------------------
+C----------------------------------------------------------------------
+C
+      SUBROUTINE STPNT(NDIM,U,PAR)
+C     ---------- -----
+C
+C Input arguments :
+C      NDIM   :   Dimension of the algebraic or ODE system 
+C
+C Values to be returned :
+C      U      :   A starting solution vector
+C      PAR    :   The corresponding equation-parameter values
+C
+C Note : For time- or space-dependent solutions this subroutine has
+C        arguments (NDIM,U,PAR,T), where the scalar input parameter T
+C        contains the varying time or space variable value.
+
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      DIMENSION U(NDIM), PAR(*)
+C
+C Initialize the equation parameters
+       PAR(1)= 1D0
+       PAR(2)= 0.25D0
+       PAR(3)= -200D0
+       PAR(4)= 200D0
+       PAR(7) = 0.5D0
+

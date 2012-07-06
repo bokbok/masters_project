@@ -1,0 +1,17 @@
+#=======================================================
+# AUTO Script for quick assesment of par1 and par2 plots
+#=======================================================
+
+# Load libraries
+import os
+import shutil
+
+pl('par1',stability=True,bifurcation_y=[2],coloring_method="curve",use_symbols=True,use_labels=False,maxx=10.0,minx=0.0)
+
+wait
+
+pl('par2',stability=False,bifurcation_y=[7],use_symbols=True,use_labels=False,coloring_method="branch");
+
+#pl('par1',stability=Trues,bifurcation_y=[7],coloring_method="curve",use_symbols=True,use_labels=False)
+
+wait

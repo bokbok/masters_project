@@ -1,0 +1,32 @@
+#====================================================================
+# AUTO Script for equilibria only 
+#====================================================================
+
+# Load libraries
+import os
+import shutil
+
+#Slice for pee, pei, prepare init file.
+#pee
+r(e='slicepee',c='slicepee',SP=['UZ1'],sv='pee')
+r(e='slicepee',c='slicepee', DS='-',SP=['UZ1'],ap='pee')
+rl('pee')
+
+#pei
+peistart=sl('pee')
+ld(e='slicepee',c='slicepei',s='pee')
+for solution in peistart:
+     if solution["Type name"] == "UZ":
+	 r(IRS=solution["Label"],SP=['UZ1'],sv='init')
+	 r(IRS=solution["Label"],DS='-',SP=['UZ1'],ap='init')
+rl('init')
+
+# Slicing
+initstart=sl('init')
+ld(e='slicepee',c='An14d',s='init')
+for solution in initstart:
+     if solution["Type name"] == "UZ":
+	 r(IRS=solution["Label"],sv='start')
+rl('start')
+
+

@@ -1,0 +1,138 @@
+C
+      E=DEXP(1D0)
+      ROOT2=DSQRT(2D0)
+      SIGE=emax/(1D0+DEXP(-ROOT2/se*(U(1)-te)))
+      SIGI=imax/(1D0+DEXP(-ROOT2/si*(U(2)-ti)))     
+C      
+      F(1)=((her-U(1)) + (heqee-U(1))*U(3)/DABS(heqee-her) 
+     $    + (heqie-U(1))*U(5)/DABS(heqie-her))/taue
+      F(2)=((hir-U(2)) + (heqei-U(2))*U(7)/DABS(heqei-hir)
+     $    + (heqii-U(2))*U(9)/DABS(heqii-hir))/taui
+      F(3)=U(4)
+      F(4)=gee*PAR(5)*E*(nbee*SIGE + U(11) + PAR(3)) - (gee**2)*U(3) 
+     $    - 2D0*gee*U(4)
+      F(5)=U(6)
+      F(6)=gie*PAR(1)*PAR(7)*E*(nbie*SIGI + pie) - (gie**2)*U(5) 
+     $     - 2D0*gie*U(6)
+      F(7)=U(8)
+      F(8)=gei*PAR(6)*E*(nbei*SIGE + U(13) + PAR(4))-(gei**2)*U(7) 
+     $    - 2D0*gei*U(8)
+      F(9)=U(10)
+      F(10)=gii*PAR(1)*PAR(8)*E*(PAR(2)*nbii*SIGI+pii)-(gii**2)*U(9) 
+     $     - 2D0*gii*U(10)
+      F(11)=U(12)
+      F(12)=naee*lambdaee**2*vbar**2*SIGE - 2D0*vbar*lambdaee*U(12) 
+     $     - vbar**2*lambdaee**2*U(11)
+      F(13)=U(14)
+      F(14)=naei*lambdaei**2*vbar**2*SIGE - 2D0*vbar*lambdaei*U(14) 
+     $     - vbar**2*lambdaei**2*U(13) 
+C      
+      IF(IJAC.EQ.0)RETURN
+      DO 1 i=1,NDIM
+         DO 2 j=1,NDIM
+            DFDU(i,j)=0D0
+ 2        CONTINUE
+ 1    CONTINUE
+C      
+      DSIGE=emax/((1D0+DEXP(-ROOT2/se*(U(1)-te)))**2)
+     $     * ROOT2/se*DEXP(-ROOT2/se*(U(1)-te))
+      DSIGI=imax/((1D0+DEXP(-ROOT2/si*(U(2)-ti)))**2)
+     $     * ROOT2/si*DEXP(-ROOT2/si*(U(2)-ti))
+C
+      DFDU(1,1)=(-1D0-U(3)/DABS(-heqee+her)-U(5)/DABS(-heqie+her))/taue
+      DFDU(1,3)=(heqee-U(1))/DABS(-heqee+her)/taue
+      DFDU(1,5)=(heqie-U(1))/DABS(-heqie+her)/taue
+      DFDU(2,2)=(-1D0-U(7)/DABS(-heqei+hir)-U(9)/DABS(-heqii+hir))/taui
+      DFDU(2,7)=(heqei-U(2))/DABS(-heqei+hir)/taui
+      DFDU(2,9)=(heqii-U(2))/DABS(-heqii+hir)/taui
+      DFDU(3,4)=1D0
+      DFDU(4,1)=gee*PAR(5)*E*nbee*DSIGE
+      DFDU(4,3)=-gee**2
+      DFDU(4,4)=-2D0*gee
+      DFDU(4,11)=gee*PAR(5)*E
+      DFDU(5,6)=1D0
+      DFDU(6,2)=gie*PAR(1)*PAR(7)*E*nbie*DSIGI
+      DFDU(6,5)=-gie**2
+      DFDU(6,6)=-2D0*gie
+      DFDU(7,8)=1D0
+      DFDU(8,1)=gei*PAR(6)*E*nbei*DSIGE
+      DFDU(8,7)=-gei**2
+      DFDU(8,8)=-2D0*gei
+      DFDU(8,13)=gei*PAR(6)*E
+      DFDU(9,10)=1D0
+      DFDU(10,2)=gii*PAR(1)*PAR(8)*E*PAR(2)*nbii*DSIGI
+      DFDU(10,9)=-gii**2
+      DFDU(10,10)=-2D0*gii
+      DFDU(11,12)=1D0
+      DFDU(12,1)=naee*lambdaee**2*vbar**2*DSIGE
+      DFDU(12,11)=-vbar**2*lambdaee**2
+      DFDU(12,12)=-2D0*vbar*lambdaee
+      DFDU(13,14)=1D0
+      DFDU(14,1)=naei*lambdaei**2*vbar**2*DSIGE
+      DFDU(14,13)=-vbar**2*lambdaei**2
+      DFDU(14,14)=-2D0*vbar*lambdaei
+C      
+      IF(IJAC.EQ.1)RETURN
+C      
+C     *Parameter derivatives      
+C      
+
+C Parameters
+C Note: PAR(1)=R, PAR(2)=cci
+C       PAR(3)=pee, PAR(4)=pei
+C       PAR(5)=aee
+C       PAR(6)=aei
+C       PAR(7)=aie
+C       PAR(8)=aii
+
+      DO 11 i=1,NDIM
+         DFDP(i,1)=0D0
+         DFDP(i,2)=0D0
+         DFDP(i,3)=0D0
+         DFDP(i,4)=0D0
+         DFDP(i,5)=0D0
+         DFDP(i,6)=0D0
+         DFDP(i,7)=0D0
+         DFDP(i,8)=0D0
+ 11   CONTINUE
+ 
+      DFDP(6,1)=gie*PAR(7)*E*(nbie*SIGI + pie)
+      DFDP(10,1)=gii*PAR(8)*E*(PAR(2)*nbii*SIGI + pii)
+      DFDP(10,2)=gii*PAR(1)*PAR(8)*E*nbii*SIGI
+      DFDP(4,3)=gee*PAR(5)*E
+      DFDP(8,4)=gei*PAR(6)*E
+
+C      NEW TERMs FOR Gammas
+     DFDP(4,5)=gee*E*(nbee*SIGE + U(11) + PAR(3)) 
+     DFDP(6,7)=gie*PAR(1)*E*(nbie*SIGI + pie)
+     DFDP(8,6)=gei*E*(nbei*SIGE + U(13) + PAR(4))
+     DFDP(10,8)=gii*PAR(1)*E*(PAR(2)*nbii*SIGI+pii)
+      
+      RETURN
+      END
+      
+C----------------------------------------------------------------------
+C----------------------------------------------------------------------
+C
+      SUBROUTINE STPNT(NDIM,U,PAR)
+C     ---------- -----
+C
+C Input arguments :
+C      NDIM   :   Dimension of the algebraic or ODE system 
+C
+C Values to be returned :
+C      U      :   A starting solution vector
+C      PAR    :   The corresponding equation-parameter values
+C
+C Note : For time- or space-dependent solutions this subroutine has
+C        arguments (NDIM,U,PAR,T), where the scalar input parameter T
+C        contains the varying time or space variable value.
+
+      IMPLICIT DOUBLE PRECISION (A-H,O-Z)
+      DIMENSION U(NDIM), PAR(*)
+C
+C Initialize the equation parameters
+       PAR(1)= 1D0
+       PAR(2)= 0.25D0
+       PAR(3)= -200D0
+       PAR(4)= 200D0

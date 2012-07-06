@@ -1,0 +1,69 @@
+#====================================================================
+# AUTO Script for equilibria, orbits and 2 parameters continuation
+#====================================================================
+
+# Load libraries
+import os
+import shutil
+
+# Load initial data
+data=sl('start')
+
+# initial variable count set to zero
+count=0
+
+#Run through solutions
+
+for solution in data:
+
+# Compute equilibria and periodics for UZ points
+
+    if solution["Type name"] == "UZ":
+        ld(e='slicepee',c='An14d.1',s='start')
+        count=count+1
+        dirname = "UZ-" + str(count)
+        if not os.path.isdir("./" + dirname + "/"):
+            os.mkdir("./" + dirname + "/")
+
+        print "\n********* Computing equilibria for UZ-" + str(count) + " *************"
+        run(IRS=solution["Label"])
+        sv('par1')
+        run(DS='-',IRS=solution["Label"])
+        ap('par1')
+        rl('par1')
+
+#Move and copy files to the appropriate directories, compute two paramaters
+# plots and periodic orbits
+
+        print "\n********* Equilibria for UZ-" + str(count) + " computed ! *************"
+        
+        shutil.copy("s.par1",dirname)
+        shutil.copy("d.par1",dirname)
+        shutil.copy("b.par1",dirname)
+        shutil.copy('slicepee.f',dirname)
+        shutil.copy('c.An14d.2',dirname)
+        dl('par1')
+        cl()
+
+
+        print "\n********* Computing periodic orbits for UZ-" + str(count) + " *************"
+        os.chdir(dirname)
+        ld(e='slicepee',c='An14d.2',s='par1')
+        run(IRS='HB1',STOP=['BP1'])
+        ap('par1')
+        rl('par1')
+	run(IRS='HB2',STOP=['BP1'])
+	ap('par1')
+	rl('par1')
+        run(IRS='HB3',STOP=['BP1'])
+	ap('par1')
+	rl('par1')
+        cl()
+        os.chdir("../")
+
+
+
+    dirname= "UZ-"
+
+
+

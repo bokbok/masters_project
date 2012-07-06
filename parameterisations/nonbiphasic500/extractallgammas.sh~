@@ -1,0 +1,16 @@
+#!/bin/bash
+
+echo Extracting gamma stats
+
+# Create a file with set numbers and type of gamma:
+# 0: No gamma
+# 1: Physiological, stable gamma oscillations
+# 2: Physiological, unstable gamma oscillations
+# 3: Unphysiological, stable gamma oscillations
+# 4: Unphysiological, unstable gamma oscillations
+awk '/*/ {if (($1+$6+$11+$16)>0) print NR/2, "1"; else if(($2+$7+$12+$17)>0) print NR/2, "2"; else if(($3+$8+$13+$18)>0) print NR/2, "3"; else if(($4+$9+$14+$19)>0) print NR/2, "4"; else print NR/2, "0"; }' reduxall.dat > rr.dat; 
+
+
+# Extract percentages
+awk '{if ($2==1) n++; if ($2==2) s++; if($2==3) m++; if($2==4) r++; if($2==0) h++;} END {printf("Physiological, stable gamma: %.2lf % (%d / %d) \n",n/NR*100, n, NR); printf("Physiological, unstable gamma: %.2lf % (%d / %d) \n",s/NR*100, s, NR); printf("Unphysiological, stable gamma: %.2lf % (%d / %d) \n",m/NR*100, m, NR); printf("Unphysiological, unstable gamma: %.2lf % (%d / %d) \n",r/NR*100, r, NR); printf("No gamma: %.2lf % (%d / %d) \n",h/NR*100, h, NR)}' rr.dat > percentage.final.dat
+
