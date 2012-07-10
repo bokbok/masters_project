@@ -201,6 +201,7 @@ class LileyBase(object):
         axes.set_zlabel(z)
         draw()
         return self
+
     def vals(self, axis):
         return self.points[axis]
 
@@ -289,11 +290,10 @@ class LileyWith2ndOrderSlow(LileyBase):
         LileyBase.__init__(self, params = params, ics = ics, name = name, equations = equations, points = points, odeSystem = odeSystem)
 
 class LileyWithSingle1stOrderSlow(LileyBase):
-    h_e_t='(1/tor_e) * (-(h_e - h_e_rest) + (Y_e_h_e(h_e) * i_ee) + (Y_i_h_e(h_e) * (i_ie))) + weight_slow_e * slow'
-    h_i_t='(1/tor_i) * (-(h_i - h_i_rest) + (Y_e_h_i(h_i) * i_ei) + (Y_i_h_i(h_i) * (i_ii))) + weight_slow_i * slow'
+    h_e_t='(1/tor_e) * (-(h_e - h_e_rest) + (Y_e_h_e(h_e) * i_ee) + (Y_i_h_e(h_e) * (i_ie)) + weight_slow_e * slow)'
+    h_i_t='(1/tor_i) * (-(h_i - h_i_rest) + (Y_e_h_i(h_i) * i_ei) + (Y_i_h_i(h_i) * (i_ii)) + weight_slow_i * slow)'
 
     slow_t='(1/tor_slow) * (mu_slow * (h_e_rest - h_e) - nu_slow * slow)'
-
 
     zeroIcs = { 'phi_ee' : 0, 'phi_ee_t' : 0, 'phi_ei' : 0, 'phi_ei_t' : 0, 'i_ee' : 0,
                 'i_ee_t' : 0, 'i_ei' : 0, 'i_ei_t' : 0, 'i_ie' : 0, 'i_ie_t' : 0,
@@ -313,6 +313,8 @@ class LileyWithSingle1stOrderSlow(LileyBase):
 
         if ics == None:
             ics = LileyWithSingle1stOrderSlow.zeroIcs
+            ics['h_e'] = params['h_e_rest']
+            ics['h_i'] = params['h_i_rest']
         LileyBase.__init__(self, params = params, ics = ics, name = name, equations = equations, points = points, odeSystem = odeSystem)
 
 
