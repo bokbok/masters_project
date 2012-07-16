@@ -1,0 +1,232 @@
+\documentclass[a4paper,12pt]{article}
+\usepackage{fixltx2e}
+\begin{document}
+\section{Introduction}
+Prior to the development of the modern intensive care unit in the early
+1960s, featuring intubation, artificial respiration and comprehensive
+physiological monitoring, reports of the electroencephalographic
+pattern of burst suppression were confined to animal studies involving
+deep anaesthesia and the odd case of psychosurgery (Niedermeyer,
+2009). Since then the burst suppression pattern is now recognized as
+a major class of generalised EEG waveform abnormality of diagnostic
+and prognostic significance that is encountered in a range of
+encephalopathic conditions, in addition to its pharmacological genesis
+by a variety of sedative and anaesthetic agents. Typically the burst
+suppression pattern consists of bursts of high amplitude slow, sharp or
+spiking activity electroencephalographic activity separated by periods
+of electroencephalographic suppression (isoelectricity). The oscillatory
+features of the bursts, together with their duration and the duration of
+suppressed periods show a high degree of variability that reflects its
+myriad of initiating causes (see Figure 1 for examples). First identified
+during deep anaesthesia with tribromoethanol in cats (Derbyshire et al,
+1936), labelled “burst-suppression pattern” by Swank \& Watson (1948) during barbiturate and ether anaesthesia in dogs, it is now
+associated with cortical deafferentation (Henry \& Scoville, 1952),
+cerebral anoxia and hypoxia, various types of intracortical lesions
+(Fischer-Williams, 1963), deep coma, various infantile
+encephalopathies, the final stages of deteriorated status epilepticus
+(Trieman et al 1990), hypothermia, and high levels of many sedative
+and anaesthetic agents (Schwartz et al, 1989; Akrawi et al 1996).
+
+Burst suppression in the absence of anaesthesia is in general
+associated with a very poor prognosis. Grigg-Damberger et al (1989)
+found that the neonatal appearance of burst suppression, even if
+transient, was a portent of death or severe neurodevelopmental
+disability in 93\% of infants who were followed up subsequent to the
+appearance of electroencephalographic evidence of neonatal burst
+suppression. In adult populations while an anoxic/hypoxic burst
+suppression pattern signals a serious pathophysiological event the
+outcome is not necessarily fatal and recovery with or without severe
+neurological damage is possible (Niedermeyer, 2009). The results of
+experimental work with EEG monitoring in rats reveals that animals with
+greater rates of high amplitude bursts had a better survival and
+neurological outcome compared to those with lower rates of low
+amplitude bursts (Geocadin et al, 2002).
+
+While the electroencephalographic phenomenon and clinical
+implications of burst suppression have been studied extensively
+(Niedermeyer, 2009; Brenner, 1985) the physiological mechanisms
+underlying its emergence remain unresolved and obscure. However the
+phenomenal resemblance of the patterns of burst suppression to
+disorders of neuronal hyperexcitability suggests that similar
+physiological mechanisms may be at root. For example the bursting
+during burst suppression is often associated with myoclonic jerks
+resembling those seen during epileptic fits. Further, during burst
+suppression induced by various halogenated anaesthetic agents, bursts
+can be readily evoked by auditory, visual or somatosensory stimuli
+(Hartikainen et al, 1995). Like generalised epileptiform activity, bursts
+are recorded simultaneously at multiple electrode derivations, implying
+the wide synchronisation of neuronal activity. Not surprisingly then, in
+clinical practice the boundaries between what constitutes coma
+induced burst suppression and what is defined as ictal seizure activity
+is blurred (Amzica, 2009; Hirsch et al, 2004). While such
+differentiation may be one of only semantics practically speaking there
+nevertheless may be important clinical implications if they respond
+differentially to pharmacotherapy and have different prognostic
+outcomes, thus motivating attempts to better clarify such a
+distinction.
+
+Surprisingly many anaesthetic agents, at levels well below that needed
+to induce burst suppression, quite commonly induce epileptiform
+activity (Voss et al, 2008). While such epileptiform activity rarely
+progresses to clinically apparent seizures (Garcia-Morales et al, 2002)
+the presence of such activity nevertheless is believed to indicate some
+form of incipient cortical hyperexcitability. Indeed a number of
+mesoscopic mean field models developed to account for the
+electroencephalographic features of anaesthetic action (Bojak \& Liley,
+2005; Steyn-Ross et al, 1999), based on parameterising empirically
+identified sub-cellular and molecular targets, have been able to account
+for the pro-convulsant properties of many anaesthetic agents known
+to have seizurogenic potential (Wilson et al, 2006; Liley \& Bojak,
+2005). Given that the majority of anaesthetic agents induce burst
+suppression it is therefore natural to inquire whether these mesoscopic
+mean field models of electrocortical anaesthetic action are able to
+account for the appearance of drug-induced burst suppression, and in
+doing so shed light on the pathophysiological mechanisms of burst
+suppression and epilepsy in general.
+
+Figure 1: Example traces of electroencephalogram and
+electrocorticogram illustrating the heterogeneity of burst suppression
+patterns. (A) changes in neocortical electroencephalogram in the rat,
+recorded using dural surface electrodes, in response to a 5 mg/kg/min
+thiopental infusion (figure reproduced with permission from Lukatch \&
+MacIver, 1996). (B) electroencephalogram recorded in acute anoxia
+showing a clear burst suppression pattern with grouped spikes (figure
+reproduced with permission from Hockaday et al, 1965). (C) burst
+suppression pattern during closed loop target controlled propofol
+infusion at a target level of approximately 15 μg/ml (data courtesy of
+Professor Michel Struys, Groningen). Note the bursts consist of fast
+activity (> 10 Hz) on a slow wave background. (D) electrocorticogram
+obtained from an adult merino sheep during deep enflurane anaethesia,
+demonstrating high amplitude spikes interspersed with isoelectric
+periods of variable length (figure reproduced with permission from
+Voss et al, 2006). (E) electroencephalogram recorded from a 3 month
+old infant suffering from infantile myoclonic encephalopathy
+(reproduced with permission from Niedermeyer, 2005).
+
+\section{Methods}
+\subsection{Mesoscopic mean field modelling of electrocortical activity}
+The electroencephalogram and electrocorticogram arise out of the
+cooperative activity of many thousands of neurons. A single
+electroencephalographic electrode records the synaptically induced
+currents of well over a 100,000 neurons (Nunez \& Srinivasan, 2006)
+and thus detailing each neurons contribution to this summed activity
+would appear superfluous. For this reason it is preferable instead to
+model the activity of populations of neurons. One general way of
+achieving this, in which known stochastic fluctuations can be included,
+is to dynamically evolve the probability distributions associated with
+the states of the neuronal ensemble. While in principle providing a
+rigorous way forward the formulation of such stochastic equations of
+motion entails a great deal of physiological uncertainty. For this and
+other reasons (Deco et al, 2008) a more resolute path is to
+dynamically evolve some average quantity such as the mean soma
+membrane potential or the mean firing rate of some suitably defined
+neuronal ensemble. In this manner a mesoscopic level model can be
+developed which acts as a bridge between cellular (or microscopic)
+level activity and whole brain (or macroscopic) level behaviour.
+While the current mathematical approach for formulating the equations
+of motion for the activity of neuronal populations or masses, stems
+principally from the works of Wilson \& Cowan (1973, 1972), Nunez
+(1974), Freeman (1975) and Amari (1975, 1977), they are not
+particularly successful in articulating the genesis of rhythmic activity in
+the EEG and its modulation by pharmacological agents, due to a range
+of mathematical simplifications that cannot be justified by an appeal to
+physiology. For this reason a range of biologically more refined
+neuronal populations models have been developed (Deco et al, 2008)
+that form a more appropriate basis from which to model the
+physiological genesis of the electroencephalogram. The model of Liley
+et al (2005; 2003; 2002; 1999) is one such model and will be the
+focus of our attempts to account for the phenomenon of burst
+suppression.
+
+The model of Liley et al (2011; 2005; 2003; 2002; 1999) is able to
+account for the major features of the mammalian
+electroencephalogram in the context of a parameterisation that
+accords with physiological measurement and experiment. Because it
+aims to provide a dynamical description of the electroencephalogram
+the model is spatially coarse-grained over the approximate extent of a
+cortical macrocolumn, reflecting the general physiological wisdom that
+such columniation signifies populations of neurons having similar
+functional behaviour and anatomical connectivity. The multiple
+interactions between individual neurons are replaced by effective feedforward
+and feed-back interactions between the mean activity (or
+“mean fields”) of excitatory and inhibitory populations of neurons over
+the spatial extent of the column. In this way mammalian neocortex is
+conceived as consisting of localized populations of excitatory and
+inhibitory neurons interacting by all possible combinations of
+feedforward and feedback connectivity interacting globally via long
+range excitatory connections (Figure 2).
+
+Figure 2: Schematic overview of the essential intracortical and corticocortical
+interactions between excitatory and inhibitory neuronal
+populations in the model of Liley et al (2011; 2005; 2003; 2002;
+1999). Figure reproduced with permission from Liley et al (2011).
+Following conductance based approaches typically used to model
+networks of synaptically interacting networks of individual model
+neurons, excitatory and inhibitory neuronal populations are modeled as
+single passive resistive-capacitive compartments into which all
+synaptically induced postsynaptic currents flow. Functionally these
+populations are equivalent to the excitatory and inhibitory KO sets of
+Freeman’s (1975) K-set hierarchy. Cortical activity is then described
+by the mean soma membrane potentials of the spatially distributed excitatory ($h_e$)
+and inhibitory ($h_i$) neuronal populations. The connection with pysiological measurement is obtained through $h_e$, which is
+assumed to be linearly related to the surface recorded
+electroencephalogram (Nunez \& Srinivasan, 2006; Freeman, 1975).
+Thus the response of the mean soma membrane potential $h_k$ ($k=e,i$) at position $r$ on a two dimensional cortical sheet, to induce post synaptic activity $I_{lk}$ ($l$=source, $k$=target population) is given by
+
+\begin{equation} 
+\tau_k\frac{\partial h_k(r,t)}{\partial t} = h^r_k - h_k(r,t) + \sum_{l=e,i} \frac{h_{lk}^{eq} - h_k(r, t)}{\left| h_{lk}^{eq}-h_k^r\right|}I_{lk}(r,t) 
+\end{equation}
+
+The postsynaptic response to a single pre-synaptic action potential (at
+t = 0) is modeled by the well-known synaptic alpha function of cable
+theory as $\Gamma_{lk} \gamma_{lk}texp(1-\gamma_{lk}t), t \geq 0$ and is excitatory or inhibitory depending
+on the sign of $\Gamma_{lk}$ (peak amplitude), and thus we assume that the time
+course of the synaptically induced excitatory and inhibitory currents is
+described by a critically damped oscillator driven respectively by the
+mean rate of incoming excitatory and inhibitory axonal pulses:
+
+\begin{equation}
+\left( \frac{\partial}{\partial t} + \gamma_{lk} \right)^2 I_{lk}(r,t) = exp(1)\Gamma_{lk}\gamma_{lk}.A_{lk}(r,t)
+\end{equation}
+
+\begin{equation}
+A_{ek}(r,t) = N_{ek}^{\beta} S_e[ h_e(r,t)] + \phi_{ek} p_{ek}(r,t),  A_{ik}(r,t) = N_{ik}^{\beta} S_i[h_i(r,t)] + p_{ik}(r,t)
+\end{equation}
+
+where $A_{lk}$ comprises the different sources of presynaptic spikes: $N_{lk}^\beta S_i$ (input from local cortical neuronal populations), $\phi_{ek}$ (input from long range excitatory cortico-cortical fibres) and $p_{lk}$ (extracortical sources).
+While the present consensus is that extracortical sources
+(thalamocortical afferents) are purely excitatory in nature and thus $p_{ik} \cong 0$0, we choose to keep these terms as they enable the effects of
+tonic inhibition to be included without the need to define additional
+parameters. The time courses of the synaptically induced currents, $1 / \gamma_{lk}$ are taken to describe the time course of ‘fast’ excitatory ($l = e$: $\alpha$-amino-3-hydroxl-5-methyl-4-isoxazole-propionate (AMPA) \& kainate) and inhibitory ($l=i$: $\gamma$-amino-butyric-acid type A (GABA\textsubscript{A}) neurotransmitter kinetics. Mean neuronal population firing rates, $S_l$, are assumed to to instantanious sigmoid functions of the mean soma membrane potential i.e
+
+\begin{equation}
+S_l[h_l(r,t)]=S_l^{max}/\{1 + exp[\sqrt{2}(h_l(r,t)-\mu_l)/\sigma_l]\}
+\end{equation}
+
+The axonal pulses $\phi_{ek}$ propagated by the exclusively excitatory long
+range cortico-cortical fibre system is in the simplest case described by
+the following two-dimensional telegraph equation,
+
+\begin{equation}
+\left(\frac{\partial}{\partial t} + v_{ek} \Lambda_{ek} \right)^2 \phi(r,t) - \frac{3}{2} v_{ek}^2 \bigtriangledown^2\phi(r,t)=v_{ek}^2 \Lambda_{ek}^2 N_{ek}^\alpha S_e[h_e(r,t)]
+\end{equation}
+
+where $N_{ek}^\alpha$ is the total number of excitatory connections formed by
+long range cortico-cortical axons on long on local population $k$, and
+assumes a single axonal conduction velocity $v_{ek}$ and and an exponential fall
+off with distance (characteristic scale = $1/\Lambda_{ek}$) of the strength of
+cortico-cortical connectivity. For simplicity, and given the fact that in
+anaesthesia burst suppression involves the whole brain, we choose to
+only study the spatially homogeneous case i.e. $\bigtriangledown^2 = 0$
+
+Equations (1-4) represent a system of 8 coupled non-linear partial
+differential equations that typically defines the Liley model of
+electrocortical rhythmogenesis, which is capable of reproducing the
+main features of spontaneous human electroencephalogram (alpha
+resonance, '$1/f$' activity). Table 1 summarises all model parameters,
+their definitions and approximate ranges. 
+
+
+
+
+\end{document}

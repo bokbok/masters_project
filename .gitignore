@@ -3,6 +3,10 @@ java-implementation/build/*
 java-implementation/results/*
 java-implementation/out/*
 tmp/*
+papers/*.pdf
+papers/*.log
+papers/*.gz
+papers/*.aux
 *_temp
 _radau*
 _auto*
