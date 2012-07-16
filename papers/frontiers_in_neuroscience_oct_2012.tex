@@ -173,7 +173,7 @@ assumed to be linearly related to the surface recorded
 electroencephalogram (Nunez \& Srinivasan, 2006; Freeman, 1975).
 Thus the response of the mean soma membrane potential $h_k$ ($k=e,i$) at position $r$ on a two dimensional cortical sheet, to induce post synaptic activity $I_{lk}$ ($l$=source, $k$=target population) is given by
 
-\begin{equation} 
+\begin{equation} \label{eq:h_e} 
 \tau_k\frac{\partial h_k(r,t)}{\partial t} = h^r_k - h_k(r,t) + \sum_{l=e,i} \frac{h_{lk}^{eq} - h_k(r, t)}{\left| h_{lk}^{eq}-h_k^r\right|}I_{lk}(r,t) 
 \end{equation}
 
@@ -185,11 +185,11 @@ course of the synaptically induced excitatory and inhibitory currents is
 described by a critically damped oscillator driven respectively by the
 mean rate of incoming excitatory and inhibitory axonal pulses:
 
-\begin{equation}
+\begin{equation} \label{eq:i_lk}
 \left( \frac{\partial}{\partial t} + \gamma_{lk} \right)^2 I_{lk}(r,t) = exp(1)\Gamma_{lk}\gamma_{lk}.A_{lk}(r,t)
 \end{equation}
 
-\begin{equation}
+\begin{equation} \label{eq:a_ek}
 A_{ek}(r,t) = N_{ek}^{\beta} S_e[ h_e(r,t)] + \phi_{ek} p_{ek}(r,t),  A_{ik}(r,t) = N_{ik}^{\beta} S_i[h_i(r,t)] + p_{ik}(r,t)
 \end{equation}
 
@@ -199,7 +199,7 @@ While the present consensus is that extracortical sources
 tonic inhibition to be included without the need to define additional
 parameters. The time courses of the synaptically induced currents, $1 / \gamma_{lk}$ are taken to describe the time course of ‘fast’ excitatory ($l = e$: $\alpha$-amino-3-hydroxl-5-methyl-4-isoxazole-propionate (AMPA) \& kainate) and inhibitory ($l=i$: $\gamma$-amino-butyric-acid type A (GABA\textsubscript{A}) neurotransmitter kinetics. Mean neuronal population firing rates, $S_l$, are assumed to to instantanious sigmoid functions of the mean soma membrane potential i.e
 
-\begin{equation}
+\begin{equation} \label{eq:s_l}
 S_l[h_l(r,t)]=S_l^{max}/\{1 + exp[\sqrt{2}(h_l(r,t)-\mu_l)/\sigma_l]\}
 \end{equation}
 
@@ -207,7 +207,7 @@ The axonal pulses $\phi_{ek}$ propagated by the exclusively excitatory long
 range cortico-cortical fibre system is in the simplest case described by
 the following two-dimensional telegraph equation,
 
-\begin{equation}
+\begin{equation} \label{eq:phi}
 \left(\frac{\partial}{\partial t} + v_{ek} \Lambda_{ek} \right)^2 \phi(r,t) - \frac{3}{2} v_{ek}^2 \bigtriangledown^2\phi(r,t)=v_{ek}^2 \Lambda_{ek}^2 N_{ek}^\alpha S_e[h_e(r,t)]
 \end{equation}
 
@@ -219,14 +219,45 @@ cortico-cortical connectivity. For simplicity, and given the fact that in
 anaesthesia burst suppression involves the whole brain, we choose to
 only study the spatially homogeneous case i.e. $\bigtriangledown^2 = 0$
 
-Equations (1-4) represent a system of 8 coupled non-linear partial
+Equations (\ref{eq:h_e}, \ref{eq:i_lk}, \ref{eq:a_ek} \& \ref{eq:phi}) represent a system of 8 coupled non-linear partial
 differential equations that typically defines the Liley model of
 electrocortical rhythmogenesis, which is capable of reproducing the
 main features of spontaneous human electroencephalogram (alpha
-resonance, '$1/f$' activity). Table 1 summarises all model parameters,
+resonance, '$1/f$' activity). Table \ref{table:model_params} summarises all model parameters,
 their definitions and approximate ranges. 
 
-
+\begin{table}[h]
+\centering
+\label{table:model_params} 
+\begin{tabular}{r l r r l}
+\hline 
+ & Definition & Min & Max & Units \\
+\hline
+$h_k^r$ & resting membrane potential & −80 & −60 & $mV$ \\
+$\tau_k$ & passive membrane decay time & 5 & 150 & $ms$ \\
+$h_{ek}^{eq}$ & excitatory reversal potential & −20 & 10 & $mV$ \\
+$h_{ik}^{eq}$ & inhibitory reversal potential & −90 & $h_k^r - 5$ & $mV$ \\
+$\Gamma_{ek}$ & EPSP peak amplitude & 0.1 & 2.0 & $mV$ \\
+$\Gamma_{ik}$ & IPSP peak amplitude & 0.1 & 2.0 & $mV$ \\
+$1/\gamma_{ek}$ & EPSP rise time to peak & 1 & 10 & $ms$ \\
+$1/\gamma_{ik}$ & IPSP rise time to peak & 2 & 100 & $ms$ \\
+$N_{ek}^\alpha$ & number of excitatory cortico-cortical synapses & 1000 & 5000 & − \\
+$N_{ek}^\beta$ & number of excitatory intracortical synapses & 2000 & 5000 & − \\
+$N_{ik}^\beta$ & number of inhibitory intracortical synapses & 100 & 1000 & − \\
+$v_{ek}$ & axonal conduction velocity & 0.1 & 1 & $mm/ms$ \\
+$1 / \Lambda_{ek}$ & decay scale cortico-cortical connectivity & 10 & 100 & $mm$ \\
+$S_k^{max}$ & maximum firing rate & 0.05 & 0.5 & $ms^{-1}$ \\
+$\mu_k$ & mean firing threshold & −55 & −40 & $mV$ \\ 
+$\sigma_k^2$ & variance in firing threshold & 4 & 49 & $mV^2$ \\
+$p_{lk}$ & extracortical synaptic input rate & 0 & 10 & $ms^{-1}$ \\
+\hline
+\end{tabular}
+\caption{List of spatially averaged parameters for different types $k = e,
+i$ of neuronal target populations in the electrocortical model of Liley et
+al. (2011; 2005; 2003; 2002; 1999), with typical ranges that are
+assumed to be physiologically admissible. Table adapted from Liley et
+al (2011).}
+\end{table}
 
 
 \end{document}
