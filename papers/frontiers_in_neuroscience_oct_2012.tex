@@ -227,7 +227,6 @@ resonance, '$1/f$' activity). Table \ref{table:model_params} summarises all mode
 their definitions and approximate ranges. 
 
 \begin{table}[h]
-\centering
 \label{table:model_params} 
 \begin{tabular}{r l r r l}
 \hline 
@@ -258,6 +257,148 @@ al. (2011; 2005; 2003; 2002; 1999), with typical ranges that are
 assumed to be physiologically admissible. Table adapted from Liley et
 al (2011).}
 \end{table}
+
+\subsection{Model parameterisation: generation of normative parameter sets}
+Because burst suppression activity (at least that caused by
+anaesthetic and sedative action) is assumed to ultimately arise out of
+a background of normal electroencephalographic activity it is
+important to define parametrically normative states in order to study
+how they may be perturbed during health and disease. We therefore
+choose to utilize previously defined parameter sets (Bojak \& Liley,
+2005) that have the following properties: i) are confined to the
+physiologically admissible parameter space (see Table 1), ii) give rise
+to electroencephalographically and physiologically plausible activity
+('1/f' decay at low frequencies plus a relatively sharp peak at alpha
+frequencies, 8 – 13 Hz; mean excitatory/inhibitory neuronal firing rates
+< 20 s-1) and iii) that exhibit transient increases in total power and
+monotonic reductions in mean frequency with respect to modeled
+anaesthetic action (see below). In general such sets are found by
+randomly searching the high dimensional physiologically admissible
+(and plausible) parameter space. For further details see Bojak \& Liley
+(2005).
+
+\subsection{Extending mean field models to account for the molecular and subcellular
+actions of anaesthetic agents}
+A great deal of information is available regarding the molecular and
+sub-cellular sites of anaesthetic action, with many of these identified
+sites able to be mapped to parameters in the Liley model (see Table
+2). Given that the majority of anaesthetic agents (for exceptions see
+below) induce burst suppression, the parametric subspace defined by
+anaesthetic action is the obvious place to begin explorations into the
+pathophysiological mechanisms and implications of burst suppression.
+As shown in Bojak \& Liley (2005) in order to better account for the
+effects that many anaesthetics have on the time course of inhibitory
+postsynaptic potentials a simple extension of the synaptic alpha
+function, which allows independent adjustments of the rise (defined by $1/\gamma_{lk}$)
+and decay times (determined by $\epsilon_{lk}$) is required i.e.
+
+$\Gamma_{lk}\gamma_{lk} \frac{exp\left\{\epsilon_{lk}/(1-exp[-\epsilon_{lk}])\right\} }{exp[\epsilon_{lk}] - 1}.\{exp[-\epsilon_{ek}\gamma_{lk}/(exp[\epsilon_{lk}] - 1) - exp[-\epsilon_{ek}\gamma_{lk}/(1 - exp[-\epsilon_{lk}])]\}$
+\\
+where $\epsilon_{lk} \ge 0$ and where the limit $\epsilon_{lk} \rightarrow 0$ reduces to the previously
+defined synaptic alpha function. The corresponding differential
+equation is then (Liley et al, 2011; Bojak \& Liley, 2005):
+
+\begin{equation} \label{eq:i_lk_aug}
+\left( \frac{\partial}{\partial t} + \tilde{\gamma_{lk}}exp[\epsilon_{lk}] \right)^2 I_{lk}(r,t) = \Gamma_{lk}\tilde{\gamma_{lk}}exp[\epsilon_{lk} + \tilde{\gamma_{lk}}/\gamma_{lk}].A_{lk}(r,t)
+\end{equation}
+\\
+where $\tilde{\gamma_{lk}} = \epsilon_{lk}\gamma_{lk}/(exp[\epsilon_{lk} - 1])$. The relationship between $\epsilon_{lk}$ and the decay time from peak $(\varsigma)$ while monotonically increasing, can in general only
+be determined numerically.
+
+\begin{table}[h]
+\label{table:site_of_action} 
+\begin{tabular}{p{5cm} p{5cm} l}
+\hline 
+ Site of action & Main anaesthetic effect & Parameters \\
+\hline
+2PK channels \& extrasynaptic GABA$_A$ receptors & increase in tonic inhibition & $p_{ik}, h_k^r$ \\
+\\
+HCN1 pacemaker channels & membrane hyperpolarisation, increase in EPSP amplitude$^a$ & $\Gamma_{ee}, h_e^r$\\
+\\
+nACh receptors & reduction in tonic excitation & $p_{ek}, h_k^r$ \\
+\\
+synaptic GABA$_A$ & increase in IPSP charge transfer & $\Gamma_{ik}, \gamma_{ik}, \epsilon_{ik}$\\
+\\
+AMPA/kainate \& NMDA$_b$ receptors & decrease in EPSP charge transfer & $\Gamma_{ek}, \gamma_{ek}, \epsilon_{ek}$\\
+\\
+myelinated axons$^c$ & decreased conduction velocity & $v_{ek}$\\
+\\
+Na channels & alterations of neuronal firing & $S_k^{max}, \mu_k, \phi_k$\\
+\hline
+\end{tabular}
+\caption{Relationship between major experimentally identified sites of
+cortical anaesthetic action and parameters of the electrocortical model
+of Liley et al. (2005; 2003; 2002; 1999). EPSP = excitatory
+postsynaptic potential; IPSP = inhibitory postsynaptic potential; 2PK =
+two-pore potassium; nACh = nicotinic acetylcholinergic; NMDA = Nmethyl-
+d-aspartate; $^a$ only demonstrated in excitatory neurons (Chen
+et al, 2009). $^b$ hypothesized to depend on $h_k$ ; $^c$ Effect demonstrated
+in periphery, speculative in cortex (Swindale, 2003). Table adapted
+from Liley et al (2011).}
+\end{table}
+
+
+
+\subsection{Investigating and incorporating speculative physiological
+mechanisms of burst suppression}
+While it is often assumed that burst-suppression pattern arises from
+slow thalamic oscillations driving cortex (Fisch, 1999), the fact that
+this pattern persists subsequent to cortical deafferentation instead
+suggests that it is an intrinsic dynamical feature of cortical tissue
+(Luktach et al, 1995).
+While many anaesthetic agents, at sufficiently high doses, are capable
+of producing burst suppression pattern electroencephalogram, not all
+do. Pharmacologically, anaesthetics that induce burst suppression all
+seem to have a GABAergic profile, even if weak. One that has not
+been reported to induce burst suppression, xenon, is widely believed to
+act principally via the antagonism of glutamatergic neurotransmission.
+Indeed it is reported in laboratory slice preparations that burst
+suppression induced by thiopental, propofol and isoflurane requires the
+maintenance of glutamate-mediated excitatory neurotransmission
+(Luktach et al, 2005). While NMDA antagonists have been shown to
+reduce burst duration and amplitude in slice preparations (Kroeger \&
+Amzica, 2007), in clinical practise antiepileptic drugs generally show
+poor response.
+Lukatch \& MacIver (1996) report that burst suppression appears to
+result from the direct activation of GABA-gated Cl– channels as
+muscimol, a potent selective GABAA agonist, reliably induces this
+phenomenon. Therefore perturbation of GABAergic neurotransmission
+may be key to understanding the pathophysiology of burst
+suppression. Such a view is also supported by work involving
+hippocampal slices subject to simulated ischemia in which it is found
+that ischemia releases GABA initially by exocytosis and then by
+reversal of a high affinity GABA plasma membrane transporter (GAT-1;
+Allen et al, 2004).
+The implied importance of GABAergic inhibitory processes is also
+supported by the work of Steriade et al (1994) in which they found
+that hyperpolarisation of the resting cell membrane potential of
+cortical neurons reliably preceded conspicuous electroencephalographic
+aspects of burst suppression. However in addition to inhibitory
+GABAergic contributions they also ascribed the hyperpolarisation to i)
+thalamic disfacilitation ii) inactivation of a variety of inward ionic
+currents and iii) increases in membrane K+ conductances.
+While maintenance of a sufficient level of glutamate-mediated
+excitatory neurotransmission is required for the genesis of the bursting
+in burst suppression, there is nevertheless evidence that
+neurotransmission in general is attenuated. For example Kroeger \&
+Amzica (2007) showed that bursting depleted interstitial Ca2+ to a
+level incompatible with synaptic transmission, and speculate that this
+accounts for the isoelectric suppression period. That attenuated
+neurotransmission may also be involved in the genesis of hypoxia
+induced burst suppression is supported by the works of Endemli and
+Crunelli (1998), in which they found that brief periods of anoxia can
+cause a total, but reversible loss of synaptic transmission, and
+Fleidervish et al (2001), in which it was found that hypoxia depleted
+readily releasable pools of vesicles for transmitter release.
+On the basis of the available evidence regarding the pathophysiology
+of burst suppression we will therefore confine ourselves to a
+parametric subspace comprising alterations in the strength of excitatory neurotransmission ($\Gamma_{ee},  \Gamma_{ei}$), variations in the strength and kinetics of inhibitory neurotransmission ($\Gamma_{ii},  \Gamma_{ie}, \epsilon_{ii}, \epsilon_{ie}$),
+and alteration in subcortical drive ($p_{lk}$).
+
+
+
+
+
 
 
 \end{document}
