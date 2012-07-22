@@ -37,7 +37,8 @@ class Convert
       'pii' => 'p_ii',
       'pie' => 'p_ie',
       'pei' => 'p_ei',
-      'pee' => 'p_ee'
+      'pee' => 'p_ee',
+      'rabs' => 'r_abs'
   }
 
   def initialize(dir, out)
@@ -46,7 +47,7 @@ class Convert
   end
 
   def run
-    params = {}
+    params = { }
     Dir["#{@dir}/**/*.ode"].each do |file|
       params[File.basename(file)] = extract_params(file)
     end
@@ -57,10 +58,19 @@ class Convert
   end
 
   def extract_params(file)
-    params = {}
+    params = {'r_abs' => 0,
+              'tor_slow' => 1,
+              'mu_slow_e' => 0,
+              'nu_slow_e' => 0,
+              'mu_slow_i' => 0,
+              'nu_slow_i' => 0,
+              'burst_i' => 0,
+              'burst_e' => 0,
+              'phi_ii' => 0,
+              'phi_ie' => 0}
     File.open(file) do |f|
       f.readlines.each do |line|
-        if line =~ /^\s*param\s*(.*)=(\d+\.{0,1}\d*).*$/
+        if line =~ /^\s*param\s*(.*)=(-{0,1}\d+\.{0,1}\d*).*$/
           params[TRANSLATIONS[$1] || $1] = $2.to_f
         end
       end
