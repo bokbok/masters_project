@@ -1,6 +1,43 @@
 \documentclass[a4paper,12pt]{article}
 \usepackage{fixltx2e}
 \begin{document}
+\title{Mesoscopic Modelling of Burst Suppression Under Anaesthesia}
+\maketitle
+\author{
+    Matthew Walsh\\
+    Brain and Psychological Sciences Research Centre (BPsyC),\\
+    Swinburne University of Technology, Hawthorn, Victoria 3122,\\
+    Australia; 
+    matthew.walsh@gmail.com\\
+  \and
+    David Liley\\
+    Brain and Psychological Sciences Research Centre (BPsyC),\\
+    Swinburne University of Technology, Hawthorn, Victoria 3122,\\
+    Australia; Cortical Dynamics Ltd, Hawthorn. Victoria 3122, Australia\\
+    dliley@swin.edu.au\\
+}
+
+\begin{abstract}
+The burst suppression pattern is well recognized as
+a major class of generalised electroencephlagram (EEG) waveform abnormality 
+and is evoked by a variety of anesthetic agents. 
+While the electroencephalographic phenomenon and clinical
+implications of burst suppression have been studied extensively, the physiological mechanisms
+underlying its emergence remain unresolved and obscure. 
+
+While the model of Liley et. al. has been shown to account for many of the major features of the 
+mammalian electroencephlagram, because of a strong coupling between excitatory and inhibitory population dynamics,  
+it is unlikely to display burst suppression. This is because of the inability of simulated anesthetic action 
+to induce the dynamics on multiple timescales that underlie bursting.
+However the addition of a mean field driven slow wave system to the Liley model introduces 
+multiple timescale behavior to the Liley model.
+
+The extended Liley model is shown to exhibit burst suppression under physiologically 
+plausible parameterisations for anesthesia with a wide variety of bursting behavior. 
+This paper provides an overview of such dynamics and their relevance for a more 
+complete physiological understanding of the EEG.
+
+\end{abstract}
 \section{Introduction}
 Prior to the development of the modern intensive care unit in the early
 1960s, featuring intubation, artificial respiration and comprehensive
@@ -173,7 +210,7 @@ assumed to be linearly related to the surface recorded
 electroencephalogram (Nunez \& Srinivasan, 2006; Freeman, 1975).
 Thus the response of the mean soma membrane potential $h_k$ ($k=e,i$) at position $r$ on a two dimensional cortical sheet, to induce post synaptic activity $I_{lk}$ ($l$=source, $k$=target population) is given by
 
-\begin{equation} \label{eq:h_e} 
+\begin{equation} \label{eq:h_k} 
 \tau_k\frac{\partial h_k(r,t)}{\partial t} = h^r_k - h_k(r,t) + \sum_{l=e,i} \frac{h_{lk}^{eq} - h_k(r, t)}{\left| h_{lk}^{eq}-h_k^r\right|}I_{lk}(r,t) 
 \end{equation}
 
@@ -219,7 +256,7 @@ cortico-cortical connectivity. For simplicity, and given the fact that in
 anaesthesia burst suppression involves the whole brain, we choose to
 only study the spatially homogeneous case i.e. $\bigtriangledown^2 = 0$
 
-Equations (\ref{eq:h_e}, \ref{eq:i_lk}, \ref{eq:a_ek} \& \ref{eq:phi}) represent a system of 8 coupled non-linear partial
+Equations (\ref{eq:h_k}, \ref{eq:i_lk}, \ref{eq:a_ek} \& \ref{eq:phi}) represent a system of 8 coupled non-linear partial
 differential equations that typically defines the Liley model of
 electrocortical rhythmogenesis, which is capable of reproducing the
 main features of spontaneous human electroencephalogram (alpha
@@ -392,9 +429,48 @@ Fleidervish et al (2001), in which it was found that hypoxia depleted
 readily releasable pools of vesicles for transmitter release.
 On the basis of the available evidence regarding the pathophysiology
 of burst suppression we will therefore confine ourselves to a
-parametric subspace comprising alterations in the strength of excitatory neurotransmission ($\Gamma_{ee},  \Gamma_{ei}$), variations in the strength and kinetics of inhibitory neurotransmission ($\Gamma_{ii},  \Gamma_{ie}, \epsilon_{ii}, \epsilon_{ie}$),
+parametric subspace comprising alterations in the strength of excitatory neurotransmission 
+($\Gamma_{ee},  \Gamma_{ei}$), variations in the strength and kinetics of inhibitory neurotransmission ($\Gamma_{ii},  \Gamma_{ie}, \epsilon_{ii}, \epsilon_{ie}$),
 and alteration in subcortical drive ($p_{lk}$).
 
+\section{Methods}
+\subsection{Theoretical basis of busrting}
+Fast slow dynamics....
+
+\subsection{Physiological Observations of Bursting in EEG}
+Up/down states. Slow wave etc
+
+\subsection{Limitations with the current model}
+Inability to operate on multiple time scales. Phase locking of excitatory/inhibitory subsystems
+
+
+\subsection{Extensions to Liley Model to facilitate slow wave dynamics}
+To account for cortical up and down states an expression for the resting potential $\tilde{h}_k^{rest}$ must be formulated to include a slow wave driven
+deviation ($\zeta_{k}$) from the average resting potential, $h_k^{rest}$. This is expressed as
+
+\begin{equation}\label{eq:h_k_aug}
+\tilde{h}_k^{rest}=h_k^{rest} + \rho_k\zeta_k
+\end{equation}
+where $\rho_k$ is a constant
+
+
+
+With equation (\ref{eq:h_k}) then becoming
+\begin{equation} \label{eq:h_k_aug} 
+\tau_k\frac{\partial h_k(r,t)}{\partial t} = \tilde{h}^{rest}_k - h_k(r,t) + \sum_{l=e,i} \frac{h_{lk}^{eq} - h_k(r, t)}{\left| h_{lk}^{eq}-h_k^r\right|}I_{lk}(r,t) 
+\end{equation}
+
+\subsection{Simple decoupled second order system system}
+
+\subsection{First order mean field driven slow system}
+$h_k^{slow}$ is assumed to be driven by deviations of the mean field ($h_k$) from its average resting potential $h_k^{rest}$. 
+\begin{equation} \label{eq:h_k_slow} 
+\frac{\partial \zeta_k}{\partial t} = \mu_k^{slow}(h_k - h_k^{rest}) - \nu_k^{slow}\zeta_k
+\end{equation}
+with $\mu_k^{slow}, \nu_k^{slow}$ being time constants specifying 'charge' and 'discharge' times respectively.
+
+
+\subsection{Results}
 
 
 
