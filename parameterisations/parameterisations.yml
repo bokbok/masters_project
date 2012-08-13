@@ -183,7 +183,7 @@ alpha_slow:
     h_e_rest: -60.0e-3
     h_i_rest: -60.0e-3
     tor_e: 10.0e-3
-#    tor_i: 25.81563735e-3
+    #tor_i: 25.81563735e-3
     tor_i: 10.0e-3
     h_ee_eq: 0
     h_ei_eq: 0 
@@ -198,7 +198,8 @@ alpha_slow:
     gamma_e: 300
     gamma_ee: 300
     gamma_ei: 300
-    gamma_i: 30
+    #gamma_i: 30
+    gamma_i: 25
     gamma_ie: 65
     gamma_ii: 65
     N_beta_ee: 3034
@@ -221,10 +222,12 @@ alpha_slow:
     p_ei: 0
     p_ii: 0
     r_abs: 0
-    weight_slow_e: -20
-    weight_slow_i: -20
+    weight_slow_e: -10
+    weight_slow_i: -10
     burst_e: 20
     burst_i: 22
+    mu_slow: 0.001
+    nu_slow: 0.00025
     mu_slow_e: 0.002
     nu_slow_e: 0.0005
     mu_slow_i: 0.08
@@ -469,6 +472,64 @@ biphasic_burst_slow:
     weight_e: 1
     weight_i: 0.01
 
+biphasic_burst_sigmoid:
+    h_e_rest: -62.226e-3
+    h_i_rest: -65.666e-3
+    tor_e: 132.55e-3
+    tor_i: 135.91e-3
+    h_ee_eq: -18.038e-3
+    h_ei_eq: -16.554e-3 
+    h_ie_eq: -81.976e-3
+    h_ii_eq: -78.995e-3
+    T_e: 0.10631e-3
+    T_ee: 0.10631e-3
+    T_ei: 0.10631e-3
+    T_i: 0.28663e-3
+    T_ie: 0.46477e-3
+    T_ii: 0.28663e-3
+    gamma_e: 291.5
+    gamma_ee: 291.5
+    gamma_ei: 697.76
+    gamma_i: 458.67
+    gamma_ie: 458.67
+    gamma_ii: 82.33
+    N_beta_ee: 2185.8
+    N_beta_ei: 3749.8
+    N_beta_ie: 466.30
+    N_beta_ii: 160.69
+    N_alpha_ee: 4611.6
+    N_alpha_ei: 1372.4
+    A_ee: 0.92809
+    A_ei: 0.92809
+    v: 0.00068424
+    s_e_max: 196.08
+    s_i_max: 454.40
+    mu_e: -45.104e-3
+    mu_i: -43.91e-3
+    sigma_e: 3.842e-3
+    sigma_i: 4.573e-3
+    p_ee: 6603.4
+    p_ie: 0
+    p_ei: 2625.7
+    p_ii: 0
+    r_abs: 0
+    burst_e: 7.0e-4
+    burst_i: 1.0e-7
+    weight_slow_e: 1.0e-3
+    weight_slow_i: 1.0e-3
+    mu_slow: 0.02
+    nu_slow: 0.05
+    mu_slow_e: 0.01
+    nu_slow_e: 0.02
+    mu_slow_i: 0.04
+    nu_slow_i: 0.08
+    tor_slow: 102.55e-3
+    phi_ie: 0
+    phi_ii: 0
+    weight_e: 1
+    weight_i: 0.01
+
+
 
 
 biphasic_burst:
@@ -483,7 +544,7 @@ biphasic_burst:
     T_e: 0.10631e-3
     T_ee: 0.10631e-3
     T_ei: 0.10631e-3
-    T_i: 0.46477e-3
+    T_i: 0.28663e-3
     T_ie: 0.46477e-3
     T_ii: 0.28663e-3
     gamma_e: 291.5
@@ -517,7 +578,7 @@ biphasic_burst:
     weight_slow_e: 1
     weight_slow_i: 1
     mu_slow: 0.02
-    nu_slow: 0.03
+    nu_slow: 0.05
     mu_slow_e: 0.01
     nu_slow_e: 0.02
     mu_slow_i: 0.04

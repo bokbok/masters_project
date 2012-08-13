@@ -15,18 +15,21 @@ except ImportError:
 
 
 path = os.path.dirname(os.path.abspath(__file__))
-params = load(file(path + '/../parameterisations/parameterisations.yml', 'r'))
+#params = load(file(path + '/../parameterisations/parameterisations.yml', 'r'))
+params = load(file(sys.argv[1], 'r'))
 
-burst = LileyWithBurst(params = params[sys.argv[1]])
+#burst = LileyWithBurst(params = params[sys.argv[1]])
+burst = LileyWithBurst(params = params[sys.argv[2]])
 
-run = burst.run([0, 16.5])
-without_transient = run.run([0, 100])
+run = burst.run([0, 16.5 * 1000]).display(['h_e'])
+show()
+without_transient = run.run([0, 100 * 1000])
 without_transient.display(['h_e', 'h_i'])
-without_transient.displayPhasePlane3D('slow_e', 'h_e', 'h_i', fig = "2")
-without_transient.displayPhasePlane3D('slow_i', 'h_e', 'h_i', fig = "3")
-without_transient.displayPhasePlane3D('slow_i', 'slow_e', 'h_i', fig = "4")
-without_transient.displayPhasePlane3D('slow_i', 'slow_e', 'h_e', fig = "5")
-without_transient.displayPhasePlane2D('slow_i', 'slow_e', fig = "6")
+#without_transient.displayPhasePlane3D('slow_e', 'h_e', 'h_i', fig = "2")
+#without_transient.displayPhasePlane3D('slow_i', 'h_e', 'h_i', fig = "3")
+#without_transient.displayPhasePlane3D('slow_i', 'slow_e', 'h_i', fig = "4")
+#without_transient.displayPhasePlane3D('slow_i', 'slow_e', 'h_e', fig = "5")
+#without_transient.displayPhasePlane2D('slow_i', 'slow_e', fig = "6")
 gc.collect()
 
 show()

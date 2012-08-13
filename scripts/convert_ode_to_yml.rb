@@ -41,9 +41,10 @@ class Convert
       'rabs' => 'r_abs'
   }
 
-  def initialize(dir, out)
+  def initialize(dir, out, field)
     @dir = dir
     @out = out
+    @field = field
   end
 
   def run
@@ -68,6 +69,7 @@ class Convert
               'burst_e' => 0,
               'phi_ii' => 0,
               'phi_ie' => 0}
+
     File.open(file) do |f|
       f.readlines.each do |line|
         if line =~ /^\s*param\s*(.*)=(-{0,1}\d+\.{0,1}\d*).*$/
@@ -75,8 +77,67 @@ class Convert
         end
       end
     end
+
+    adjust_params(params, file)
     params
+  end
+
+  private
+  def adjust_params(params, file)
+    hb_files = Dir["#{file.gsub(".ode", "")}/**/hb-*"]
+
+    if hb_files.length == 2
+      find_midpoint(hb_files, params)
+    else
+      move_beyond_bif(hb_files.first, file, params)
+    end
+  end
+
+  def move_beyond_bif(file, process_file, params)
+    if file
+      bif_params = read_file(file)
+      dir = bif_params[@field] - params[@field]
+      if dir > 0
+        dir = 1
+      else
+        dir = -1
+      end
+
+      params[@field] = bif_params[@field] + dir * 0.1
+
+      bif_params.each do |k, v|
+        params[k] = v unless k == @field
+      end
+
+    else
+      puts "No hopf point for #{process_file}"
+    end
+  end
+
+  def find_midpoint(hb_files, params)
+    bif_params = hb_files.map{ |file| read_file(file) }
+
+    mid = bif_params.first[@field] + (bif_params.last[@field] - bif_params.first[@field]) / 2
+
+    params[@field] = mid
+
+    bif_params.last.each do |k, v|
+      params[k] = v unless k == @field
+    end
+  end
+
+  def read_file(file)
+    res = {}
+    File.open(file, 'r') do |f|
+      lines = f.readlines
+      lines.each do |line|
+        kv = line.strip.split("=")
+        res[kv.first] = kv.last.to_f
+      end
+    end
+
+    res
   end
 end
 
-Convert.new(ARGV[0], ARGV[1]).run
+Convert.new(ARGV[0], ARGV[1], ARGV[2]).run
