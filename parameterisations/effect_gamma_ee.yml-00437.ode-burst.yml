@@ -1,0 +1,11 @@
+00437.ode: {A_ee: 0.86105134, A_ei: 0.86105134, N_alpha_ee: 4341.25193969, N_alpha_ei: 2090.67065413,
+  N_beta_ee: 2781.85183452, N_beta_ei: 4415.02046465, N_beta_ie: 627.88434235, N_beta_ii: 165.8475872,
+  R: 1.0, T_ee: 0.31131382, T_ei: 0.89051966, T_ie: 0.45190088, T_ii: 0.46972905,
+  burst_e: 0, burst_i: 0, g: 0.7, gamma_ee: 0.408268776135, gamma_ei: 0.85187069,
+  gamma_ie: 0.43178215, gamma_ii: 0.11557391, h_e_rest: -70.33244996, h_ee_eq: -11.73351028,
+  h_ei_eq: 9.61308985, h_i_rest: -75.2486697, h_ie_eq: -84.93905666, h_ii_eq: -89.422392,
+  k: 1.0000003071, mu_e: -50.7131407, mu_i: -48.59322159, mu_slow_e: 0, mu_slow_i: 0,
+  nu_slow_e: 0, nu_slow_i: 0, p_ee: 5.3768081791, p_ei: 2.4516686856, p_ie: 0.0, p_ii: 0.0,
+  phi_ie: 0, phi_ii: 0, r_abs: 0.0, s_e_max: 0.053809, s_i_max: 0.16111, sigma_e: 4.19198299,
+  sigma_i: 4.90266349, tor_e: 106.98, tor_i: 102.094, tor_slow: 5349.0, v: 0.476986,
+  weight_slow_e: 10000.0, weight_slow_i: 10000.0}

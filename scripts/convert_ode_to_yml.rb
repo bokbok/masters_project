@@ -53,7 +53,7 @@ class Convert
       params[File.basename(file)] = extract_params(file)
     end
 
-    File.open("#{@out}/#{File.basename(File.dirname(@dir))}.yml", "w+") do |f|
+    File.open("#{@out}/#{File.basename(@dir)}.yml", "w+") do |f|
       YAML.dump(params, f)
     end
   end
@@ -61,10 +61,7 @@ class Convert
   def extract_params(file)
     params = {'r_abs' => 0,
               'tor_slow' => 1,
-              'mu_slow_e' => 0,
-              'nu_slow_e' => 0,
-              'mu_slow_i' => 0,
-              'nu_slow_i' => 0,
+              'g' => 0,
               'burst_i' => 0,
               'burst_e' => 0,
               'phi_ii' => 0,
