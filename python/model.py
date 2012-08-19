@@ -231,7 +231,7 @@ class LileyWithDifferingV(LileyBase):
             equations = equations
 
         if ics == None:
-            ics = LileyWithBurst.zeroIcs
+            ics = LileyBase.zeroIcs
             ics['h_e'] = params['h_e_rest']
             ics['h_i'] = params['h_i_rest']
             print "ICS.."
