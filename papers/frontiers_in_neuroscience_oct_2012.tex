@@ -1,20 +1,19 @@
 \documentclass[a4paper,12pt]{article}
 \usepackage{fixltx2e}
+\usepackage{amssymb}
 \begin{document}
 \title{Mesoscopic Modelling of Burst Suppression Under Anaesthesia}
 \maketitle
-\author{
-    Matthew Walsh\\
-    Brain and Psychological Sciences Research Centre (BPsyC),\\
-    Swinburne University of Technology, Hawthorn, Victoria 3122,\\
-    Australia; 
-    matthew.walsh@gmail.com\\
+\author{Matthew Walsh\\
+   \small Brain and Psychological Sciences Research Centre (BPsyC),\\
+   \small Swinburne University of Technology, Hawthorn, Victoria 3122, Australia; \\
+   \small matthew.walsh@gmail.com\\
   \and
     David Liley\\
-    Brain and Psychological Sciences Research Centre (BPsyC),\\
-    Swinburne University of Technology, Hawthorn, Victoria 3122,\\
-    Australia; Cortical Dynamics Ltd, Hawthorn. Victoria 3122, Australia\\
-    dliley@swin.edu.au\\
+   \small  Brain and Psychological Sciences Research Centre (BPsyC),\\
+   \small Swinburne University of Technology, Hawthorn, Victoria 3122,\\
+   \small Australia; Cortical Dynamics Ltd, Hawthorn. Victoria 3122, Australia\\
+   \small dliley@swin.edu.au\\
 }
 
 \begin{abstract}
@@ -226,8 +225,14 @@ mean rate of incoming excitatory and inhibitory axonal pulses:
 \left( \frac{\partial}{\partial t} + \gamma_{lk} \right)^2 I_{lk}(r,t) = exp(1)\Gamma_{lk}\gamma_{lk}.A_{lk}(r,t)
 \end{equation}
 
+With
 \begin{equation} \label{eq:a_ek}
-A_{ek}(r,t) = N_{ek}^{\beta} S_e[ h_e(r,t)] + \phi_{ek} p_{ek}(r,t),  A_{ik}(r,t) = N_{ik}^{\beta} S_i[h_i(r,t)] + p_{ik}(r,t)
+A_{ek}(r,t) = N_{ek}^{\beta} S_e[ h_e(r,t)] + \phi_{ek} + p_{ek}(r,t)
+\end{equation}
+
+And
+\begin{equation} \label{eq:a_ik}
+A_{ik}(r,t) = N_{ik}^{\beta} S_i[h_i(r,t)] + p_{ik}(r,t)
 \end{equation}
 
 where $A_{lk}$ comprises the different sources of presynaptic spikes: $N_{lk}^\beta S_i$ (input from local cortical neuronal populations), $\phi_{ek}$ (input from long range excitatory cortico-cortical fibres) and $p_{lk}$ (extracortical sources).
@@ -245,7 +250,7 @@ range cortico-cortical fibre system is in the simplest case described by
 the following two-dimensional telegraph equation,
 
 \begin{equation} \label{eq:phi}
-\left(\frac{\partial}{\partial t} + v_{ek} \Lambda_{ek} \right)^2 \phi(r,t) - \frac{3}{2} v_{ek}^2 \bigtriangledown^2\phi(r,t)=v_{ek}^2 \Lambda_{ek}^2 N_{ek}^\alpha S_e[h_e(r,t)]
+\left(\frac{\partial}{\partial t} + v_{ek} \Lambda_{ek} \right)^2 \phi(r,t) - \frac{3}{2} v_{ek}^2 \nabla^2\phi(r,t)=v_{ek}^2 \Lambda_{ek}^2 N_{ek}^\alpha S_e[h_e(r,t)]
 \end{equation}
 
 where $N_{ek}^\alpha$ is the total number of excitatory connections formed by
@@ -253,10 +258,10 @@ long range cortico-cortical axons on long on local population $k$, and
 assumes a single axonal conduction velocity $v_{ek}$ and and an exponential fall
 off with distance (characteristic scale = $1/\Lambda_{ek}$) of the strength of
 cortico-cortical connectivity. For simplicity, and given the fact that in
-anaesthesia burst suppression involves the whole brain, we choose to
-only study the spatially homogeneous case i.e. $\bigtriangledown^2 = 0$
+anaesthesia burst suppression involves the whole brain, we chose to
+only study the spatially homogeneous case i.e. $\nabla^2 = 0$
 
-Equations (\ref{eq:h_k}, \ref{eq:i_lk}, \ref{eq:a_ek} \& \ref{eq:phi}) represent a system of 8 coupled non-linear partial
+Equations (\ref{eq:h_k}, \ref{eq:i_lk}, \ref{eq:a_ek}, \ref{eq:a_ik} \& \ref{eq:phi}) represent a system of 8 coupled non-linear partial
 differential equations that typically defines the Liley model of
 electrocortical rhythmogenesis, which is capable of reproducing the
 main features of spontaneous human electroencephalogram (alpha
@@ -301,13 +306,13 @@ anaesthetic and sedative action) is assumed to ultimately arise out of
 a background of normal electroencephalographic activity it is
 important to define parametrically normative states in order to study
 how they may be perturbed during health and disease. We therefore
-choose to utilize previously defined parameter sets (Bojak \& Liley,
+chose to utilize previously defined parameter sets (Bojak \& Liley,
 2005) that have the following properties: i) are confined to the
 physiologically admissible parameter space (see Table 1), ii) give rise
 to electroencephalographically and physiologically plausible activity
 ('1/f' decay at low frequencies plus a relatively sharp peak at alpha
 frequencies, 8 – 13 Hz; mean excitatory/inhibitory neuronal firing rates
-< 20 s-1) and iii) that exhibit transient increases in total power and
+< 20 $s^{-1}$) and iii) that exhibit transient increases in total power and
 monotonic reductions in mean frequency with respect to modeled
 anaesthetic action (see below). In general such sets are found by
 randomly searching the high dimensional physiologically admissible
@@ -433,48 +438,90 @@ parametric subspace comprising alterations in the strength of excitatory neurotr
 ($\Gamma_{ee},  \Gamma_{ei}$), variations in the strength and kinetics of inhibitory neurotransmission ($\Gamma_{ii},  \Gamma_{ie}, \epsilon_{ii}, \epsilon_{ie}$),
 and alteration in subcortical drive ($p_{lk}$).
 
-\section{Methods}
 \subsection{Theoretical basis of busrting}
-Fast slow dynamics....
+Generally bursting is characterised by oscillations occurring on two different time scales \cite{izikevich2007_1}. Fast oscillations underlie the active phase of bursting and slow oscillations underlie the quiescent periods of suppression. 
+The ratio of of the characteristic timescales of the fast and slow oscillations($\mu$) is given as $\mu \ll 0$. 
 
-\subsection{Physiological Observations of Bursting in EEG}
-Up/down states. Slow wave etc
+Bursting can be described by a fast slow system with the general form:
 
-\subsection{Limitations with the current model}
-Inability to operate on multiple time scales. Phase locking of excitatory/inhibitory subsystems
-
-
-\subsection{Extensions to Liley Model to facilitate slow wave dynamics}
-To account for cortical up and down states an expression for the resting potential $\tilde{h}_k^{rest}$ must be formulated to include a slow wave driven
-deviation ($\zeta_{k}$) from the average resting potential, $h_k^{rest}$. This is expressed as
-
-\begin{equation}\label{eq:h_k_aug}
-\tilde{h}_k^{rest}=h_k^{rest} + \rho_k\zeta_k
+\begin{equation} \label{fast_gen_form}
+\dot{x}=f(x, u)   
 \end{equation}
-where $\rho_k$ is a constant
-
-
-
-With equation (\ref{eq:h_k}) then becoming
-\begin{equation} \label{eq:h_k_aug} 
-\tau_k\frac{\partial h_k(r,t)}{\partial t} = \tilde{h}^{rest}_k - h_k(r,t) + \sum_{l=e,i} \frac{h_{lk}^{eq} - h_k(r, t)}{\left| h_{lk}^{eq}-h_k^r\right|}I_{lk}(r,t) 
+\begin{equation} \label{slow_gen_form}
+\dot{u}=\mu g(x, u)
 \end{equation}
 
-\subsection{Simple decoupled second order system system}
+With $x \in \mathbb{R}^m, u \in \mathbb{R}^n$ being vectors of the fast and slow system variables respectively. 
 
-\subsection{First order mean field driven slow system}
-$h_k^{slow}$ is assumed to be driven by deviations of the mean field ($h_k$) from its average resting potential $h_k^{rest}$. 
-\begin{equation} \label{eq:h_k_slow} 
-\frac{\partial \zeta_k}{\partial t} = \mu_k^{slow}(h_k - h_k^{rest}) - \nu_k^{slow}\zeta_k
+Equation \ref{slow_gen_form} describes a slow system that is driven by the fast system. Equation \ref{fast_gen_form} describes a fast system that is modulated by the slow system.
+
+
+\subsection{Fast dynamics within the current model of Liley Et Al}
+Liley et al (Liley et al, 2003 - Drug-induced modification of the system properties associated
+with spontaneous human electroencephalographic activity) propose that oscillatory activity within cortical interneuron (inhibitory) circuits is generated by a feedback mechanism between the excitatory and inhibitory population. 
+The inhibitory population activity phase leads excitatory population activity and thus describes a phase locked system of inhibitory and excitatory neurons. 
+
+The phase locking of these systems leads us to assume that equations \ref{h_k} and \ref{i_lk} represent a single timescale with the model of Liley et al and as such were considered to be a 'fast' system within the exploration.
+
+\subsection{Introduction of a mean field driven slow system}
+$\zeta$ is assumed to be driven by deviations of the excitatory mean field ($h_e$) from its average resting potential $h_k^{rest}$. 
+\begin{equation} \label{eq:zeta_slow} 
+- \tau^{slow} \frac{\partial \zeta}{\partial t} = g s_e(h_e) + \zeta
 \end{equation}
-with $\mu_k^{slow}, \nu_k^{slow}$ being time constants specifying 'charge' and 'discharge' times respectively.
+with $\tau^{slow}$ being the time constant for the slow system and $g$ the feed forward connectivity constant.
+
+This defines a generic, mean field averaging system that was used to explore several topologies that were found to bring about bursting behaviour.
+
+\subsection{Modelling thalamic averaging of the mean field}
+Equation \ref{eq:a_ek} includes the constants $p_{ek}$ representing the rate of extra cortical input.
+
+$p_{ee}, p_{ei}$ can be reformulated to include a mean field driven deviation from its average (constant) value. The extracortical inputs ($p_{ek}$) then become
+
+\begin{equation}
+p_{ek} = \hat{p_{ek}} + \rho_k \zeta
+\end{equation}
+
+Where $k = e,i$, $\rho$ is the thalamic feedback connectivity constant and $\hat{p_{ek}}$
+
+\subsection{Modelling intracellular and/or synaptic resource utilisation}
+Depletion of synaptic resources is assumed to result in a depolarising of neurons (ELABORATE, REFERENCE). This depolarisation can be expressed as a deviation of the resting potential $h_{k}^{rest}$. The resting potential was reformulated to become
+
+\begin{equation}
+h_{j}^{rest} = \hat{h_{j}^{rest}} + \chi \zeta
+\end{equation}
+
+Where $\hat{h_{j}^{rest}}$ is a constant representing the average resting potential and $\chi$ is the resource utilisation coupling constant. 
+
+\subsection{Slow system emerges from parametric variation of long range coupling}
+Literature suggests that anaesthesia may effect conduction axonal velocities (REF?), demylenated fibres stuff here. We investigated the effects of that modifying the conduction velocity ($v$ and $\Gamma_{ek}$) had on the long range coupling ($\phi_{ek}$) were investigated. A reduction of $v$ and $\Gamma_{ek}$ 
+showed that the long range coupling can operate on a timescale slower and independent to the timescale of the coupled excitatory/inhibitory system.
+
+\subsection{Computational methods}
+We performed all numerical integrations of the aforementioned models using the Python programming language, utilising the excellent PyDSTool library under 64 bit Linux. The Radau integrator was used for all integrations. Typical numerical settings included step size, ......
+
+\section{Results}
+\subsection{Thalamic coupled bursting}
+\subsection{Resource utilisation driven bursting}
+
+\subsection{Bursting observed in cannonical model}
+
+\section{Discussion}
+\subsection{Multiple origins for bursting possible}
+\subsection{Long range coupling}
+Mention it may account for synchronous bursting observed in EEG, need to scale up to PDEs and investigate
+\subsection{Onset may emerge from parametric changes in the 'fast' system alone}
 
 
-\subsection{Results}
 
+\begin{thebibliography}{999}
 
+\bibitem{izikevich2007_1}
+  Eugene M. Izhikevich,
+  Dynamical Systems in Neuroscience: the geometry of excitability and bursting:329-344,
+  1st Edition,
+  2010.
 
-
-
+\end{thebibliography}
 
 \end{document}
+
