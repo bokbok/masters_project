@@ -15,6 +15,7 @@ radau*
 fort.*
 python/**/*.pyc
 **/*.swp
+**/*.out
 
 *.pyc
 *.swp

@@ -1,20 +1,20 @@
 \documentclass[a4paper,12pt]{article}
 \usepackage{fixltx2e}
 \usepackage{amssymb}
+\usepackage{hyperref}
 \begin{document}
 \title{Mesoscopic Modelling of Burst Suppression Under Anaesthesia}
-\maketitle
 \author{Matthew Walsh\\
    \small Brain and Psychological Sciences Research Centre (BPsyC),\\
    \small Swinburne University of Technology, Hawthorn, Victoria 3122, Australia; \\
-   \small matthew.walsh@gmail.com\\
+   \texttt{matthew.walsh@gmail.com}\\
   \and
     David Liley\\
    \small  Brain and Psychological Sciences Research Centre (BPsyC),\\
-   \small Swinburne University of Technology, Hawthorn, Victoria 3122,\\
-   \small Australia; Cortical Dynamics Ltd, Hawthorn. Victoria 3122, Australia\\
-   \small dliley@swin.edu.au\\
-}
+   \small Swinburne University of Technology, Hawthorn, Victoria 3122, Australia; \\
+   \small Cortical Dynamics Ltd, Hawthorn. Victoria 3122, Australia\\
+   \texttt{dliley@swin.edu.au}}
+\maketitle
 
 \begin{abstract}
 The burst suppression pattern is well recognized as
@@ -319,34 +319,6 @@ randomly searching the high dimensional physiologically admissible
 (and plausible) parameter space. For further details see Bojak \& Liley
 (2005).
 
-\subsection{Extending mean field models to account for the molecular and subcellular
-actions of anaesthetic agents}
-A great deal of information is available regarding the molecular and
-sub-cellular sites of anaesthetic action, with many of these identified
-sites able to be mapped to parameters in the Liley model (see Table
-2). Given that the majority of anaesthetic agents (for exceptions see
-below) induce burst suppression, the parametric subspace defined by
-anaesthetic action is the obvious place to begin explorations into the
-pathophysiological mechanisms and implications of burst suppression.
-As shown in Bojak \& Liley (2005) in order to better account for the
-effects that many anaesthetics have on the time course of inhibitory
-postsynaptic potentials a simple extension of the synaptic alpha
-function, which allows independent adjustments of the rise (defined by $1/\gamma_{lk}$)
-and decay times (determined by $\epsilon_{lk}$) is required i.e.
-
-$\Gamma_{lk}\gamma_{lk} \frac{exp\left\{\epsilon_{lk}/(1-exp[-\epsilon_{lk}])\right\} }{exp[\epsilon_{lk}] - 1}.\{exp[-\epsilon_{ek}\gamma_{lk}/(exp[\epsilon_{lk}] - 1) - exp[-\epsilon_{ek}\gamma_{lk}/(1 - exp[-\epsilon_{lk}])]\}$
-\\
-where $\epsilon_{lk} \ge 0$ and where the limit $\epsilon_{lk} \rightarrow 0$ reduces to the previously
-defined synaptic alpha function. The corresponding differential
-equation is then (Liley et al, 2011; Bojak \& Liley, 2005):
-
-\begin{equation} \label{eq:i_lk_aug}
-\left( \frac{\partial}{\partial t} + \tilde{\gamma_{lk}}exp[\epsilon_{lk}] \right)^2 I_{lk}(r,t) = \Gamma_{lk}\tilde{\gamma_{lk}}exp[\epsilon_{lk} + \tilde{\gamma_{lk}}/\gamma_{lk}].A_{lk}(r,t)
-\end{equation}
-\\
-where $\tilde{\gamma_{lk}} = \epsilon_{lk}\gamma_{lk}/(exp[\epsilon_{lk} - 1])$. The relationship between $\epsilon_{lk}$ and the decay time from peak $(\varsigma)$ while monotonically increasing, can in general only
-be determined numerically.
-
 \begin{table}[h]
 \label{table:site_of_action} 
 \begin{tabular}{p{5cm} p{5cm} l}
@@ -432,17 +404,12 @@ Crunelli (1998), in which they found that brief periods of anoxia can
 cause a total, but reversible loss of synaptic transmission, and
 Fleidervish et al (2001), in which it was found that hypoxia depleted
 readily releasable pools of vesicles for transmitter release.
-On the basis of the available evidence regarding the pathophysiology
-of burst suppression we will therefore confine ourselves to a
-parametric subspace comprising alterations in the strength of excitatory neurotransmission 
-($\Gamma_{ee},  \Gamma_{ei}$), variations in the strength and kinetics of inhibitory neurotransmission ($\Gamma_{ii},  \Gamma_{ie}, \epsilon_{ii}, \epsilon_{ie}$),
-and alteration in subcortical drive ($p_{lk}$).
 
 \subsection{Theoretical basis of busrting}
 Generally bursting is characterised by oscillations occurring on two different time scales \cite{izikevich2007_1}. Fast oscillations underlie the active phase of bursting and slow oscillations underlie the quiescent periods of suppression. 
-The ratio of of the characteristic timescales of the fast and slow oscillations($\mu$) is given as $\mu \ll 0$. 
+The ratio of of the characteristic timescales of the fast and slow oscillations($\mu$) is given as $\mu \ll 1$. 
 
-Bursting can be described by a fast slow system with the general form:
+Generally bursting consists of coupled slow and fast systems. Both the fast and slow systems drive each other and can be described by the general form
 
 \begin{equation} \label{fast_gen_form}
 \dot{x}=f(x, u)   
@@ -451,65 +418,70 @@ Bursting can be described by a fast slow system with the general form:
 \dot{u}=\mu g(x, u)
 \end{equation}
 
-With $x \in \mathbb{R}^m, u \in \mathbb{R}^n$ being vectors of the fast and slow system variables respectively. 
+With $x \in \mathbb{R}^m, u \in \mathbb{R}^n$ being vectors of the fast and slow system variables respectively. $\mu \ll 1$ describes the slow timescale with respect to the fast system.
 
-Equation \ref{slow_gen_form} describes a slow system that is driven by the fast system. Equation \ref{fast_gen_form} describes a fast system that is modulated by the slow system.
-
-
-\subsection{Fast dynamics within the current model of Liley Et Al}
+\subsection{Fast dynamics within the model of Liley et Al}
 Liley et al (Liley et al, 2003 - Drug-induced modification of the system properties associated
-with spontaneous human electroencephalographic activity) propose that oscillatory activity within cortical interneuron (inhibitory) circuits is generated by a feedback mechanism between the excitatory and inhibitory population. 
-The inhibitory population activity phase leads excitatory population activity and thus describes a phase locked system of inhibitory and excitatory neurons. 
+with spontaneous human electroencephalographic activity) propose that oscillatory activity within cortical interneuron (inhibitory) circuits is generated by a feedback mechanism between the excitatory and inhibitory population.
+The inhibitory population activity phase leads excitatory population activity, generating a phase locked system of inhibitory and excitatory neurons generating the observed oscillatory behaviour. 
 
-The phase locking of these systems leads us to assume that equations \ref{h_k} and \ref{i_lk} represent a single timescale with the model of Liley et al and as such were considered to be a 'fast' system within the exploration.
+The phase locking of these systems leads us to assume that equations \ref{eq:h_k} and \ref{eq:i_lk} represent a single timescale within the model of Liley et al and as such were considered as a whole to be a 'fast' system for this exploration.
 
 \subsection{Introduction of a mean field driven slow system}
 $\zeta$ is assumed to be driven by deviations of the excitatory mean field ($h_e$) from its average resting potential $h_k^{rest}$. 
 \begin{equation} \label{eq:zeta_slow} 
-- \tau^{slow} \frac{\partial \zeta}{\partial t} = g s_e(h_e) + \zeta
+\tau_j^{slow} \frac{\partial \zeta_j}{\partial t} = g_j s_j(h_j) - \zeta_j
 \end{equation}
-with $\tau^{slow}$ being the time constant for the slow system and $g$ the feed forward connectivity constant.
+with $j=e,i$ and $\tau_j^{slow}$ is the time constant for the slow system and $g_j$ the feed forward connectivity constant.
 
 This defines a generic, mean field averaging system that was used to explore several topologies that were found to bring about bursting behaviour.
 
 \subsection{Modelling thalamic averaging of the mean field}
-Equation \ref{eq:a_ek} includes the constants $p_{ek}$ representing the rate of extra cortical input.
-
-$p_{ee}, p_{ei}$ can be reformulated to include a mean field driven deviation from its average (constant) value. The extracortical inputs ($p_{ek}$) then become
+The plausibility of a slow, thalamic system contributing to burst suppression was investigated. A model of thalamic driven slow waves was formulated by modifying the expressions for the extracortical inputs in the cannonical model of Liley et al.
+In equation \ref{eq:a_ek}, the constants $p_{ek}$ represent the rate of extra cortical input. $p_{ek}$ was reformulated to include a mean field driven deviation from its average (constant) value, the expression for extracortical inputs ($p_{ek}$) becoming
 
 \begin{equation}
-p_{ek} = \hat{p_{ek}} + \rho_k \zeta
+p_{ek} = \hat{p_{ek}} - \rho_{ek} \zeta_e
 \end{equation}
 
-Where $k = e,i$, $\rho$ is the thalamic feedback connectivity constant and $\hat{p_{ek}}$
+Where $k = e,i$, $\rho$ is the thalamic feedback connectivity constant and $\hat{p_{ek}}$ is a constant, representing the average rate of extra cortical input.
 
 \subsection{Modelling intracellular and/or synaptic resource utilisation}
-Depletion of synaptic resources is assumed to result in a depolarising of neurons (ELABORATE, REFERENCE). This depolarisation can be expressed as a deviation of the resting potential $h_{k}^{rest}$. The resting potential was reformulated to become
+(Tsodyks and Markram 1997, Bazhenov et Al 2002) propose models of synaptic resource utilisation and recovery that depend on neuronal activity. Similarly we reformulated the excitatory post synaptic potentials ($\Gamma_{ee}, \Gamma_{ei}$) to account for synaptic resource depletion and recovery. 
+The postsynaptic potentials are assumed to decrease along with a decrease in available synaptic resources. Resource utilisation and recovery was modeled as a coupling to the generic averaging system $\zeta_{e}$, with the expressions for post synaptic potentials becoming
 
 \begin{equation}
-h_{j}^{rest} = \hat{h_{j}^{rest}} + \chi \zeta
+\Gamma_{ek} = \hat{\Gamma_{ek}} - \chi_{ek} \zeta_e
 \end{equation}
 
-Where $\hat{h_{j}^{rest}}$ is a constant representing the average resting potential and $\chi$ is the resource utilisation coupling constant. 
+Where $\hat{\Gamma_{ek}}$ is a constant representing the average post synaptic potential and $\chi$ is the resource utilisation coupling constant. 
 
-\subsection{Slow system emerges from parametric variation of long range coupling}
-Literature suggests that anaesthesia may effect conduction axonal velocities (REF?), demylenated fibres stuff here. We investigated the effects of that modifying the conduction velocity ($v$ and $\Gamma_{ek}$) had on the long range coupling ($\phi_{ek}$) were investigated. A reduction of $v$ and $\Gamma_{ek}$ 
-showed that the long range coupling can operate on a timescale slower and independent to the timescale of the coupled excitatory/inhibitory system.
+\subsection{Emergence of a slow system from a parametric variation of long range coupling constants}
+Swindale 2003 propose that anaesthesia may bring about changes to axonal conduction velocities and capacitances. The effects of modifying the conduction velocity and the characteristic decay scale ($v$ and $1 / \Gamma_{ek}$) had on the long range coupling ($\phi_{ek}$) in the cannonical model of Liley et al were investigated. 
 
 \subsection{Computational methods}
-We performed all numerical integrations of the aforementioned models using the Python programming language, utilising the excellent PyDSTool library under 64 bit Linux. The Radau integrator was used for all integrations. Typical numerical settings included step size, ......
+We performed all numerical integrations of the aforementioned models using the Python programming language, utilising the PyDSTool library (available from \url{http://sourceforge.net/projects/pydstool/}) library running under 64 bit Linux. The Radau integrator that comes standard with PyDSTool was used for all integrations. 
+Typical numerical settings used for the radau integrator were $init\_step = 1e-6$, $atol = 1e-15$, $rtol = 1e-16$ and $max\_pts = 40000000$.
 
 \section{Results}
-\subsection{Thalamic coupled bursting}
-\subsection{Resource utilisation driven bursting}
+\subsection{Bursting arising from modelled thalamic averaging}
+Select 2 nice examples
 
-\subsection{Bursting observed in cannonical model}
+
+\subsection{Bursting arising from modelled synaptic resource utilisation}
+Select 2 nice examples
+
+\subsection{Bursting observed in cannonical model via parametric changes to long range coupling}
+For the cannonical model, it was found that a reduction of $v$ and/or $\Gamma_{ek}$ showed that the long range coupling ($\phi_{ek}$) can operate on a timescale slower and independent to the timescale of the coupled (fast) excitatory/inhibitory system. This brought about bursting behaviour.
+
+Select 2 nice examples
+
 
 \section{Discussion}
 \subsection{Multiple origins for bursting possible}
 \subsection{Long range coupling}
-Mention it may account for synchronous bursting observed in EEG, need to scale up to PDEs and investigate
-\subsection{Onset may emerge from parametric changes in the 'fast' system alone}
+Mention it may account for synchronous bursting observed in EEG, need to scale up to PDEs and investigate. Mention there is a lack of hi res multi electrode recordings to investigate phase differences. (Talk to Jess high density children recording)
+\subsection{Onset of bursting may emerge from parametric changes in the 'fast' system alone}
 
 
 
