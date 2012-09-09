@@ -16,8 +16,9 @@ except ImportError:
 params = load(file(sys.argv[1], 'r'))
 
 run_params = params[sys.argv[2]]
-run_params['v_ee'] = run_params['v'] #* float(sys.argv[3])
-run_params['v_ei'] = run_params['v'] #* float(sys.argv[3])
+run_params['v'] *= float(sys.argv[3])
+run_params['v_ee'] = run_params['v']
+run_params['v_ei'] = run_params['v']
 run_params['A_ee'] *= float(sys.argv[4])
 run_params['A_ei'] *= float(sys.argv[5])
 #run_params['N_alpha_ei'] = run_params['N_alpha_ee']

@@ -113,7 +113,6 @@ class Convert
 
   def find_midpoint(hb_files, params)
     bif_params = hb_files.map{ |file| read_file(file) }
-
     mid = bif_params.first[@field] + (bif_params.last[@field] - bif_params.first[@field]) / 2
 
     params[@field] = mid

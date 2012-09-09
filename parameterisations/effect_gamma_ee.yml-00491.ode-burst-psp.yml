@@ -1,0 +1,11 @@
+00491.ode: {A_ee: 0.83536019, A_ei: 0.83536019, N_alpha_ee: 2056.67149045, N_alpha_ei: 1543.59384931,
+  N_beta_ee: 3930.56477417, N_beta_ei: 2139.92188412, N_beta_ie: 599.04740821, N_beta_ii: 231.55557086,
+  R: 1.0, T_ee: 0.17687694, T_ei: 0.52395445, T_ie: 1.60546658, T_ii: 0.19699941,
+  burst_e: 0, burst_i: 0, g: 0.7, gamma_ee: 0.267450970125, gamma_ei: 0.7012553, gamma_ie: 0.37489189,
+  gamma_ii: 0.06328008, gamma_slow_ee: 80.0, gamma_slow_ei: 80.0, h_e_rest: -79.3592646,
+  h_ee_eq: 6.67106365, h_ei_eq: -18.88421238, h_i_rest: -70.14839965, h_ie_eq: -87.18840142,
+  h_ii_eq: -84.47917374, k: 1.0000029369, mu_e: -53.15644908, mu_i: -40.2381409, mu_slow_e: 0,
+  mu_slow_i: 0, nu_slow_e: 0, nu_slow_i: 0, p_ee: 1.7106111294, p_ei: 7.1850093987,
+  p_ie: 0.0, p_ii: 0.0, phi_ie: 0, phi_ii: 0, r_abs: 0.0, s_e_max: 0.39406, s_i_max: 0.0956382,
+  sigma_e: 4.62730126, sigma_i: 3.01078227, tor_e: 101.771, tor_i: 20.8032, tor_slow: 5088.55,
+  v: 0.181821}

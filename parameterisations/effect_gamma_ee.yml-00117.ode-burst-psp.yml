@@ -1,0 +1,11 @@
+00117.ode: {A_ee: 0.62244801, A_ei: 0.62244801, N_alpha_ee: 2655.57942011, N_alpha_ei: 1281.13451427,
+  N_beta_ee: 4286.74516095, N_beta_ei: 4400.88055721, N_beta_ie: 796.9941461, N_beta_ii: 145.64725293,
+  R: 1.0, T_ee: 0.93046892, T_ei: 1.93782935, T_ie: 1.95907288, T_ii: 0.82691967,
+  burst_e: 0, burst_i: 0, g: 0.7, gamma_ee: 0.663264472815, gamma_ei: 0.63374516,
+  gamma_ie: 0.38000675, gamma_ii: 0.08506644, gamma_slow_ee: 2000.0, gamma_slow_ei: 2000.0,
+  h_e_rest: -67.52727442, h_ee_eq: 1.76163453, h_ei_eq: 7.39355659, h_i_rest: -79.56986996,
+  h_ie_eq: -85.65249835, h_ii_eq: -88.87399793, k: 1.0000089731, mu_e: -48.17586256,
+  mu_i: -45.62889634, mu_slow_e: 0, mu_slow_i: 0, nu_slow_e: 0, nu_slow_i: 0, p_ee: 1.2139298856,
+  p_ei: 1.0864000019, p_ie: 0.0, p_ii: 0.0, phi_ie: 0, phi_ii: 0, r_abs: 0.0, s_e_max: 0.474852,
+  s_i_max: 0.258274, sigma_e: 2.64641154, sigma_i: 2.87745071, tor_e: 144.246, tor_i: 29.8071,
+  tor_slow: 7212.3, v: 0.805166}

@@ -18,6 +18,7 @@ params = load(file(sys.argv[1], 'r'))
 run_params = params[sys.argv[2]]
 
 run_params['phi_c'] = 0
+run_params['phi_r'] = 1
 
 hopf_count = 1
 saddle_node_count = 1
@@ -38,9 +39,10 @@ hopf = cont.specialPointNames('H')
 saddlenode = cont.specialPointNames('LP')
 print hopf
 print saddlenode
+
 if len(hopf) >= hopf_count and len(saddlenode) >= saddle_node_count:
     print "Burst candidate!! "
-    file = open("tmp/candidates-phi.txt", "a")
+    file = open("tmp/candidates-phi-2par.txt", "a")
     file.write(sys.argv[1] + "|||" + sys.argv[2] + "||hopf_count=" + str(len(hopf)) + "||saddle_node_count=" + str(len(saddlenode)) + "\n")
     for point in hopf:
         print point

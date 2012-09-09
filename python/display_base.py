@@ -19,7 +19,7 @@ run_params = params[sys.argv[2]]
 
 model = LileyBase(params = run_params, timescale = "ms")
 
-equib = model.freeze(['phi_ee', 'phi_ei']).run([0, 40000]).display(['h_e'], fig = "3")#.display(['phi_ee', 'phi_ei'], fig = "1")
+equib = model.run([0, 10000]).run([0, 40000]).display(['h_e'], fig = "3").display(['phi_ee', 'phi_ei'], fig = "1")
 
-#equib.displayPhasePlane3D('phi_ee', 'phi_ei', 'h_e')
+equib.displayPhasePlane3D('phi_ee', 'phi_ei', 'h_e')
 show()
