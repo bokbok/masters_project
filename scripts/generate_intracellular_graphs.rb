@@ -1,3 +1,3 @@
-Dir["parameterisations/**/*.ode-burst.yml"].each do |f|
+Dir["parameterisations/**/*.ode-burst-psp.yml"].each do |f|
    puts `python python/display_intracellular.py #{f} save`
 end
