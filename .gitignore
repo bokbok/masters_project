@@ -7,6 +7,10 @@ papers/*.pdf
 papers/*.log
 papers/*.gz
 papers/*.aux
+papers/*.ps
+papers/*.dvi
+papers/*.blg
+papers/*.bbl
 *_temp
 _radau*
 _auto*
