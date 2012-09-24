@@ -20,6 +20,6 @@ fort.*
 python/**/*.pyc
 **/*.swp
 **/*.out
-
+papers/frontiers-2012-images/*
 *.pyc
 *.swp
