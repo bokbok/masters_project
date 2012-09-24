@@ -2,6 +2,7 @@
 \usepackage{fixltx2e}
 \usepackage{amssymb}
 \usepackage{hyperref}
+\usepackage{pdfpages}
 \begin{document}
 \title{Mesoscopic Modelling of Burst Suppression Under Anaesthesia}
 \author{Matthew Walsh\\
@@ -468,7 +469,7 @@ The plausibility of such a system driving burst suppression was investigated.
 The cannonical model of Liley Et Al was augmented to introduce a a cortico-thalamic feedback component. 
 In (\ref{eq:a_ek}) $p_{ek}$ is a constant representing the rate of extra cortical input. Modelling cortico-thalamic feedback, $p_{ek}$ was reformulated to include a slow deviation from its resting value that was proportial to $\zeta_e$. The constants for $p_{ek}$ in (\ref{eq:a_ek}) were replaced with the expression
 
-\begin{equation}
+\begin{equation} \label{eq:p_ek}
 p_{ek} = \hat{p_{ek}} - \rho_{ek} \zeta_e
 \end{equation}
 
@@ -485,7 +486,7 @@ account for intracellular/synaptic resource depletion and recovery.
 The effect of intracellular/synaptic resource utilisation and recovery had on the peak PSP was assumed to be proportial to the generic averaging system $\zeta_{e}$, giving an expression for
 the excitatory PSPs:
 
-\begin{equation}
+\begin{equation} \label{eq:Gamma_ek}
 \Gamma_{ek} = \hat{\Gamma_{ek}} - \chi_{ek} \zeta_e
 \end{equation}
 
@@ -497,29 +498,43 @@ It should be noted in this case that when $\chi_{ek} \zeta_e=0; t \geq 0$ the au
 We investigated the possibility of the long range coupling system ($\phi_{ek}$) operating on a timescale slower than that of the coupled excitatory/inhibitory system, bringing about BS. 
 
 Swindale 2003 propose that anaesthesia may bring about changes to axonal conduction velocities and capacitances. We investigated the
-effects of modifying the conduction velocity and the characteristic decay scale ($v$ and $1 / \Gamma_{ek}$) had on the
+effects of modifying the conduction velocity and the characteristic decay scale ($v$ and $1 / \Lambda_{ek}$) had on the
 long range coupling $\phi_{ek}$ and its ability to operate on a timescale slower than the coupled excitatory/inhibitory system.
 
 \subsection{Parametric variation of fast system parameters}
 GABAergic anaesthetics are known to predominantly effect the inhibitory system. We studied the dynamical effect of varying model parameters that are known to vary under the effect of GABAergic anaesthetics, namely $\Gamma_{ik}$ and $\gamma_{ik}$. This was performed with parameter sets that were found to exhibit BS.
 
 \subsection{Computational methods}
-We performed all numerical integrations of the aforementioned models using the Python programming language, utilising
-the PyDSTool library (available from \url{http://sourceforge.net/projects/pydstool/}) library running under 64 bit
+We performed all numerical integrations and bifurcation analysis of the aforementioned models using the Python programming language, utilising
+the PyDSTool library (available from \url{http://sourceforge.net/projects/pydstool/}) running under 64 bit
 Linux. The Radau integrator that comes standard with PyDSTool was used for all integrations.
 Typical numerical settings used for the radau integrator were $init\_step = 1e-6$, $atol = 1e-15$, $rtol = 1e-16$ and
 $max\_pts = 40000000$.
 
+\subsection{Identification of BS candidate parameter sets}
+Riznel (1995) introduces a method method of dissection to analyse bursting. The fast and slow systems are considered separately and the slow system can be frozen replaced by a parameter in the fast system to thus analyse the dynamics of the fast system with respect to the slow system's value. Izhikevich (ref) introduces common bursting topologies, where the transitions between quiescence and spiking can be viewed as bifurcations with respect to the slow variable(s).
+
+A large scale bifurcation analysis was undertaken on previously generated parameter sets. This was repeated for each candidate slow system for the investigation. Parameter sets that displayed a topological liklihood of supporting BS were individually investigated. Slow system time constants and coupling terms $\tau_k^{slow}, g_k, \chi_{ek}, \rho_{ek}, v$ and $1 / \Lambda_{ek}$ were varied in attempt to induce BS in the identified parameter sets.
+
 \section{Results}
-\subsection{Bursting arising from modelled thalamic averaging}
+
+\subsection{BS arising from modelled thalamic averaging}
 Select 2 nice examples
 
 
-\subsection{Bursting arising from modelled synaptic resource utilisation}
-Select 2 nice examples
+\subsection{BS arising from modelled synaptic/intracellular resource utilisation}
+Bifurcation analysis of existing parameter sets was performed by freezing $\zeta_e$ and using it as a bifurcation parameter. Candidate parameter sets were examined and it was found that the model of synaptic/intracellular resource utilisation given in (\ref{eq:Gamma_ek}) produces BS under appropriate parametric conditions. Parameric alteration of fast system parameters $\gamma_{ik}, \tau_i$ and $\hat{\Gamma_{ik}}$ showed that bursting dynamics were highly variable with respect to these parameters and their variation could trigger a transition between tonic spiking and BS.
 
-\subsection{Bursting observed in cannonical model via parametric changes to long range coupling}
-For the cannonical model, it was found that a reduction of $v$ and/or $\Gamma_{ek}$ showed that the long range coupling
+\begin{figure}
+\includegraphics[scale=0.4]{chosen-frontiers-2012/00493-ode-he-intra.pdf}
+\includegraphics[scale=0.4]{chosen-frontiers-2012/00493-0_1-he-intra.pdf}
+\includegraphics[scale=0.4]{chosen-frontiers-2012/00493-0_11-he-intra.pdf}
+\includegraphics[scale=0.4]{chosen-frontiers-2012/00493-0_2-5-1_5-1-he-intra.pdf}
+
+\end{figure}
+
+\subsection{BS observed in cannonical model via parametric changes to long range coupling}
+For the cannonical model, it was found that a reduction of $v$ and/or $\Lambda_{ek}$ showed that the long range coupling
 ($\phi_{ek}$) can operate on a timescale slower and independent to the timescale of the coupled (fast)
 excitatory/inhibitory system. This brought about bursting behaviour.
 
@@ -555,7 +570,7 @@ The current investigations have focussed on the spatially homogeneous case for t
 0$). Therefore the cortical phase synchrony(ref?) of burst suppression has not been investigated.
 
 This investigation considered each emergent slow system orthogonally and we have not as yet investigated the
-interactions between the presented emergent slow system in a unified model that covers all the presented augmentations to the connonical model of Liley et al.
+interactions between the presented emergent slow system in a unified model that covers all the presented augmentations to the cannonical model of Liley et al.
 
 
 \begin{thebibliography}{999}
