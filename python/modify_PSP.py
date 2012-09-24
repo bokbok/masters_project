@@ -30,7 +30,14 @@ run_params["tor_i"] *= float(sys.argv[5])
 
 model = LileySigmoidBurstPSP(params = run_params, timescale = "ms")
 
-equib = model.run([0, 10000]).run([0, 100000]).display(['h_e'], fig = "3").display(['slow'], fig = "1")
+equib = model.run([0, 10000]).run([0, 400000]).display(['h_e'], fig = "3").display(['slow'], fig = "1").display(['phi_ee', 'phi_ei'], fig = "2")
 
 #equib.displayPhasePlane3D('phi_ee', 'phi_ei', 'h_e')
+if len(sys.argv) > 6:
+    if sys.argv[6] == "save":
+        print "Saving modified set"
+        out = open(sys.argv[1] + "-mod-" + str(sys.argv[2]) + "-" + str(sys.argv[3]) + "-" + str(sys.argv[4]) + "-" + str(sys.argv[5]) + ".yml", 'w')
+
+        dump({ sys.argv[2] : run_params }, out)
+        out.close()
 show()
