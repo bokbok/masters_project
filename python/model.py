@@ -335,10 +335,10 @@ class LileySigmoidBurst(LileyBase):
         LileyBase.__init__(self, params = params, ics = ics, name = name, equations = equations, points = points, odeSystem = odeSystem)
 
 class LileySigmoidBurstThalamic(LileyBase):
-    slow_t='-(1/tor_slow) * (g * s_e(h_e) + slow)'
+    slow_t='(1/tor_slow) * (g * s_e(h_e) - slow)'
 
-    i_ee_tt='-2*gamma_ee * i_ee_t - (gamma_ee * gamma_ee) * i_ee + T_ee * gamma_ee * exp(1) * (N_beta_ee * s_e(h_e) + phi_ee + p_ee + thal_e * slow)'
-    i_ei_tt='-2*gamma_ei * i_ei_t - (gamma_ei * gamma_ei) * i_ei + T_ei * gamma_ei * exp(1) * (N_beta_ei * s_e(h_e) + phi_ei + p_ei + thal_i * slow)'
+    i_ee_tt='-2*gamma_ee * i_ee_t - (gamma_ee * gamma_ee) * i_ee + T_ee * gamma_ee * exp(1) * (N_beta_ee * s_e(h_e) + phi_ee + p_ee - thal_e * slow)'
+    i_ei_tt='-2*gamma_ei * i_ei_t - (gamma_ei * gamma_ei) * i_ei + T_ei * gamma_ei * exp(1) * (N_beta_ei * s_e(h_e) + phi_ei + p_ei - thal_i * slow)'
 
 
     zeroIcs = { 'phi_ee' : 0, 'phi_ee_t' : 0, 'phi_ei' : 0, 'phi_ei_t' : 0, 'i_ee' : 0,
@@ -547,7 +547,7 @@ class LileyWithSigmoidSingleSlow(LileyBase):
             equations = equations
 
         if ics == None:
-            ics = LileyWithSingle1stOrderSlow.zeroIcs
+            ics = LileyWithSigmoidSingleSlow.zeroIcs
             #ics['h_e'] = params['h_e_rest']
             #ics['h_i'] = params['h_i_rest']
         LileyBase.__init__(self, params = params, ics = ics, name = name, equations = equations, points = points, odeSystem = odeSystem, timescale = timescale)
