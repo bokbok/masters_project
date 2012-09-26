@@ -3,6 +3,8 @@
 \usepackage{amssymb}
 \usepackage{hyperref}
 \usepackage{pdfpages}
+\usepackage{caption}
+\usepackage{subcaption}
 \begin{document}
 \title{Mesoscopic Modelling of Burst Suppression Under Anaesthesia}
 \author{Matthew Walsh\\
@@ -526,12 +528,65 @@ Select 2 nice examples
 Bifurcation analysis of existing parameter sets was performed by freezing $\zeta_e$ and using it as a bifurcation parameter. Candidate parameter sets were examined and it was found that the model of synaptic/intracellular resource utilisation given in (\ref{eq:Gamma_ek}) produces BS under appropriate parametric conditions. Parameric alteration of fast system parameters $\gamma_{ik}, \tau_i$ and $\hat{\Gamma_{ik}}$ showed that bursting dynamics were highly variable with respect to these parameters and their variation could trigger a transition between tonic spiking and BS.
 
 \begin{figure}
-\includegraphics[scale=0.4]{chosen-frontiers-2012/00493-ode-he-intra.pdf}
-\includegraphics[scale=0.4]{chosen-frontiers-2012/00493-0_1-he-intra.pdf}
-\includegraphics[scale=0.4]{chosen-frontiers-2012/00493-0_11-he-intra.pdf}
-\includegraphics[scale=0.4]{chosen-frontiers-2012/00493-0_2-5-1_5-1-he-intra.pdf}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[scale=0.35]{chosen-frontiers-2012/00493-1-he-intra.pdf}
+		\label{fig:493_a}
+		\caption{$h_e (mV)$}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[scale=0.35]{chosen-frontiers-2012/00493-0_5-he-intra.pdf}
+		\label{fig:493_b}
+		\caption{$h_e (mV)$}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[scale=0.35]{chosen-frontiers-2012/00493-0_11-he-intra.pdf}
+		\label{fig:493_c}
+		\caption{$h_e (mV)$}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[scale=0.35]{chosen-frontiers-2012/00493-0_1-he-intra.pdf}
+		\label{fig:493_d}
+		\caption{$h_e (mV)$}
+	\end{subfigure}
 
+	\caption{The effects of varying $\gamma_{ie}$ and $\gamma_{ii}$ with the model of synaptic/intracellular resource utilisation. \\
+	Values for $\gamma_{ie}, \gamma_{ii}$ are as follows: \\
+\ref{fig:493_a}: $\gamma_{ie}=0.51495496832$, $\gamma_{ii}=0.03891608$ \\
+\ref{fig:493_b}: $\gamma_{ie}=0.25747748416$, $\gamma_{ii}=0.01945804$ \\
+\ref{fig:493_c}: $\gamma_{ie}=0.0566450465152$, $\gamma_{ii}=0.0042807688$ \\
+\ref{fig:493_d}: $\gamma_{ie}=0.051495496832$, $\gamma_{ii}=0.003891608$ \\
+All other parameters:\\ \\
+$\Lambda_{ee}: 0.861765043, \Lambda_{ei}: 0.861765043, N^{\alpha}_{ee}: 2564.793282, N^{\alpha}_{ei}: 1118.08004, N^{\beta}_{ee}: 3745.711734, N^{\beta}_{ei}: 3144.983978, N^{\beta}_{ie}: 446.4477283, N^{\beta}_{ii}: 345.8866865, \Gamma_{ee}: 1.6861042005, \Gamma_{ei}: 1.885871361, \Gamma_{ie}: 5.855116285, \Gamma_{ii}: 6.9331585350000005, g: 0.7, \gamma_{ee}: 0.95083473, \gamma_{ei}: 0.79156622, \chi_{ee}: 700.0, \chi_{ei}: 700.0, h^{rest}_e: -79.61058688, h^{eq}_{ee}: -17.9914286, h^{eq}_{ei}: -15.53827744, h^{rest}_i: -71.24328917, h^{eq}_{ie}: -84.00936425, h^{eq}_{ii}: -89.797995, \mu_e: -41.12042539, \mu_i: -54.45064422, p_{ee}: 2.6864898634, p_{ei}: 6.648040185, p_{ie}: 0.0, p_{ii}: 0.0, \phi_{ie}: 0, \phi_{ii}: 0, r^{abs}: 0.0, S^{max}_e: 0.400558, S^{max}_i: 0.404191, \sigma_e: 6.55747395, \sigma_i: 2.047597811, \tau_e: 108.758, \tau_i: 232.0, \tau^{slow}_e: 5437.9, v: 0.419426$
+}
 \end{figure}
+
+\begin{figure}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[scale=0.35]{chosen-frontiers-2012/00460-3-he-intra.pdf}
+		\label{fig:460_a}
+		\caption{$h_e (mV)$}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[scale=0.35]{chosen-frontiers-2012/00460-3-slow-intra.pdf}
+		\label{fig:460_b}
+		\caption{$\zeta_e (UNITS)$}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[scale=0.35]{chosen-frontiers-2012/00460-0_7-he-intra.pdf}
+		\label{fig:460_c}
+		\caption{$h_e (mV)$}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[scale=0.35]{chosen-frontiers-2012/00460-0_7-slow-intra.pdf}
+		\label{fig:460_d}
+		\caption{$\zeta_e (UNITS)$}
+	\end{subfigure}
+	\caption{$h_e$ along with $\zeta_e$ for the model of synaptic/intracellular resource utilisation. 
+	Values as follows:
+	\ref{fig:460_a} and \ref{fig:460_b}: $\gamma_{ie}=X$, $\gamma_{ii}=Y$, \ref{fig:460_a} and \ref{fig:460_b}:  $\gamma_{ie}=X$, $\gamma_{ii}=Y$. 
+	All other parameters:....}
+\end{figure}
+
 
 \subsection{BS observed in cannonical model via parametric changes to long range coupling}
 For the cannonical model, it was found that a reduction of $v$ and/or $\Lambda_{ek}$ showed that the long range coupling
