@@ -520,12 +520,58 @@ A large scale bifurcation analysis was undertaken on previously generated parame
 
 \section{Results}
 
-\subsection{BS arising from modelled thalamic averaging}
-Select 2 nice examples
+\subsection{Burst suppression arising from modelled thalamic averaging}
+Bifurcation analysis of existing parameter sets was performed by freezing $\zeta_e$ and using it as a bifurcation parameter within the model of thalamic averaging. Candidate parameter sets were examined and it was found that the model of thalamic averaging given in (\ref{eq:p_ek}) produces BS under appropriate parametric conditions. 
+
+Parameric alteration of fast system parameters $\gamma_{ik}, \tau_i$ and $\Gamma_{ik}$ was performed on parameter sets that were discovered to display BS. This investigation revealed that bursting dynamics were highly variable with respect to the parametric alteration (see figure \ref{fig} and \ref{ref})
+
+\begin{figure}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[scale=0.35]{chosen-frontiers-2012/00143-1-1-6-he-thal.pdf}
+		\label{fig:00143_a}
+		\caption{$h_e (mV)$}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[scale=0.35]{chosen-frontiers-2012/00143-1_2-1-6-he-thal.pdf}
+		\label{fig:00143_b}
+		\caption{$h_e (mV)$}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[scale=0.35]{chosen-frontiers-2012/00143-1-0_4-6-he-thal.pdf}
+		\label{fig:00143_c}
+		\caption{$h_e (mV)$}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[scale=0.35]{chosen-frontiers-2012/00143-1-1-5-he-thal.pdf}
+		\label{fig:00143_d}
+		\caption{$h_e (mV)$}
+	\end{subfigure}
+	\label{fig:00143}
+	\caption{Effect of varying $\gamma_{ie}$, $\gamma_{ii}$, $\Gamma_{ie}$, $\Gamma_{ii}$ and $\tau_i$ for the model of thalamic averaging\\
+\\
+a. $\gamma_{ie} = 0.06603578$, $\gamma_{ii} = 0.05208962$, $\Gamma_{ie} = 1.39744992$, $\Gamma_{ii} = 1.38041254$ and $\tau_i = 135.1578$ \\
+b. $\gamma_{ie} = 0.079242936$, $\gamma_{ii} = 0.062507544$, $\Gamma_{ie} = 1.39744992$, $\Gamma_{ii} = 1.38041254$ and $\tau_i = 135.1578$ \\
+c. $\gamma_{ie} = 0.06603578$, $\gamma_{ii} = 0.05208962$, $\Gamma_{ie} = 0.558979968$, $\Gamma_{ii} = 0.552165016$ and $\tau_i = 135.1578$ \\
+d. $\gamma_{ie} = 0.06603578$, $\gamma_{ii} = 0.05208962$, $\Gamma_{ie} = 1.39744992$, $\Gamma_{ii} = 1.38041254$ and $\tau_i = 112.6315$ \\
+\\
+All other parameters are:\\
+$\Lambda_{ee}: 0.97960647, \Lambda_{ei}: 0.97960647, N^{\alpha}_{ee}: 3218.25773139, N^{\alpha}_{ee}: 1725.76994483,
+N^{\beta}_{ee}: 2555.55531967, N^{\beta}_{ei}: 3955.4019654, N^{\beta}_{ie}: 558.83565101, N^{\beta}_{ii}: 805.76418084,
+\Gamma_{ee}: 0.15172837, \Gamma_{ei}: 0.27123796, 
+g: 0.7, \gamma_{ee}: 0.31475255879, \gamma_{ei}: 0.24594817, h^{rest}_e: -66.96584987, h^{eq}_{ee}: 0.0353266, h^{eq}_{ei}: -6.84352222,
+h^{rest}_i: -77.90610838, h^{eq}_{ie}: -85.52639408, h^{eq}_{ii}: -85.434985,
+\mu_e: -50.73253197, \mu_i: -51.66219544, p_{ee}: 2.1687293948, p_{ei}: 2.4342247579, p_{ie}: 0.0, p_{ii}: 0.0, \phi_{ie}: 0,
+\phi_{ii}: 0, S^{max}_e: 0.101903, S^{max}_i: 0.469, \sigma_e: 6.02438944, \sigma_i: 4.21865921,
+\rho_e: 2000.0, \rho_i: 2000.0, \tau_e: 139.779, \tau_i: 135.1578, \tau^{slow}: 6988.95,
+  v: 0.681401$
+}
+\end{figure}
 
 
-\subsection{BS arising from modelled synaptic/intracellular resource utilisation}
-Bifurcation analysis of existing parameter sets was performed by freezing $\zeta_e$ and using it as a bifurcation parameter. Candidate parameter sets were examined and it was found that the model of synaptic/intracellular resource utilisation given in (\ref{eq:Gamma_ek}) produces BS under appropriate parametric conditions. Parameric alteration of fast system parameters $\gamma_{ik}, \tau_i$ and $\hat{\Gamma_{ik}}$ showed that bursting dynamics were highly variable with respect to these parameters and their variation could trigger a transition between tonic spiking and BS.
+\subsection{Burst suppression arising from modelled synaptic/intracellular resource utilisation}
+Bifurcation analysis of existing parameter sets was performed by freezing $\zeta_e$ and using it as a bifurcation parameter within the model of synaptic/intracellular resource utilisation. Candidate parameter sets were examined and it was found that the model of synaptic/intracellular resource utilisation given in (\ref{eq:Gamma_ek}) produces BS under appropriate parametric conditions. 
+
+Again parameric alteration of fast system parameters $\gamma_{ik}, \tau_i$ and $\hat{\Gamma_{ik}}$ was performed on parameter sets that were discovered to display BS. The alterations of these parameters showed that bursting dynamics were highly variable and transitions between tonic spiking and BS (see figure \ref{fig:intra_gamma}) were triggered by an alteration of these fast system parameters alone.
 
 \begin{figure}
 	\begin{subfigure}[b]{0.5\textwidth}
@@ -549,6 +595,7 @@ Bifurcation analysis of existing parameter sets was performed by freezing $\zeta
 		\caption{$h_e (mV)$}
 	\end{subfigure}
 
+	\label{fig:intra_gamma}
 	\caption{The effects of varying $\gamma_{ie}$ and $\gamma_{ii}$ with the model of synaptic/intracellular resource utilisation. \\
 	Values for $\gamma_{ie}, \gamma_{ii}$ are as follows: \\
 \ref{fig:493_a}: $\gamma_{ie}=0.51495496832$, $\gamma_{ii}=0.03891608$ \\
@@ -556,7 +603,7 @@ Bifurcation analysis of existing parameter sets was performed by freezing $\zeta
 \ref{fig:493_c}: $\gamma_{ie}=0.0566450465152$, $\gamma_{ii}=0.0042807688$ \\
 \ref{fig:493_d}: $\gamma_{ie}=0.051495496832$, $\gamma_{ii}=0.003891608$ \\
 All other parameters:\\ \\
-$\Lambda_{ee}: 0.861765043, \Lambda_{ei}: 0.861765043, N^{\alpha}_{ee}: 2564.793282, N^{\alpha}_{ei}: 1118.08004, N^{\beta}_{ee}: 3745.711734, N^{\beta}_{ei}: 3144.983978, N^{\beta}_{ie}: 446.4477283, N^{\beta}_{ii}: 345.8866865, \Gamma_{ee}: 1.6861042005, \Gamma_{ei}: 1.885871361, \Gamma_{ie}: 5.855116285, \Gamma_{ii}: 6.9331585350000005, g: 0.7, \gamma_{ee}: 0.95083473, \gamma_{ei}: 0.79156622, \chi_{ee}: 700.0, \chi_{ei}: 700.0, h^{rest}_e: -79.61058688, h^{eq}_{ee}: -17.9914286, h^{eq}_{ei}: -15.53827744, h^{rest}_i: -71.24328917, h^{eq}_{ie}: -84.00936425, h^{eq}_{ii}: -89.797995, \mu_e: -41.12042539, \mu_i: -54.45064422, p_{ee}: 2.6864898634, p_{ei}: 6.648040185, p_{ie}: 0.0, p_{ii}: 0.0, \phi_{ie}: 0, \phi_{ii}: 0, r^{abs}: 0.0, S^{max}_e: 0.400558, S^{max}_i: 0.404191, \sigma_e: 6.55747395, \sigma_i: 2.047597811, \tau_e: 108.758, \tau_i: 232.0, \tau^{slow}_e: 5437.9, v: 0.419426$
+$\Lambda_{ee}: 0.861765043, \Lambda_{ei}: 0.861765043, N^{\alpha}_{ee}: 2564.793282, N^{\alpha}_{ei}: 1118.08004, N^{\beta}_{ee}: 3745.711734, N^{\beta}_{ei}: 3144.983978, N^{\beta}_{ie}: 446.4477283, N^{\beta}_{ii}: 345.8866865, \Gamma_{ee}: 1.6861042005, \Gamma_{ei}: 1.885871361, \hat{\Gamma_{ie}}: 5.855116285, \hat{\Gamma_{ii}}: 6.9331585350000005, g: 0.7, \gamma_{ee}: 0.95083473, \gamma_{ei}: 0.79156622, \chi_{ee}: 700.0, \chi_{ei}: 700.0, h^{rest}_e: -79.61058688, h^{eq}_{ee}: -17.9914286, h^{eq}_{ei}: -15.53827744, h^{rest}_i: -71.24328917, h^{eq}_{ie}: -84.00936425, h^{eq}_{ii}: -89.797995, \mu_e: -41.12042539, \mu_i: -54.45064422, p_{ee}: 2.6864898634, p_{ei}: 6.648040185, p_{ie}: 0.0, p_{ii}: 0.0, \phi_{ie}: 0, \phi_{ii}: 0, r^{abs}: 0.0, S^{max}_e: 0.400558, S^{max}_i: 0.404191, \sigma_e: 6.55747395, \sigma_i: 2.047597811, \tau_e: 108.758, \tau_i: 232.0, \tau^{slow}_e: 5437.9, v: 0.419426$
 }
 \end{figure}
 
@@ -583,8 +630,19 @@ $\Lambda_{ee}: 0.861765043, \Lambda_{ei}: 0.861765043, N^{\alpha}_{ee}: 2564.793
 	\end{subfigure}
 	\caption{$h_e$ along with $\zeta_e$ for the model of synaptic/intracellular resource utilisation. 
 	Values as follows:
-	\ref{fig:460_a} and \ref{fig:460_b}: $\gamma_{ie}=X$, $\gamma_{ii}=Y$, \ref{fig:460_a} and \ref{fig:460_b}:  $\gamma_{ie}=X$, $\gamma_{ii}=Y$. 
-	All other parameters:....}
+	\ref{fig:460_a} and \ref{fig:460_b}: $\gamma_{ie}=1.1841867$, $\gamma_{ii}=0.09702306$, \ref{fig:460_a} and \ref{fig:460_b}:  $\gamma_{ie}=0.27631023$, $\gamma_{ii}=0.022638713999999997$. 
+	All other parameters:
+$\Lambda_{ee}: 0.418331295, \Lambda_{ei}: 0.418331295, N^{\alpha}_{ee}: 3524.127975, N^{\alpha}_{ei}: 1178.475832,
+N^{\beta}_{ee}: 4567.016139, N^{\beta}_{ei}: 2946.029337, N^{\beta}_{ie}: 705.6645138, N^{\beta}_{ii}: 155.6924316,
+\Gamma_{ee}: 1.030206899, \hat{\Gamma_{ei}}: 1.245480131, \hat{\Gamma_{ie}}: 1.661138507, \Gamma_{ii}: 1.144879622,
+g: 0.7, \gamma_{ee}: 0.71336694981, \gamma_{ei}: 0.53411167, \chi_{ee}: 700.0, \chi_{ei}: 700.0, h^{rest}_e: -79.27217543,
+h^{eq}_{ee}: -19.32193417, h^{eq}_{ei}: -8.307573166, h^{rest}_i: -76.08372036, h^{eq}_{ie}: -85.45750982,
+h^{eq}_{ii}: -84.48223465, \mu_e: -54.37736285, \mu_i: -54.60726943,
+p_{ee}: 6.8330303706, p_{ei}: 9.2679440497,
+p_{ie}: 0.0, p_{ii}: 0.0, \phi_{ie}: 0, \phi_{ii}: 0, S^{max}_e: 0.0637001, S^{max}_i: 0.0838227,
+\sigma_e: 4.16943943, \sigma_i: 2.126102814, \tau_e: 73.3, \tau_i: 75.2, \tau^{slow}: 3665.0,
+  v: 0.839055$
+}
 \end{figure}
 
 
@@ -607,9 +665,8 @@ As BS has been observed associated with hypothermia(Schwartz et al, 1989; Akrawi
 to BS.
 
 \subsection{Onset of bursting may emerge from parametric changes in the 'fast' system alone}
-A wide variety of have been observed via simple parametric alteration. It is demonstrated that parametric variations in
-'fast' system variables ($\gamma_{ik}, \Gamma_{ik}, \Gamma_{ek}, \tau_i$) alone can instigate, and alter bursting
-dynamics. Therefore it is conceivable that BS is triggered either partially or entirely via a parametric variation in the fast system.
+A wide variety of bursting dynamics have been observed via simple parametric alteration. It is demonstrated that parametric variations in
+'fast' system variables ($\gamma_{ik}, \Gamma_{ik}, \Gamma_{ek}, \tau_i$) alone can instigate BS and vary its dymaics. Therefore it is conceivable that BS is triggered either partially or entirely via a parametric variation in the fast system alone.
 
 \subsection{Multiple origins for bursting possible}
 We have presented results that demonstrate that there are a variety of physiologically plausible mechanisms that bring about
