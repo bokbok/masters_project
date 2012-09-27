@@ -26,11 +26,11 @@ equib = model.run([0, 10000]).run([0, 16000]).display(['h_e'], fig = "3", label=
 
 if len(sys.argv) > 2 and sys.argv[2] == "save":
     figure("3")
-    savefig("papers/frontiers-2012-images/" + params.keys()[0] + "-he-phi.eps", format = 'eps')
+    savefig("papers/frontiers-2012-images/" + os.path.basename(sys.argv[1]) + "-he-phi.eps", format = 'eps')
 
     figure("1")
-    savefig("papers/frontiers-2012-images/" + params.keys()[0] + "-phi_ee-phi.eps", format = 'eps')
+    savefig("papers/frontiers-2012-images/" + os.path.basename(sys.argv[1]) + "-phi_ee-phi.eps", format = 'eps')
     figure("2")
-    savefig("papers/frontiers-2012-images/" + params.keys()[0] + "-phi_ei-phi.eps", format = 'eps')
+    savefig("papers/frontiers-2012-images/" + os.path.basename(sys.argv[1]) + "-phi_ei-phi.eps", format = 'eps')
 else:
     show()
