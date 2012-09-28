@@ -647,11 +647,85 @@ p_{ie}: 0.0, p_{ii}: 0.0, \phi_{ie}: 0, \phi_{ii}: 0, S^{max}_e: 0.0637001, S^{m
 
 
 \subsection{BS observed in cannonical model via parametric changes to long range coupling}
-For the cannonical model, it was found that a reduction of $v$ and/or $\Lambda_{ek}$ showed that the long range coupling
-($\phi_{ek}$) can operate on a timescale slower and independent to the timescale of the coupled (fast)
-excitatory/inhibitory system. This brought about bursting behaviour.
 
-Select 2 nice examples
+Bifurcation analysis of existing parameter sets was performed by freezing $\phi_{ei}$, using it as a bifurcation parameter within the cannonical model of Liley et Al. Parametric alteration of $v_{ei}$ and $\Lambda_{ei}$ was performed, and BS was found under appropriate parametric conditions. 
+
+The dynamics of ($\phi_{ei}$) were found to operate on a timescale slower and independent to the timescale of the coupled (fast)
+excitatory/inhibitory system (see figure \ref{fig:phi_dyn}), making it the slow system underlying the observed BS.
+
+Parametric alteration of fast system parameters $\gamma_{ik}, \tau_i$ and $\hat{\Gamma_{ik}}$ on parameter sets that were discovered to display BS was again performed. The alterations of these parameters showed that bursting dynamics were highly variable with respect to these changes (see figure \ref{fig:phi_fast_var}) and again transitions between tonic spiking and BS were observed through alteration of the fast system parameters.
+
+\begin{figure}
+	\begin{subfigure}[b]{1\textwidth}
+		\includegraphics[scale=0.32]{chosen-frontiers-2012/00214-1-0_5-5-0_5-he-phi.pdf}
+		\includegraphics[scale=0.32]{chosen-frontiers-2012/00214-1-0_5-5-0_5-phi_ei-phi}
+		\label{fig:214-1-0_5-5-0_5}
+		\caption{$h_e (mV)$ and $\phi_{ei}$}
+	\end{subfigure}
+
+	\begin{subfigure}[b]{1\textwidth}
+		\includegraphics[scale=0.32]{chosen-frontiers-2012/00214-1-0_1-5-0_2-he-phi.pdf}
+		\includegraphics[scale=0.32]{chosen-frontiers-2012/00214-1-0_1-5-0_2-phi_ei-phi}
+		\label{fig:214-1-0_1-5-0_2}
+		\caption{$h_e (mV)$ and $\phi_{ei}$}
+	\end{subfigure}
+
+	\begin{subfigure}[b]{1\textwidth}
+		\includegraphics[scale=0.32]{chosen-frontiers-2012/00214-1-0_1-5-0_1-he-phi.pdf}
+		\includegraphics[scale=0.32]{chosen-frontiers-2012/00214-1-0_1-5-0_1-phi_ei-phi}
+		\label{fig:214-1-0_1-5-0_2}
+		\caption{$h_e (mV)$ and $\phi_{ei}$}
+	\end{subfigure}
+	\label{fig:phi_dyn}
+	\caption{Illustrating the emergence of a slow system ($\phi_{ei}$) as parameters $v_{ei}$ and $\Lambda_{ei}$ are decreased. \\
+	Parameter values as follows:\\
+	a. $v_{ei} = 0.4122915$ and $\Lambda_{ei} = 0.1943756305$\\
+	b. $v_{ei} = 0.0824583$ and $\Lambda_{ei} = 0.0777502522$\\
+	c. $v_{ei} = 0.0824583$ and $\Lambda_{ei} = 0.0388751261$\\
+All other parameters:\\
+$\Lambda_{ee}: 1.943756305, N^{\alpha}_{ee}: 2661.274299, N^{\alpha}_{ei}: 2415.41369,
+N^{\beta}_{ee}: 4537.657838, N^{\beta}_{ei}: 4285.318574, N^{\beta}_{ie}: 496.4015214, N^{\beta}_{ii}: 989.8177416,
+\Gamma_{ee}: 0.426272815, \Gamma_{ei}: 1.718762667, \Gamma_{ie}: 0.857083964, \Gamma_{ii}: 1.322388202,
+\gamma_{ee}: 0.78950312677, \gamma_{ei}: 0.82632296, \gamma_{ie}: 0.14776569,
+\gamma_{ii}: 0.04887233, h^{rest}_e: -75.54580909, h^{eq}_{ee}: -16.50733437, h^{eq}_{ei}: -2.729873877,
+h^{rest}_i: -75.55674507, h^{eq}_{ie}: -88.67197452, h^{eq}_{ii}: -85.43395694,
+\mu_e: -42.50180811, \mu_i: -48.70101116, p_{ee}: 7.1858700524, p_{ei}: 6.7944395893, p_{ie}: 0.0, p_{ii}: 0.0, \phi_{ie}: 0,
+\phi_{ii}: 0, S^{max}_e: 0.450176, S^{max}_i: 0.07468, \sigma_e: 5.024823991,
+\sigma_i: 3.22531141, \tau_e: 38.9, \tau_i: 137.859, v_{ee}: 0.824583$}
+\end{figure}
+
+\begin{figure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[scale=0.22]{chosen-frontiers-2012/00416-he-phi.pdf}
+		\label{fig:416_phi_a}
+		\caption{$h_e (mV)$}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[scale=0.22]{chosen-frontiers-2012/00416-0_5-2-1-he-phi.pdf}
+		\label{fig:416_phi_b}
+		\caption{$h_e (mV)$}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[scale=0.22]{chosen-frontiers-2012/00416-1_1-2-1-he-phi.pdf}
+		\label{fig:416_phi_c}
+		\caption{$h_e (mV)$}
+	\end{subfigure}
+
+	\label{fig:phi_fast_var}
+	\caption{Effect of modifying fast system parameters $\gamma_{ie}$, $\gamma_{ii}$, $\Gamma_{ie}$ and $\Gamma_{ii}$ with BS arising from slowing of the long range coupling in the cannonical model of Liley et al.\\
+	a. $\Gamma_{ie}: 1.42852881, \Gamma_{ii}: 0.14073783, \gamma_{ie}: 0.45787892, \gamma_ii: 0.09011466$ \\
+	b. $\Gamma_{ie}: 2.85705762, \Gamma_{ii}: 0.28147566, \gamma_{ie}: 0.22893946,  \gamma_{ii}: 0.04505733$\\
+	c. $\Gamma_{ie}: 2.85705762, \Gamma_{ii}: 0.28147566, \gamma_{ie}: 0.503666812,  \gamma_{ii}: 0.099126126$\\
+All other parameters:\\
+$\Lambda_{ee}: 0.33012064, \Lambda_{ei}: 0.033012064, N^{\alpha}_{ee}: 2342.99410942, N^{\alpha}_{ei}: 2635.01259668,
+N^{\beta}_{ee}: 4016.1981429, N^{\beta}_{ei}: 4356.20256437, N^{\beta}_{ie}: 634.73935613, N^{\beta}_{ii}: 473.38388612,
+\Gamma_{ee}: 0.13699266, \Gamma_{ei}: 0.4439827, \gamma_{ee}: 0.244953287255, \gamma_{ei}: 0.82969594, h^{rest}_e: -61.7485641, h^{eq}_{ee}: 5.73011624, h^{eq}_{ei}: 2.099135,
+h^{rest}_i: -64.46142322, h^{eq}_{ie}: -81.67044311, h^{eq}_{ii}: -82.29433835, \mu_e: -53.10048735, \mu_i: -53.68380602, p_{ee}: 3.6997382629, p_{ei}: 0.60015865013, p_{ie}: 0.0, p_{ii}: 0.0, \phi_{ie}: 0,
+\phi_{ii}: 0, S^{max}_e: 0.0930382, S^{max}_i: 0.0648537, \sigma_e: 4.64535035,
+\sigma_i: 3.10925431, \tau_e: 86.1876, \tau_i: 65.0391, v_{ee}: 0.160606, v_{ei}: 0.160606$
+}
+
+\end{figure}
 
 
 \section{Discussion}
