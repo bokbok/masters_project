@@ -16,11 +16,13 @@ except ImportError:
 params = load(file(sys.argv[1], 'r'))
 
 run_params = params[sys.argv[2]]
-run_params['v'] *= float(sys.argv[3])
-run_params['v_ee'] = run_params['v']
-run_params['v_ei'] = run_params['v']
-run_params['A_ee'] *= float(sys.argv[4])
-run_params['A_ei'] *= float(sys.argv[5])
+run_params['v_ee'] = run_params['v'] * float(sys.argv[3])
+run_params['v_ei'] = run_params['v'] * float(sys.argv[4])
+run_params['A_ee'] *= float(sys.argv[5])
+run_params['A_ei'] *= float(sys.argv[6])
+run_params['N_beta_ee'] *= float(sys.argv[7])
+run_params['N_beta_ei'] *= float(sys.argv[8])
+
 #run_params['N_alpha_ei'] = run_params['N_alpha_ee']
 
 model = LileyWithDifferingV(params = run_params, timescale = "ms")
@@ -29,9 +31,9 @@ equib = model.run([0, 60000]).display(['h_e'], fig = "3").display(['phi_ee', 'ph
 
 equib.displayPhasePlane3D('phi_ee', 'phi_ei', 'h_e')
 
-if len(sys.argv) > 6:
-    if sys.argv[6] == "save":
-        out = open(sys.argv[1] + '-' + sys.argv[2] + "-phi-burst.yml", 'w')
+if len(sys.argv) > 9:
+    if sys.argv[9] == "save":
+        out = open(sys.argv[1] + '-' + sys.argv[2] + "-phi-burst-split-v-" + sys.argv[3] + "-" + sys.argv[4] + "-" + sys.argv[5] + "-" + sys.argv[6]+ ".yml", 'w')
         dump({ sys.argv[2] : run_params }, out)
         out.close()
 else:
