@@ -56,7 +56,7 @@ spiking activity electroencephalographic activity separated by periods
 of electroencephalographic suppression (isoelectricity). The oscillatory
 features of the bursts, together with their duration and the duration of
 suppressed periods show a high degree of variability that reflects its
-myriad of initiating causes (see Figure 1 for examples). First identified
+myriad of initiating causes (see Figure \ref{fig:burst_examples} for examples). First identified
 during deep anaesthesia with tribromoethanol in cats (Derbyshire et al,
 1936), labelled “burst-suppression pattern” by Swank \& Watson (1948) during barbiturate and ether anaesthesia in dogs,
 it is now
@@ -124,7 +124,10 @@ account for the appearance of drug-induced burst suppression, and in
 doing so shed light on the pathophysiological mechanisms of burst
 suppression and epilepsy in general.
 
-Figure 1: Example traces of electroencephalogram and
+\begin{figure}
+	\label{fig:burst_examples}
+	\includegraphics[scale=0.7]{chosen-frontiers-2012/burst_examples.pdf}
+	\caption{Example traces of electroencephalogram and
 electrocorticogram illustrating the heterogeneity of burst suppression
 patterns. (A) changes in neocortical electroencephalogram in the rat,
 recorded using dural surface electrodes, in response to a 5 mg/kg/min
@@ -141,7 +144,8 @@ demonstrating high amplitude spikes interspersed with isoelectric
 periods of variable length (figure reproduced with permission from
 Voss et al, 2006). (E) electroencephalogram recorded from a 3 month
 old infant suffering from infantile myoclonic encephalopathy
-(reproduced with permission from Niedermeyer, 2005).
+(reproduced with permission from Niedermeyer, 2005).}
+\end{figure}
 
 \section{Methods}
 \subsection{Mesoscopic mean field modelling of electrocortical activity}
@@ -194,9 +198,12 @@ the spatial extent of the column. In this way mammalian neocortex is
 conceived as consisting of localized populations of excitatory and
 inhibitory neurons interacting by all possible combinations of
 feedforward and feedback connectivity interacting globally via long
-range excitatory connections (Figure 2).
+range excitatory connections (Figure \ref{fig:liley_schema}).
 
-Figure 2: Schematic overview of the essential intracortical and corticocortical
+\begin{figure}
+\label{fig:liley_schema}
+		\includegraphics[scale=0.15]{chosen-frontiers-2012/liley_topology.pdf}
+		\caption{Schematic overview of the essential intracortical and corticocortical
 interactions between excitatory and inhibitory neuronal
 populations in the model of Liley et al (2011; 2005; 2003; 2002;
 1999). Figure reproduced with permission from Liley et al (2011).
@@ -211,7 +218,9 @@ by the mean soma membrane potentials of the spatially distributed excitatory ($h
 and inhibitory ($h_i$) neuronal populations. The connection with pysiological measurement is obtained through $h_e$,
 which is
 assumed to be linearly related to the surface recorded
-electroencephalogram (Nunez \& Srinivasan, 2006; Freeman, 1975).
+electroencephalogram (Nunez \& Srinivasan, 2006; Freeman, 1975).}
+\end{figure}
+
 Thus the response of the mean soma membrane potential $h_k$ ($k=e,i$) at position $r$ on a two dimensional cortical
 sheet, to induce post synaptic activity $I_{lk}$ ($l$=source, $k$=target population) is given by
 
@@ -422,10 +431,10 @@ Fleidervish et al (2001), in which it was found that hypoxia depleted
 readily releasable pools of vesicles for transmitter release.
 
 \subsection{Theoretical basis of busrting}
-Generally bursting is characterised by oscillations occurring on two different time scales \cite{izikevich2007_1}. Fast
-oscillations underlie the active phase of bursting and slow oscillations underlie the quiescent periods of suppression. Generally these systems are coupled with the fast system feeding in to the slow subsystem and the slow subsystem feeding in to the fast.
+Bursting is generally characterised by oscillations occurring on two different time scales \cite{izikevich2007_1}. Fast
+oscillations underlie the active phase of bursting and slow oscillations underlie the quiescent periods of suppression. These systems are generally coupled with the fast system feeding in to the slow subsystem and the slow subsystem feeding back in to the fast.
 
-The difference of timescales between the fast subsystem and slow subsystem is a significant. If $\tau^{fast}$ is the characteristic timescale for the fast subsystem and $\tau_{slow}$ is the characteristic timescale for the slow subsystem then $\tau^{fast}/\tau^{slow} \ll 1$ for it to be considered a fast/slow system.
+The difference of timescales between the fast subsystem and slow subsystem must be significant. If $\tau^{fast}$ is the characteristic timescale for the fast subsystem and $\tau^{slow}$ is the characteristic timescale for the slow subsystem then $\tau^{fast}/\tau^{slow} \ll 1$ for it to be considered a fast/slow system.
 
 \subsection{Fast dynamics within the model of Liley et Al}
 Liley et al (Liley et al, 2003 - Drug-induced modification of the system properties associated
@@ -435,7 +444,7 @@ The inhibitory population activity phase leads excitatory population activity, g
 inhibitory and excitatory neurons generating the observed oscillatory behaviour.
 
 The phase locking of these systems leads us to assume that equations \ref{eq:h_k} and \ref{eq:i_lk} represent a single
-timescale within the model of Liley et al and as such were considered as a whole to be a 'fast' system for this
+timescale within the model of Liley et al and as therefore were considered as together to be a 'fast' system for this
 exploration.
 
 \subsection{Introduction of a mean field averaging system}
@@ -453,10 +462,10 @@ constant (UNITS).
 $\zeta_{k}$ was used to augment the cannonical equations of the Liley et al model. These augmentations were used to investigate several physiologically plausible fast/slow topologies for burst suppression.
 
 \subsection{Modelling thalamic averaging of the mean field}
-A mechanism of Cortico-Thalamic feedback has been proposed as a mechanism for the generation of slow sleep waves (ref steriade etc). 
+Cortico-Thalamic feedback has been proposed as a mechanism for the generation of slow sleep waves (ref steriade etc). 
 We investigated the plausibility of such a system driving BS. 
 
-We augmented the cannonical model of Liley Et Al to introduce a a cortico-thalamic feedback component. 
+We augmented the cannonical model of Liley et al. to introduce a a cortico-thalamic feedback component. 
 In (\ref{eq:a_ek}) $p_{ek}$ is a constant representing the rate of extra cortical input. Modelling cortico-thalamic feedback, $p_{ek}$ was reformulated to include a slow deviation from its resting value that was proportial to $\zeta_e$. The constants for $p_{ek}$ in (\ref{eq:a_ek}) were replaced with the expression
 
 \begin{equation} \label{eq:p_ek}
@@ -466,7 +475,7 @@ p_{ek} = \hat{p_{ek}} - \rho_{ek} \zeta_e
 $\rho_{ek}$(UNITS!!) is a constant of proportionality to $\zeta_e$, representing the amount of thalamic feedback connectivity. $\hat{p_{ek}}$ is a constant, representing
 the resting value for the rate of extra cortical input, corresponding to the original constant expression for $p_{ek}$ in the cannonical model. 
 
-It should be noted in this case that when $\rho\zeta_e=0; t \geq 0$ this augmented model collapses to the cannonical model of Liley et al.
+It should be noted in this case that when $\rho\zeta_e=0; \forall t \geq 0$ this augmented model collapses to the cannonical model of Liley et al.
 
 \subsection{Modelling intracellular and/or synaptic resource utilisation}
 (Tsodyks and Markram 1997, Bazhenov et Al 2002) introduced generic models of synaptic resource utilisation and recovery that depend
@@ -475,7 +484,7 @@ on neuronal activity. We introduced a model of intracellular and synaptic resour
 It was assumed that a depletion in intracellular or synaptic resources would present itself as a decrease in the peak PSP. Therefore we reformulated the excitatory PSPs ($\Gamma_{ee}, \Gamma_{ei}$) to
 account for intracellular/synaptic resource depletion and recovery.
 
-The effect of intracellular/synaptic resource utilisation and recovery had on the peak PSP was assumed to be proportial to the generic averaging system $\zeta_{e}$, giving an expression for
+The effect that intracellular/synaptic resource utilisation and recovery has on the peak PSP was assumed to be proportial to the generic averaging system $\zeta_{e}$, giving an expression for
 the excitatory PSPs:
 
 \begin{equation} \label{eq:Gamma_ek}
@@ -484,43 +493,41 @@ the excitatory PSPs:
 
 Where $\hat{\Gamma_{ek}}$ is the original constant expression for $\Gamma_{ek}$, representing the resting post synaptic potential. $\chi$ is a constant of proportionality between $\zeta_e$ and the utilisation of intracellular resources (UNITS!!).
 
-Again, it should be noted that when $\chi_{ek} \zeta_e=0; t \geq 0$ this augmented model collapses to the cannonical model of Liley et al.
+Again, it should be noted that when $\chi_{ek} \zeta_e=0; \forall t \geq 0$ this augmented model collapses to the cannonical model of Liley et al.
 
 \subsection{Emergence of a slow system from a parametric variation of long range coupling constants}
-We investigated the possibility of the long range coupling $\phi_{ek}$ operating on a timescale slower than that of the coupled excitatory/inhibitory system and thus emerging as a slow system that could drive BS. 
+The possibility of the long range coupling $\phi_{ek}$ operating on a timescale slower than that of the coupled excitatory/inhibitory system was investigated. If a slow system is able to emerge from the long range coupling, then it could be a possible contributor to BS. 
 
-Swindale 2003 propose that anaesthesia may bring about changes to axonal conduction velocities and capacitances. We investigated the
+Swindale 2003 proposes that anaesthesia may bring about changes to axonal conduction velocities and capacitances. We investigated the
 effects of modifying the conduction velocity and the characteristic decay scale ($v$ and $1 / \Lambda_{ek}$) had on the
-long range coupling $\phi_{ek}$ and its ability to operate on a timescale slower than the coupled excitatory/inhibitory system.
+long range coupling $\phi_{ek}$ system. The investigation looked at the ability of the long range coupling the to operate on a timescale slower than the coupled excitatory/inhibitory system and thus bringing about about BS.
 
 \subsection{Parametric variation of fast system parameters}
-GABAergic anaesthetics are known to predominantly effect the inhibitory system. We studied the dynamical effect of varying model parameters that are known to vary under the effect of GABAergic anaesthetics, namely $\Gamma_{ik}$, $\tau_i$ and $\gamma_{ik}$. We studied the effects of varying these parameter with parameter sets that were found to exhibit BS.
+GABAergic anaesthetics are known to predominantly affect the inhibitory system. We studied the dynamical effect of varying model parameters that are known to vary under the effect of GABAergic anaesthetics, namely $\Gamma_{ik}$, $\tau_i$ and $\gamma_{ik}$. We studied the effects of varying these parameters within any parameter sets that were found to exhibit BS.
 
 \subsection{Identification of BS candidate parameter sets}
-Riznel (1995) introduces a method method of dissection to analyse bursting. The fast and slow systems are considered separately and the slow system can be frozen, replacing it with a parameter in the fast system. The frozen system can be used to analyse the dynamics of the fast system with respect to the slow system's value. Izhikevich (ref) introduces common bursting topologies, where the transitions between quiescence and spiking can be viewed as bifurcations with respect to the slow variable(s).
+Riznel (1995) introduces a method of dissection to analyse bursting. The fast and slow systems are considered separately and the slow system can be frozen, replacing it with a parameter in the fast system. The frozen system can be used to analyse the dynamics of the fast system with respect to the slow system's value. Izhikevich (ref) introduces common bursting topologies, where the transitions between quiescence and spiking can be viewed as bifurcations with respect to the slow parameter(s).
 
-We performed a large scale numerical bifurcation analysis on previously generated parameter sets(ref to sets). The slow system for each investigation was frozen with the frozen parameter being used as the free variable within the bifurcation analysis. We investigated parameter sets that displayed a topological liklihood of supporting BS and investigated those individually. As part of the investigation of these parameter sets, we varied slow system time constants and coupling terms $\tau_k^{slow}, g_k, \chi_{ek}, \rho_{ek}, v$ and $1 / \Lambda_{ek}$ in attempt to induce BS.
+A large scale numerical bifurcation analysis was performed on previously generated parameter sets(ref to sets). The slow system for each investigation was frozen with the frozen parameter being used as the free parameter within the bifurcation analysis. Parameter sets that displayed a topological liklihood of supporting BS were investigated individually. With the parameter sets that displayed a liklihood of bursting various slow system time constants and coupling terms $\tau_k^{slow}, g_k, \chi_{ek}, \rho_{ek}, v$ and $1 / \Lambda_{ek}$ were trialled in an attempt to produce BS.
 
 \subsection{Computational methods}
-We performed all numerical integrations and bifurcation analysis of the aforementioned models using the Python programming language, utilising
+All numerical integrations and bifurcation analysis of the aforementioned models were performed using the Python programming language, utilising
 the PyDSTool library (available from \url{http://sourceforge.net/projects/pydstool/}) running under 64 bit
 Linux. The Radau integrator that comes standard with PyDSTool was used for all integrations.
 Typical numerical settings used for the radau integrator were $init\_step = 1e-6$, $atol = 1e-15$, $rtol = 1e-16$ and
 $max\_pts = 40000000$.
 
-
-
 \section{Results}
 
 \subsection{Burst suppression arises in all investigated models}
-We performed a large scale numerical bifurcation analysis of existing parameter sets, for each of the models under investigation. For the model of thalamic averaging and the model of synaptic and intracellular resource utilisation $\zeta_e$ was frozen and used as a bifurcation parameter. For the cannonical model of Liley et al $\phi_{ei}$ and $\phi_{ee}$ were frozen and were replaced with a single bifurcation parameter $\phi$ within the cannonical model of Liley et Al. These analyses identified candidate parameter sets that displayed topology that could support bursting.
+A large scale numerical bifurcation analysis of existing parameter sets was performed for each of the models under investigation. For the model of thalamic averaging and the model of synaptic and intracellular resource utilisation $\zeta_e$ was frozen and used as a bifurcation parameter. For the cannonical model of Liley et al., $\phi_{ei}$ and $\phi_{ee}$ were frozen and were replaced with a single bifurcation parameter $\phi$. These analyses identified candidate parameter sets that displayed topologies that could support bursting.
 
-We individually examined candidate parameter sets, by varying appropriate slow system parameters. For the models of synaptic/intracellular resource utilisation and the model of thalamic averaging we examined candidate parameter sets by trialing values for $\tau^{slow}_e$, their respective coupling factors ($\chi_{e}$, $\rho_{e}$) and by setting $g=0.7$. Within the cannonical model we trialed values for $v_{ei}$ and $\Lambda_{ei}$.
+We individually examined candidate parameter sets by varying appropriate slow system parameters. For the models of synaptic/intracellular resource utilisation and the model of thalamic averaging we trialled values for $\tau^{slow}_e$, their respective coupling factors ($\chi_{e}$, $\rho_{e}$) and by setting $g_e=0.7$. Within the cannonical model we trialed values for $v_{ei}$ and $\Lambda_{ei}$.
 
-All three models displayed BS under appropriate parametric conditions. Slow oscillations in $\zeta_e$ were seen to emerge when BS emerged, in both the model of thalamic averaging and the model of synaptic/intracellular resource utilisation (see figure \ref{fig:emerging_slow_zeta}). Slow oscillations in $\phi_{ei}$ also emerged with BS (see figure \ref{fig:phi_dyn}). We found that the dynamics of ($\phi_{ei}$) were able to operate on a timescale slower and independent to that of the coupled (fast)
+All three models displayed BS under appropriate parametric conditions. Slow oscillations in $\zeta_e$ were seen to emerge along with BS, in both the model of thalamic averaging and the model of synaptic/intracellular resource utilisation (see figure \ref{fig:emerging_slow_zeta}). Slow oscillations in $\phi_{ei}$ also emerged with BS (see figure \ref{fig:phi_dyn}). We found that the dynamics of ($\phi_{ei}$) were able to operate on a timescale slower and independent to that of the coupled (fast)
 excitatory/inhibitory system (see figure \ref{fig:phi_dyn}), making it the slow system underlying the observed BS.
 
-In all three models we altered fast system parameters $\gamma_{ik}, \tau_i$ and $\Gamma_{ik}$ on the parameter sets that were discovered to display BS.  The parametric alterations showed that bursting dynamics were highly variable with respect to the fast system parameters, with transitions between tonic spiking and BS being able to be triggered by alterations in fast system parameters alone(see figure \ref{fig:00143}, \ref{fig:intra_gamma}, \ref{fig:phi_fast_var}).
+In all three models we altered fast system parameters $\gamma_{ik}, \tau_i$ and $\Gamma_{ik}$ on the parameter sets that were discovered to display BS.  The parametric alterations showed that bursting dynamics were highly variable with respect to the fast system parameters, with transitions between tonic spiking and BS being triggered by alterations in fast system parameters alone(see figure \ref{fig:00143}, \ref{fig:intra_gamma}, \ref{fig:phi_fast_var}).
 
 \begin{figure}
 	\begin{subfigure}[b]{0.5\textwidth}
@@ -555,12 +562,12 @@ All other parameters are:\\
 $\Lambda_{ee}: 0.97960647, \Lambda_{ei}: 0.97960647, N^{\alpha}_{ee}: 3218.25773139, N^{\alpha}_{ee}: 1725.76994483,
 N^{\beta}_{ee}: 2555.55531967, N^{\beta}_{ei}: 3955.4019654, N^{\beta}_{ie}: 558.83565101, N^{\beta}_{ii}: 805.76418084,
 \Gamma_{ee}: 0.15172837, \Gamma_{ei}: 0.27123796, 
-g: 0.7, \gamma_{ee}: 0.31475255879, \gamma_{ei}: 0.24594817, h^{rest}_e: -66.96584987, h^{eq}_{ee}: 0.0353266, h^{eq}_{ei}: -6.84352222,
+g_e: 0.7, \gamma_{ee}: 0.31475255879, \gamma_{ei}: 0.24594817, h^{rest}_e: -66.96584987, h^{eq}_{ee}: 0.0353266, h^{eq}_{ei}: -6.84352222,
 h^{rest}_i: -77.90610838, h^{eq}_{ie}: -85.52639408, h^{eq}_{ii}: -85.434985,
-\mu_e: -50.73253197, \mu_i: -51.66219544, p_{ee}: 2.1687293948, p_{ei}: 2.4342247579, p_{ie}: 0.0, p_{ii}: 0.0, \phi_{ie}: 0,
+\mu_e: -50.73253197, \mu_i: -51.66219544, \hat{p_{ee}}: 2.1687293948, \hat{p_{ei}}: 2.4342247579, p_{ie}: 0.0, p_{ii}: 0.0, \phi_{ie}: 0,
 \phi_{ii}: 0, S^{max}_e: 0.101903, S^{max}_i: 0.469, \sigma_e: 6.02438944, \sigma_i: 4.21865921,
 \rho_e: 2000.0, \rho_i: 2000.0, \tau_e: 139.779, \tau_i: 135.1578, \tau^{slow}: 6988.95,
-  v: 0.681401$
+  v_{ee}: 0.681401, v_{ei}: 0.681401$
 }
 \end{figure}
 
@@ -594,7 +601,7 @@ h^{rest}_i: -77.90610838, h^{eq}_{ie}: -85.52639408, h^{eq}_{ii}: -85.434985,
 \ref{fig:493_c}: $\gamma_{ie}=0.0566450465152$, $\gamma_{ii}=0.0042807688$ \\
 \ref{fig:493_d}: $\gamma_{ie}=0.051495496832$, $\gamma_{ii}=0.003891608$ \\
 All other parameters:\\ \\
-$\Lambda_{ee}: 0.861765043, \Lambda_{ei}: 0.861765043, N^{\alpha}_{ee}: 2564.793282, N^{\alpha}_{ei}: 1118.08004, N^{\beta}_{ee}: 3745.711734, N^{\beta}_{ei}: 3144.983978, N^{\beta}_{ie}: 446.4477283, N^{\beta}_{ii}: 345.8866865, \Gamma_{ee}: 1.6861042005, \Gamma_{ei}: 1.885871361, \hat{\Gamma_{ie}}: 5.855116285, \hat{\Gamma_{ii}}: 6.9331585350000005, g: 0.7, \gamma_{ee}: 0.95083473, \gamma_{ei}: 0.79156622, \chi_{ee}: 700.0, \chi_{ei}: 700.0, h^{rest}_e: -79.61058688, h^{eq}_{ee}: -17.9914286, h^{eq}_{ei}: -15.53827744, h^{rest}_i: -71.24328917, h^{eq}_{ie}: -84.00936425, h^{eq}_{ii}: -89.797995, \mu_e: -41.12042539, \mu_i: -54.45064422, p_{ee}: 2.6864898634, p_{ei}: 6.648040185, p_{ie}: 0.0, p_{ii}: 0.0, \phi_{ie}: 0, \phi_{ii}: 0, r^{abs}: 0.0, S^{max}_e: 0.400558, S^{max}_i: 0.404191, \sigma_e: 6.55747395, \sigma_i: 2.047597811, \tau_e: 108.758, \tau_i: 232.0, \tau^{slow}_e: 5437.9, v: 0.419426$
+$\Lambda_{ee}: 0.861765043, \Lambda_{ei}: 0.861765043, N^{\alpha}_{ee}: 2564.793282, N^{\alpha}_{ei}: 1118.08004, N^{\beta}_{ee}: 3745.711734, N^{\beta}_{ei}: 3144.983978, N^{\beta}_{ie}: 446.4477283, N^{\beta}_{ii}: 345.8866865, \Gamma_{ee}: 1.6861042005, \Gamma_{ei}: 1.885871361, \hat{\Gamma_{ie}}: 5.855116285, \hat{\Gamma_{ii}}: 6.9331585350000005, g_e: 0.7, \gamma_{ee}: 0.95083473, \gamma_{ei}: 0.79156622, \chi_{ee}: 700.0, \chi_{ei}: 700.0, h^{rest}_e: -79.61058688, h^{eq}_{ee}: -17.9914286, h^{eq}_{ei}: -15.53827744, h^{rest}_i: -71.24328917, h^{eq}_{ie}: -84.00936425, h^{eq}_{ii}: -89.797995, \mu_e: -41.12042539, \mu_i: -54.45064422, p_{ee}: 2.6864898634, p_{ei}: 6.648040185, p_{ie}: 0.0, p_{ii}: 0.0, \phi_{ie}: 0, \phi_{ii}: 0, r^{abs}: 0.0, S^{max}_e: 0.400558, S^{max}_i: 0.404191, \sigma_e: 6.55747395, \sigma_i: 2.047597811, \tau_e: 108.758, \tau_i: 232.0, \tau^{slow}_e: 5437.9, v_{ee}: 0.419426, v_{ei}: 0.419426$
 }
 \end{figure}
 
@@ -627,13 +634,13 @@ $\Lambda_{ee}: 0.861765043, \Lambda_{ei}: 0.861765043, N^{\alpha}_{ee}: 2564.793
 $\Lambda_{ee}: 0.418331295, \Lambda_{ei}: 0.418331295, N^{\alpha}_{ee}: 3524.127975, N^{\alpha}_{ei}: 1178.475832,
 N^{\beta}_{ee}: 4567.016139, N^{\beta}_{ei}: 2946.029337, N^{\beta}_{ie}: 705.6645138, N^{\beta}_{ii}: 155.6924316,
 \Gamma_{ee}: 1.030206899, \hat{\Gamma_{ei}}: 1.245480131, \hat{\Gamma_{ie}}: 1.661138507, \Gamma_{ii}: 1.144879622,
-g: 0.7, \gamma_{ee}: 0.71336694981, \gamma_{ei}: 0.53411167, \chi_{ee}: 700.0, \chi_{ei}: 700.0, h^{rest}_e: -79.27217543,
+g_e: 0.7, \gamma_{ee}: 0.71336694981, \gamma_{ei}: 0.53411167, \chi_{ee}: 700.0, \chi_{ei}: 700.0, h^{rest}_e: -79.27217543,
 h^{eq}_{ee}: -19.32193417, h^{eq}_{ei}: -8.307573166, h^{rest}_i: -76.08372036, h^{eq}_{ie}: -85.45750982,
 h^{eq}_{ii}: -84.48223465, \mu_e: -54.37736285, \mu_i: -54.60726943,
 p_{ee}: 6.8330303706, p_{ei}: 9.2679440497,
 p_{ie}: 0.0, p_{ii}: 0.0, \phi_{ie}: 0, \phi_{ii}: 0, S^{max}_e: 0.0637001, S^{max}_i: 0.0838227,
 \sigma_e: 4.16943943, \sigma_i: 2.126102814, \tau_e: 73.3, \tau_i: 75.2, \tau^{slow}: 3665.0,
-  v: 0.839055$
+  v_{ee}: 0.839055, v_{ei}: 0.839055$
 }
 \end{figure}
 
@@ -695,7 +702,7 @@ h^{rest}_i: -75.55674507, h^{eq}_{ie}: -88.67197452, h^{eq}_{ii}: -85.43395694,
 
 	\label{fig:phi_fast_var}
 	\caption{Effect of modifying fast system parameters $\gamma_{ie}$, $\gamma_{ii}$, $\Gamma_{ie}$ and $\Gamma_{ii}$ with BS arising from slowing of the long range coupling in the cannonical model of Liley et al.\\
-	a. $\Gamma_{ie}: 1.42852881, \Gamma_{ii}: 0.14073783, \gamma_{ie}: 0.45787892, \gamma_ii: 0.09011466$ \\
+	a. $\Gamma_{ie}: 1.42852881, \Gamma_{ii}: 0.14073783, \gamma_{ie}: 0.45787892, \gamma_{ii}: 0.09011466$ \\
 	b. $\Gamma_{ie}: 2.85705762, \Gamma_{ii}: 0.28147566, \gamma_{ie}: 0.22893946,  \gamma_{ii}: 0.04505733$\\
 	c. $\Gamma_{ie}: 2.85705762, \Gamma_{ii}: 0.28147566, \gamma_{ie}: 0.503666812,  \gamma_{ii}: 0.099126126$\\
 All other parameters:\\
@@ -722,20 +729,22 @@ to BS.
 
 \subsection{Onset of bursting may emerge from parametric changes in the 'fast' system alone}
 A wide variety of bursting dynamics have been observed via simple parametric alteration. It is demonstrated that parametric variations in
-'fast' system variables ($\gamma_{ik}, \Gamma_{ik}, \Gamma_{ek}, \tau_i$) alone can instigate BS and vary its dymaics. Therefore it is conceivable that BS is triggered either partially or entirely via a parametric variation in the fast system alone.
+'fast' system variables ($\gamma_{ik}, \Gamma_{ik}, \Gamma_{ek}, \tau_i$) alone can instigate BS and vary its dymaics. It is therefore conceivable that BS is triggered either partially or entirely via a parametric variation in the fast system alone.
+
+From this evidence it is conceivable that the slow systems introduced in the models of thalamic averaging and synaptic/intracellular resource utilisation may be largely unaffected by anaesthesia. In this case the triggering of BS would be almost entirely due the the anaesthetic effect on the 'fast' system.
 
 \subsection{Multiple origins for bursting possible}
 We have presented results that demonstrate that there are a variety of physiologically plausible mechanisms that bring about
 BS. Concordant with experimental evidence(ref), intrinsic and extrinsic cortical mechanisms have been
-presented that can produce bursting behaviour in the model of Liley et Al.
+presented that can produce BS in the model of Liley et al.
 
 The ability to demonstrate BS within the model of Liley et al. through both the introduction of physiologically
-plausible slow mechanisms and through parametric changes in the cannonical model, suggests that BS is a phenomenon that may have multiple origins. Further work is needed to investigate the interactions
+plausible slow mechanisms and through parametric changes in the cannonical model, suggests that BS may be a phenomenon that has multiple origins. Further work is needed to investigate the interactions
 between the introduced and emergent slow systems.
 
 \subsection{Further investigations}
-The current investigations have focussed on the spatially homogeneous case for the model of Liley et Al. (ie $\nabla^2 =
-0$). Therefore the cortical phase synchrony(ref?) of burst suppression has not been investigated.
+The current investigations have focussed on the spatially homogeneous case for the model of Liley et al. (i.e. $\nabla^2 =
+0$ in \ref{eq:phi}). The cortical phase synchrony(ref?) of burst suppression therefore has not as yet been investigated.
 
 This investigation considered each emergent slow system orthogonally and we have not as yet investigated the
 interactions between the presented emergent slow system in a unified model that covers all the presented augmentations to the cannonical model of Liley et al.
