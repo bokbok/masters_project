@@ -6,6 +6,7 @@
 \usepackage{caption}
 \usepackage{subcaption}
 \begin{document}
+\bibliographystyle{plain}
 \title{Mesoscopic Modelling of Burst Suppression Under Anaesthesia}
 \author{Matthew Walsh\\
    \small Brain and Psychological Sciences Research Centre (BPsyC),\\
@@ -45,8 +46,7 @@ Prior to the development of the modern intensive care unit in the early
 1960s, featuring intubation, artificial respiration and comprehensive
 physiological monitoring, reports of the electroencephalographic
 pattern of burst suppression were confined to animal studies involving
-deep anaesthesia and the odd case of psychosurgery (Niedermeyer,
-2009). Since then the burst suppression pattern is now recognized as
+deep anaesthesia and the odd case of psychosurgery~\cite{Niedermeyer2009}. Since then the burst suppression pattern is now recognized as
 a major class of generalised EEG waveform abnormality of diagnostic
 and prognostic significance that is encountered in a range of
 encephalopathic conditions, in addition to its pharmacological genesis
@@ -57,18 +57,16 @@ of electroencephalographic suppression (isoelectricity). The oscillatory
 features of the bursts, together with their duration and the duration of
 suppressed periods show a high degree of variability that reflects its
 myriad of initiating causes (see Figure \ref{fig:burst_examples} for examples). First identified
-during deep anaesthesia with tribromoethanol in cats (Derbyshire et al,
-1936), labelled “burst-suppression pattern” by Swank \& Watson (1948) during barbiturate and ether anaesthesia in dogs,
+during deep anaesthesia with tribromoethanol in cats~\cite{Derbyshire31071936}, labelled “burst-suppression pattern” by Swank \& Watson~\cite{Swank01031949} during barbiturate and ether anaesthesia in dogs,
 it is now
-associated with cortical deafferentation (Henry \& Scoville, 1952),
-cerebral anoxia and hypoxia, various types of intracortical lesions
-(Fischer-Williams, 1963), deep coma, various infantile
-encephalopathies, the final stages of deteriorated status epilepticus
-(Trieman et al 1990), hypothermia, and high levels of many sedative
-and anaesthetic agents (Schwartz et al, 1989; Akrawi et al 1996).
+associated with cortical deafferentation~\cite{Henry19521},
+cerebral anoxia and hypoxia, various types of intracortical lesions~\cite{FischerWilliams1963568}, deep coma, various infantile
+encephalopathies, the final stages of deteriorated status epilepticus~\cite{Treiman199049}
+, hypothermia, and high levels of many sedative
+and anaesthetic agents~\cite{Schwartz1989}~\cite{Akrawi1996}
 
 Burst suppression in the absence of anaesthesia is in general
-associated with a very poor prognosis. Grigg-Damberger et al (1989)
+associated with a very poor prognosis. Grigg-Damberger et al~\cite{GriggDamberger198984}
 found that the neonatal appearance of burst suppression, even if
 transient, was a portent of death or severe neurodevelopmental
 disability in 93\% of infants who were followed up subsequent to the
@@ -76,15 +74,15 @@ appearance of electroencephalographic evidence of neonatal burst
 suppression. In adult populations while an anoxic/hypoxic burst
 suppression pattern signals a serious pathophysiological event the
 outcome is not necessarily fatal and recovery with or without severe
-neurological damage is possible (Niedermeyer, 2009). The results of
+neurological damage is possible~\cite{Niedermeyer2009}. The results of
 experimental work with EEG monitoring in rats reveals that animals with
 greater rates of high amplitude bursts had a better survival and
 neurological outcome compared to those with lower rates of low
-amplitude bursts (Geocadin et al, 2002).
+amplitude bursts~\cite{Geocadin2002193}.
 
 While the electroencephalographic phenomenon and clinical
-implications of burst suppression have been studied extensively
-(Niedermeyer, 2009; Brenner, 1985) the physiological mechanisms
+implications of burst suppression have been studied extensively~\cite{Niedermeyer2009}
+(Brenner, 1985) the physiological mechanisms
 underlying its emergence remain unresolved and obscure. However the
 phenomenal resemblance of the patterns of burst suppression to
 disorders of neuronal hyperexcitability suggests that similar
@@ -98,7 +96,7 @@ are recorded simultaneously at multiple electrode derivations, implying
 the wide synchronisation of neuronal activity. Not surprisingly then, in
 clinical practice the boundaries between what constitutes coma
 induced burst suppression and what is defined as ictal seizure activity
-is blurred (Amzica, 2009; Hirsch et al, 2004). While such
+is blurred~\cite{Amzica2009} (Hirsch et al, 2004). While such
 differentiation may be one of only semantics practically speaking there
 nevertheless may be important clinical implications if they respond
 differentially to pharmacotherapy and have different prognostic
@@ -107,17 +105,15 @@ distinction.
 
 Surprisingly many anaesthetic agents, at levels well below that needed
 to induce burst suppression, quite commonly induce epileptiform
-activity (Voss et al, 2008). While such epileptiform activity rarely
-progresses to clinically apparent seizures (Garcia-Morales et al, 2002)
+activity~\cite{Voss2008}. While such epileptiform activity rarely
+progresses to clinically apparent seizures~\cite{GarciaMorales2009}
 the presence of such activity nevertheless is believed to indicate some
 form of incipient cortical hyperexcitability. Indeed a number of
 mesoscopic mean field models developed to account for the
-electroencephalographic features of anaesthetic action (Bojak \& Liley,
-2005; Steyn-Ross et al, 1999), based on parameterising empirically
+electroencephalographic features of anaesthetic action~\cite{Bojak2005}~\cite{SteynRoss1999}, based on parameterising empirically
 identified sub-cellular and molecular targets, have been able to account
 for the pro-convulsant properties of many anaesthetic agents known
-to have seizurogenic potential (Wilson et al, 2006; Liley \& Bojak,
-2005). Given that the majority of anaesthetic agents induce burst
+to have seizurogenic potentia~\cite{Liley2005}l (Wilson et al, 2006;). Given that the majority of anaesthetic agents induce burst
 suppression it is therefore natural to inquire whether these mesoscopic
 mean field models of electrocortical anaesthetic action are able to
 account for the appearance of drug-induced burst suppression, and in
@@ -532,22 +528,18 @@ In all three models we altered fast system parameters $\gamma_{ik}, \tau_i$ and 
 \begin{figure}
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[scale=0.35]{chosen-frontiers-2012/00143-1-1-6-he-thal.pdf}
-		\label{fig:00143_a}
 		\caption{$h_e (mV)$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[scale=0.35]{chosen-frontiers-2012/00143-1_2-1-6-he-thal.pdf}
-		\label{fig:00143_b}
 		\caption{$h_e (mV)$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[scale=0.35]{chosen-frontiers-2012/00143-1-0_4-6-he-thal.pdf}
-		\label{fig:00143_c}
 		\caption{$h_e (mV)$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[scale=0.35]{chosen-frontiers-2012/00143-1-1-5-he-thal.pdf}
-		\label{fig:00143_d}
 		\caption{$h_e (mV)$}
 	\end{subfigure}
 	\label{fig:00143}
@@ -574,22 +566,18 @@ h^{rest}_i: -77.90610838, h^{eq}_{ie}: -85.52639408, h^{eq}_{ii}: -85.434985,
 \begin{figure}
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[scale=0.35]{chosen-frontiers-2012/00493-1-he-intra.pdf}
-		\label{fig:493_a}
 		\caption{$h_e (mV)$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[scale=0.35]{chosen-frontiers-2012/00493-0_5-he-intra.pdf}
-		\label{fig:493_b}
 		\caption{$h_e (mV)$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[scale=0.35]{chosen-frontiers-2012/00493-0_11-he-intra.pdf}
-		\label{fig:493_c}
 		\caption{$h_e (mV)$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[scale=0.35]{chosen-frontiers-2012/00493-0_1-he-intra.pdf}
-		\label{fig:493_d}
 		\caption{$h_e (mV)$}
 	\end{subfigure}
 
@@ -608,22 +596,18 @@ $\Lambda_{ee}: 0.861765043, \Lambda_{ei}: 0.861765043, N^{\alpha}_{ee}: 2564.793
 \begin{figure}
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[scale=0.35]{chosen-frontiers-2012/00460-3-he-intra.pdf}
-		\label{fig:460_a}
 		\caption{$h_e (mV)$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[scale=0.35]{chosen-frontiers-2012/00460-3-slow-intra.pdf}
-		\label{fig:460_b}
 		\caption{$\zeta_e (UNITS)$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[scale=0.35]{chosen-frontiers-2012/00460-0_7-he-intra.pdf}
-		\label{fig:460_c}
 		\caption{$h_e (mV)$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[scale=0.35]{chosen-frontiers-2012/00460-0_7-slow-intra.pdf}
-		\label{fig:460_d}
 		\caption{$\zeta_e (UNITS)$}
 	\end{subfigure}
       \label{fig:emerging_slow_zeta}
@@ -648,21 +632,18 @@ p_{ie}: 0.0, p_{ii}: 0.0, \phi_{ie}: 0, \phi_{ii}: 0, S^{max}_e: 0.0637001, S^{m
 	\begin{subfigure}[b]{1\textwidth}
 		\includegraphics[scale=0.32]{chosen-frontiers-2012/00214-1-0_5-5-0_5-he-phi.pdf}
 		\includegraphics[scale=0.32]{chosen-frontiers-2012/00214-1-0_5-5-0_5-phi_ei-phi}
-		\label{fig:214-1-0_5-5-0_5}
 		\caption{$h_e (mV)$ and $\phi_{ei}$}
 	\end{subfigure}
 
 	\begin{subfigure}[b]{1\textwidth}
 		\includegraphics[scale=0.32]{chosen-frontiers-2012/00214-1-0_1-5-0_2-he-phi.pdf}
 		\includegraphics[scale=0.32]{chosen-frontiers-2012/00214-1-0_1-5-0_2-phi_ei-phi}
-		\label{fig:214-1-0_1-5-0_2}
 		\caption{$h_e (mV)$ and $\phi_{ei}$}
 	\end{subfigure}
 
 	\begin{subfigure}[b]{1\textwidth}
 		\includegraphics[scale=0.32]{chosen-frontiers-2012/00214-1-0_1-5-0_1-he-phi.pdf}
 		\includegraphics[scale=0.32]{chosen-frontiers-2012/00214-1-0_1-5-0_1-phi_ei-phi}
-		\label{fig:214-1-0_1-5-0_2}
 		\caption{$h_e (mV)$ and $\phi_{ei}$}
 	\end{subfigure}
 	\label{fig:phi_dyn}
@@ -686,17 +667,14 @@ h^{rest}_i: -75.55674507, h^{eq}_{ie}: -88.67197452, h^{eq}_{ii}: -85.43395694,
 \begin{figure}
 	\begin{subfigure}[b]{0.3\textwidth}
 		\includegraphics[scale=0.22]{chosen-frontiers-2012/00416-he-phi.pdf}
-		\label{fig:416_phi_a}
 		\caption{$h_e (mV)$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.3\textwidth}
 		\includegraphics[scale=0.22]{chosen-frontiers-2012/00416-0_5-2-1-he-phi.pdf}
-		\label{fig:416_phi_b}
 		\caption{$h_e (mV)$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.3\textwidth}
 		\includegraphics[scale=0.22]{chosen-frontiers-2012/00416-1_1-2-1-he-phi.pdf}
-		\label{fig:416_phi_c}
 		\caption{$h_e (mV)$}
 	\end{subfigure}
 
@@ -750,15 +728,8 @@ This investigation considered each emergent slow system orthogonally and we have
 interactions between the presented emergent slow system in a unified model that covers all the presented augmentations to the cannonical model of Liley et al.
 
 
-\begin{thebibliography}{999}
+\bibliography{frontiers_in_neuroscience_oct_2012}
 
-\bibitem{izikevich2007_1}
-  Eugene M. Izhikevich,
-  Dynamical Systems in Neuroscience: the geometry of excitability and bursting:329-344,
-  1st Edition,
-  2010.
-
-\end{thebibliography}
 
 \end{document}
 
