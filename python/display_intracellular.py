@@ -20,15 +20,18 @@ model = LileySigmoidBurstPSPRes(params = params.values()[0], timescale = "ms")
 linewidth = 1
 
 if len(sys.argv) > 2 and sys.argv[2] == "save":
-    linewidth = 0.1
+    linewidth = 0.3
 
-equib = model.run([0, 10000]).run([0, 16000]).display(['h_e'], fig = "3", linewidth = linewidth).display(['slow'], fig = "1", linewidth = linewidth)
+equib = model.run([0, 10000]).run([0, 16000]).display(['h_e'], fig = "3", linewidth = linewidth, label= "mV").display(['T_ee_aug'], fig = "1", linewidth = linewidth).display(['T_ei_aug'], fig = "2", linewidth = linewidth)
 
 if len(sys.argv) > 2 and sys.argv[2] == "save":
     figure("3")
-    savefig("papers/frontiers-2012-images/" + params.keys()[0] + "-he-intra.eps", format = 'eps')
+    savefig("papers/frontiers-2012-images-revised/" + os.path.basename(sys.argv[1]).replace('.', '_') + "-he-intra.pdf", format = 'pdf')
+
+    figure("2")
+    savefig("papers/frontiers-2012-images-revised/" + os.path.basename(sys.argv[1]).replace('.', '_') + "-T_ee-intra.pdf", format = 'pdf')
 
     figure("1")
-    savefig("papers/frontiers-2012-images/" + params.keys()[0] + "-slow-intra.eps", format = 'eps')
+    savefig("papers/frontiers-2012-images-revised/" + os.path.basename(sys.argv[1]).replace('.', '_') + "-T_ei-intra.pdf", format = 'pdf')
 else:
     show()
