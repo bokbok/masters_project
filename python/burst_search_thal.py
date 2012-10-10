@@ -19,15 +19,15 @@ run_params = params[sys.argv[2]]
 run_params['tor_slow'] = run_params['tor_e'] * 50
 run_params['g'] = 0.7
 run_params['thal_e'] = float(sys.argv[3])
-run_params['thal_i'] = float(sys.argv[3])
+run_params['thal_i'] = float(sys.argv[4])
 
 model = LileySigmoidBurstThalamic(params = run_params, timescale = "ms")
 
-equib = model.run([0, 20000]).display(['h_e'], fig = "2").display(['slow'], fig = "1")
+equib = model.run([0, 100000]).display(['h_e'], fig = "2").display(['slow'], fig = "1")
 
-if len(sys.argv) > 4:
-    if sys.argv[4] == "save":
-        out = open(sys.argv[1] + '-' + sys.argv[2] + "-burst-thal.yml", 'w')
+if len(sys.argv) > 5:
+    if sys.argv[5] == "save":
+        out = open(sys.argv[1] + '-' + sys.argv[2] + "-burst-thal-rev.yml", 'w')
         dump({ sys.argv[2] : run_params }, out)
         out.close()
 else:

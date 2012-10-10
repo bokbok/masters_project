@@ -1,4 +1,4 @@
-from model import LileySigmoidBurstPSP
+from model import LileySigmoidBurstPSPRes
 from pylab import plot, show, figure
 import gc
 
@@ -16,18 +16,18 @@ except ImportError:
 params = load(file(sys.argv[1], 'r'))
 
 run_params = params[sys.argv[2]]
-run_params['tor_slow'] = run_params['tor_e'] * 50
-run_params['g'] = 0.7
-run_params['gamma_slow_ee'] = float(sys.argv[3])
-run_params['gamma_slow_ei'] = float(sys.argv[3])
+run_params['tor_slow_ee'] = run_params['tor_e'] * float(sys.argv[3])
+run_params['tor_slow_ei'] = run_params['tor_e'] * float(sys.argv[4])
+run_params['g_ee'] = run_params['tor_slow_ee'] * float(sys.argv[5])
+run_params['g_ei'] = run_params['tor_slow_ei'] * float(sys.argv[6])
 
-model = LileySigmoidBurstPSP(params = run_params, timescale = "ms")
+model = LileySigmoidBurstPSPRes(params = run_params, timescale = "ms")
 
-equib = model.run([0, 20000]).display(['h_e'], fig = "2").display(['slow'], fig = "1")
+equib = model.run([0, 20000]).display(['h_e'], fig = "2").display(['T_ee_aug', 'T_ei_aug'], fig = "1")
 
-if len(sys.argv) > 4:
-    if sys.argv[4] == "save":
-        out = open(sys.argv[1] + '-' + sys.argv[2] + "-burst-psp.yml", 'w')
+if len(sys.argv) > 7:
+    if sys.argv[7] == "save":
+        out = open(sys.argv[1] + '-' + sys.argv[2] + "-burst-psp-res.yml", 'w')
         dump({ sys.argv[2] : run_params }, out)
         out.close()
 else:

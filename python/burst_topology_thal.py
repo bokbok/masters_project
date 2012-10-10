@@ -1,4 +1,4 @@
-from model import LileySigmoidBurstThalamicConst
+from model import LileySigmoidBurstThalamic
 from pylab import plot, show, figure
 import gc
 
@@ -17,9 +17,10 @@ params = load(file(sys.argv[1], 'r'))
 
 run_params = params[sys.argv[2]]
 
-run_params['slow'] = 0
+#run_params['slow'] = 0
 run_params['thal_e'] = 1
-run_params['thal_i'] = 1
+run_params['thal_i'] = 0
+run_params['g'] = 0
 
 hopf_count = 1
 saddle_node_count = 1
@@ -30,8 +31,8 @@ if len(sys.argv) > 2:
 if len(sys.argv) > 3:
     saddle_node_count = int(sys.argv[4])
 
-model = LileySigmoidBurstThalamicConst(params = run_params, timescale = "ms")
-equib = model.run([0, 2000])
+model = LileySigmoidBurstThalamic(params = run_params, timescale = "ms")
+equib = model.run([0, 2000]).freeze(['slow'])
 
 cont = equib.searchForBifurcations('slow', 'h_e', steps = 2000, maxStepSize = 1).display(fig = "3")
 

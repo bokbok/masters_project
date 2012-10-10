@@ -1,4 +1,4 @@
-from model import LileySigmoidBurstPSP
+from model import LileySigmoidBurstPSPRes
 from pylab import plot, show, figure, savefig
 import gc
 
@@ -15,7 +15,7 @@ except ImportError:
 
 params = load(file(sys.argv[1], 'r'))
 
-model = LileySigmoidBurstPSP(params = params.values()[0], timescale = "ms")
+model = LileySigmoidBurstPSPRes(params = params.values()[0], timescale = "ms")
 
 linewidth = 1
 

@@ -34,7 +34,7 @@ equib = model.run([0, 10000]).run([0, 40000]).display(['h_e'], fig = "3").displa
 if len(sys.argv) > 5:
     if sys.argv[5] == "save":
         print "Saving modified set"
-        out = open(sys.argv[1] + "-thal-mod-" + str(sys.argv[2]) + "-" + str(sys.argv[3]) + "-" + str(sys.argv[4]) + "-" + str(sys.argv[5]) + ".yml", 'w')
+        out = open(sys.argv[1] + "-thal-rev-mod-" + str(sys.argv[2]) + "-" + str(sys.argv[3]) + "-" + str(sys.argv[4]) + "-" + str(sys.argv[5]) + ".yml", 'w')
 
         dump({ sys.argv[2] : run_params }, out)
         out.close()

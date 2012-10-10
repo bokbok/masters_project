@@ -20,15 +20,15 @@ model = LileySigmoidBurstThalamic(params = params.values()[0], timescale = "ms")
 linewidth = 1
 
 if len(sys.argv) > 2 and sys.argv[2] == "save":
-    linewidth = 0.1
+    linewidth = 0.3
 
 equib = model.run([0, 10000]).run([0, 16000]).display(['h_e'], fig = "3", label= "mV", linewidth = linewidth).display(['slow'], fig = "1", linewidth = linewidth)
 
 if len(sys.argv) > 2 and sys.argv[2] == "save":
     figure("3")
-    savefig("papers/frontiers-2012-images/" + os.path.basename(sys.argv[1]) + "-he-thal.eps", format = 'eps')
+    savefig("papers/frontiers-2012-images-revised/" + os.path.basename(sys.argv[1]).replace('.', '_') + "-he-thal.pdf", format = 'pdf')
 
     figure("1")
-    savefig("papers/frontiers-2012-images/" + os.path.basename(sys.argv[1]) + "-slow-thal.eps", format = 'eps')
+    savefig("papers/frontiers-2012-images-revised/" + os.path.basename(sys.argv[1]).replace('.', '_') + "-slow-thal.pdf", format = 'pdf')
 else:
     show()
