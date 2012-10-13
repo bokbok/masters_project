@@ -352,9 +352,9 @@ HCN1 pacemaker channels & membrane hyperpolarisation, increase in EPSP amplitude
 \\
 nACh receptors & reduction in tonic excitation & $p_{ek}, h_k^r$ \\
 \\
-synaptic GABA$_A$ & increase in IPSP charge transfer & $\Gamma_{ik}, \gamma_{ik}, \epsilon_{ik}$\\
+synaptic GABA$_A$ & increase in IPSP charge transfer & $\Gamma_{ik}, \gamma_{ik}$\\
 \\
-AMPA/kainate \& NMDA$_b$ receptors & decrease in EPSP charge transfer & $\Gamma_{ek}, \gamma_{ek}, \epsilon_{ek}$\\
+AMPA/kainate \& NMDA$_b$ receptors & decrease in EPSP charge transfer & $\Gamma_{ek}, \gamma_{ek}$\\
 \\
 myelinated axons$^c$ & decreased conduction velocity & $v_{ek}$\\
 \\
@@ -440,66 +440,82 @@ timescale within the model of Liley et al.
 
 No obvious candidate for a slow timescale in the cannonical model of Liley et al existed, thus additional physiologically plausible slow systems were introduced as augmentations to the cannonical mean field model of Liley et al. The long range coupling described in \ref{eq:phi} was also identified as a possible candidate for an emergent slow timescale via parametric alteration.
 
-\subsection{Introduction a simple 'thalamus'}
+\subsection{Introduction of a simple 'thalamus'}
 
-Cortico-Thalamic feedback has been proposed as a mechanism for the generation of slow sleep waves (ref steriade etc) and its plausibility as a slow timescale system leading to BS in the mean field model of Liley et al was investigated. 
-A simple model of corico-thalamic feedback was introduced in to the mean field model of Liley et al. Thalamic feedback was modelled as a simple, first order, low pass filtering of mean field activity. This was acheived by introducing a mean field averaging system $\zeta$. As cortico-thalamic connections are almost entirely excitatory in nature it was assumed $\zeta$ was driven proportional to the firing rate of the excitatory system $s_e(h_e)$.
+Cortico-Thalamic feedback has been proposed as a mechanism for the generation of slow sleep waves (ref steriade etc) and its plausibility as a slow timescale system leading to BS in the mean field model of Liley et al was investigated. Thalamic feedback was modelled as a simple, first order, low pass filtering of mean field activity. This was acheived by introducing a mean field  thalamic averaging (TA) model $\zeta$. As cortico-thalamic connections are almost entirely excitatory in nature(ref) it was assumed $\zeta$ was driven proportionally to the firing rate of the excitatory system $S_e(h_e)$.
 A simple first order low pass filter was used for $\zeta$, represented by the following coupled ordinary differential equation
 
 \begin{equation} \label{eq:zeta_slow} 
-\tau^{slow} \frac{\partial \zeta}{\partial t} = g s_e(h_e) - \zeta
+\tau^{slow} \frac{\partial \zeta}{\partial t} = g S_e(h_e) - \zeta
 \end{equation}
-where $\tau^{slow}$ is the time constant for the slow system and $g$ the mean field connectivity
-dimensionless constant.
+where $\tau^{slow}$ is the time constant for the filter and $g$ is a dimensionless constant for mean field connectivity.
 
-The cannonical mean field model of Liley et al was augmented to introduce a a cortico-thalamic feedback component. 
-This was acheived by formulating an expression for the extra cortical input $p_{ek}$ in (\ref{eq:a_ek}) to include the addition of cortico-thalamic feedback. This feedback component was assumend to be linearly proportianal to $\zeta_e$. Thus the constants for $p_{ek}$ in (\ref{eq:a_ek}) were replaced with the expression
+The extra cortical input $p_{ek}$ in (\ref{eq:a_ek}) was reformulated to include a component of cortico-thalamic feedback. This feedback component was assumed to be linearly proportianal to $\zeta_e$. Thus the constants for $p_{ek}$ in (\ref{eq:a_ek}) were replaced with the expression
 
 \begin{equation} \label{eq:p_ek}
 p_{ek} = \hat{p}_{ek} + \rho_{ek} \zeta
 \end{equation}
 \noindent
-Where $\rho_{ek}$ is a dimensionless constant of proportionality to $\zeta$, representing the amount of cortico-thalamic feedback connectivity. $\hat{p}_{ek}$ is a constant that represents
-the purely feed-forward component of extra cortical input. This corresponds to the original constant expression for $p_{ek}$ in the cannonical model. 
+Where $\rho_{ek}$ is a dimensionless constant of connectivity to $\zeta$. $\hat{p}_{ek}$ is a constant that represents
+the purely feed-forward component of extra cortical input and corresponds with the original constant expression for $p_{ek}$ in the cannonical model. 
 
 It should be noted that when $\rho\zeta=0; \forall t \geq 0$ this augmented model collapses back to the cannonical model of Liley et al.
 
-\subsection{Modelling intracellular and/or synaptic resource utilisation}
-(Tsodyks and Markram 1997, Bazhenov et Al 2002) introduced generic neuronal models of synaptic resource utilisation and recovery. Spiking activity expends neuronal resources and bursting can come about through inadequate recovery of these resources that leaves neurons in a state of depletion.  Similarly a model of intracellular and synaptic resource depletion was introduced in to the mean field model of Liley et al. 
+\subsection{Intracellular and/or synaptic resource utilisation}
+(Tsodyks and Markram 1997, Bazhenov et Al 2002) introduced generic neuronal models of synaptic resource utilisation and recovery. Spiking activity expends neuronal resources and bursting can come about through inadequate recovery thus leaving the neurons in a depleted state.  Similarly a model of intracellular and synaptic resource utilisation (SIRU) was introduced in to the mean field model of Liley et al. 
 
-In the mean field model of Liley et al, it was assumed that a depletion in intracellular or synaptic resources would present itself as a decrease in the peak PSP. Therefore we reformulated the excitatory PSPs ($\Gamma_{ek}$, where $k \in \{e, i\}$) to
-introduce a simple model of intracellular/synaptic resource depletion and recovery.
+In the mean field model of Liley et al, it was assumed that a depletion in intracellular or synaptic resources would present itself as a decrease in the peak PSP. Therefore we reformulated the peak excitatory PSPs ($\Gamma_{ek}$, where $k \in \{e, i\}$) to
+introduce a simple model of synaptic/intracellular resource utilisation.
 
-It was assumed that the rate resource usage was proportional to the excitatory firing rate $s_e(h_e)$ and that the rate of resource recovery was dependant on the difference of the PSP from its nominal value ($\hat{\Gamma}_{ek}$). Based on these assumptions $\Gamma_{ek}$ was reformulated as the following coupled differential equation
-
-
-\begin{equation} \label{eq:Gamma_ek}
-{\tau^{slow}_{ek}} \frac{\partial{\Gamma_{ek}}}{\partial{t}} = \hat{\Gamma}_{ek} - \Gamma_{ek} - \chi_{ek} s_e(h_e)
+The rate of change of the peak excitatory PSP can be expressed as a simple logistic equation where:
+\begin{equation}
+\label{eq:res_rate}
+\frac{\partial{\Gamma_{ek}}}{\partial{t}} = R_{ek}^{recovery} - R_{ek}^{depletion}
 \end{equation}
-
 \noindent
-Where $\hat{\Gamma}_{ek}$ is the original constant expression for $\Gamma_{ek}$, representing the nominal post synaptic potential. $\chi_{ek}$ is the rate of resource expenditure, $\tau^{slow}$ is resource recovery time constant.
+Where $R_{ek}^{recovery}$ is the rate of peak PSP recovery and $R_{ek}^{depletion}$ is the rate of peak PSP depletion.
+
+$R_{ek}^{recovery}$ is assumed to be proportional to the decrease in peak PSP ($\hat{\Gamma}_{ek} - {\Gamma}_{ek}$), giving
+\begin{equation}
+\label{eq:res_recov}
+R_{ek}^{recovery}= \frac{\hat{\Gamma}_{ek} - {\Gamma}_{ek}}{\tau_{ek}^{slow}}
+\end{equation}
+\noindent
+Where $\tau^{slow}$ is the time constant for peak PSP recovery, $\hat{\Gamma}_{ek}$ is the original constant expression for $\Gamma_{ek}$ that represents the nominal peak PSP.
+
+$R_{ek}^{depletion}$ is assumed to be proportional to the excitatory firing rate $S_e(h_e)$ and the amount of available intracellular and the peak PSP ($\Gamma_{ek}$), giving
+\begin{equation}
+\label{eq:res_depl}
+R_{ek}^{depletion}= \frac{\Gamma_{ek} \chi_{ek}S_e(h_e)}{\tau_{ek}^{slow}}
+\end{equation}
+\noindent
+Where $\chi_{ek}/\tau_{ek}^{slow}$ is the resource depletion time constant.
+
+Substituting (\ref{eq:res_recov}) and (\ref{eq:res_depl}) into (\ref{eq:res_rate}) gives
+\begin{equation} \label{eq:Gamma_ek}
+{\tau^{slow}_{ek}} \frac{\partial{\Gamma_{ek}}}{\partial{t}} = \hat{\Gamma}_{ek} - \Gamma_{ek}(1 + \chi_{ek} S_e(h_e))
+\end{equation}
 
 It should be noted that when $\chi_{ek}=0$ and $t \gg 0$ this model aproaches the cannonical model of Liley et al.
 
-\subsection{Emergence of a slow system from a parametric variation of cannonical model}
-While the coupled inhibitory/excitatory system represents a single fast timescale in the mean field model of Liley et al, there is also a long range coupling system ($\phi_{ek}$). This system describes long range intra cortical connections. The possibility that this system could emerge as a slow system through parametric variation and thus inducing BS was investigated.
+\subsection{Emergence of a slow timescale from a parametric variation in the cannonical model}
+While the coupled inhibitory/excitatory system represents a single fast timescale in the mean field model of Liley et al, there is also a long range coupling system ($\phi_{ek}$). This system describes long range intra-cortical connections. The possibility that this system could operate on a slower timescale through parametric variation and thus inducing BS was investigated.
 
 Swindale 2003 hypothesises that anaesthesia may bring about changes to axonal conduction velocities and capacitances. Furthermore it is known that hypothermia significantly affects conduction velocities(ref) and is also a known condition under which BS occurs. We investigated the
 effects of modifying the conduction velocity and the characteristic decay scale ($v$ and $\Lambda_{ek}$) had on the
 long range coupling $\phi_{ek}$ system, in an attempt to bring about slow oscillations in this system.
 
 \subsection{Simulation of anaesthetic induction}
-Anaesthetic induction can be simulated within the mean field model of Liley et al via parametric alterations. Present knowledge of parameters that are modified due to anaesthetic action is restricted to parameters within the cannonical model (see Table \ref{table:model_params}). The contribution of parametric alterations related to anaesthetic induction was investigated. This was done to begin to understand the emergence of BS and variations its dynamics. This simulated induction of anaesthesia was done in the presence of an introduced or emergent slow system.
+Anaesthetic induction can be simulated within the mean field model of Liley et al via parametric alterations. Present knowledge of parameters that are modified due to anaesthetic action is restricted to parameters within the cannonical model (see Table \ref{table:model_params}). The contribution that known anaesthetic effects have on the instigation of BS and its dynamics were studied by simulating anaesthetic induction in the presence of slow timescale systems. 
 
-The simulation of anaesthetic induction concentrated on varying the model parameters $\Gamma_{ik}$, $\tau_i$ and $\gamma_{ik}$ as these parameters are known to vary with GABAergic anaesthetics. 
+The simulation of anaesthetic induction concentrated on varying the model parameters $\Gamma_{ik}$ and $\gamma_{ik}$ as these parameters are known to vary with GABAergic anaesthetics. 
 
 \subsection{Computational methods}
 Riznel (1995) introduces a method of dissection to analyse systems that operate on multiple timescales. Fast and slow systems are considered separately and the slow system can be frozen, replacing it with a parameter in the fast system. This frozen system can then be used to analyse the dynamics of the fast system with respect to the slow system. Izhikevich (ref) introduces common bursting topologies, where the transitions between quiescence and spiking can be viewed as bifurcations with respect to the frozen slow parameter(s).
 
-A large scale numerical bifurcation analysis was performed on previously generated parameter sets(ref to sets). The slow system for each investigation was frozen and used as the free parameter within the bifurcation analysis. For the model of thalamic averaging and the model of synaptic and intracellular resource utilisation $\zeta$ was frozen and used as a bifurcation parameter. For the MSIRU $\Gamma_{ek}$ was replaced by a single parameter $\Gamma$ and this was used as the free variable for the bifurcation analysis. For the cannonical model of Liley et al, $\phi_{ek}$ was frozen replacing them with a single bifurcation parameter $\phi$.
+A large scale numerical bifurcation analysis was performed on previously generated parameter sets(ref to sets). The slow system for each investigation was frozen and used as the free parameter within the bifurcation analysis. For the TA model $\zeta$ was frozen and used as a bifurcation parameter. For the SIRU model $\Gamma_{ek}$ was replaced by a single parameter $\Gamma$ and this was used as the free variable for the bifurcation analysis. For the cannonical model of Liley et al, $\phi_{ek}$ was frozen replacing them with a single bifurcation parameter $\phi$.
 
-Parameter sets that displayed a topological liklihood of supporting BS were investigated individually. Parameter sets that displayed a liklihood of bursting had various various slow system parameters ($\tau^{slow}, g, \chi_{ek}, \rho_{ek}, v$ and $\Lambda_{ek}$) trialled in an attempt to produce BS. 
+Parameter sets that displayed a topological liklihood of supporting BS were investigated individually. Parameter sets that displayed a liklihood of bursting had various various slow timescale system parameters ($\tau^{slow}, g, \chi_{ek}, \rho_{ek}, v$ and $\Lambda_{ek}$) trialled in an attempt to produce BS. 
 
 All model simulations were performed numerically. Numerical integrations and bifurcation analysis of the aforementioned models were performed using the Python programming language, utilising
 the PyDSTool library (available from \url{http://sourceforge.net/projects/pydstool/}) running under 64 bit
@@ -510,197 +526,154 @@ $max\_pts = 40000000$.
 \section{Results}
 
 \subsection{Burst suppression arises in all investigated models}
-It was found that all investigated model configurations were able to simulate BS. Slow oscillations in $\zeta$ were seen to emerge along with BS in the TA model (see figure \ref{fig:emerging_slow_zeta}). Oscillations in $\Gamma_{ek}$ were observed coinciding with BS in the SIRU model. 
+It was found that all investigated model configurations were able to simulate BS. Slow oscillations in $\zeta$ were seen to emerge along with BS in the TA model (see figure \ref{fig:emerging_slow_intra}). Oscillations in $\Gamma_{ek}$ were observed coinciding with BS in the SIRU model. 
 
-Slow oscillations in $\phi_{ei}$ also emerged with BS with appropriate parametric (see figure \ref{fig:phi_dyn}) showing that dynamics of ($\phi_{ei}$) were able to operate on a timescale slower and independent to that of the coupled  excitatory/inhibitory system (see figure \ref{fig:phi_dyn}).
+Slow oscillations in $\phi_{ei}$ also emerged with BS under appropriate parametric conditions (see figure \ref{fig:phi_dyn}) showing that dynamics of ($\phi_{ei}$) were able to operate on a timescale slower and independent to that of the coupled  excitatory/inhibitory system (see figure \ref{fig:phi_dyn}).
 
-Anaesthetic induction was simulated on the parameter sets that were discovered to display BS. This was performed by altering parameters the parameters $\gamma_{ik}, \tau_i$ and $\Gamma_{ik}$ in the coupled excitatory/inhibitory system.  These parametric alterations showed that bursting dynamics were highly variable with respect to the fast system parameters, with transitions between tonic spiking and BS being triggered by alterations in fast system parameters (see figure \ref{fig:00143}, \ref{fig:intra_gamma}, \ref{fig:phi_fast_var}). Although transitions between spiking and bursting were acheived via this parametric variation these transitions did not always correspond to a contour of parametric change that is known to occur with anaesthetic induction. It was seen that increases instead of decreases of $\gamma_{ik}$ induced simulated BS in some cases.
+Anaesthetic induction was simulated by an alteration of the parameters $\gamma_{ik}, \tau_i$ and $\Gamma_{ik}$ in the coupled excitatory/inhibitory system within the parameter sets that were discovered to display BS.  These alterations showed that bursting dynamics were highly variable with respect to the known effects of anaesthetics. Transitions between tonic spiking and BS were triggered in these simulated anaesthetic inductions (see figure \ref{fig:00143}, \ref{fig:intra_gamma}, \ref{fig:phi_fast_var}). Although the parametric variation that was used to simulate anaesthetic induction acheived transitions between spiking and bursting, transitions were also observed in contours of parametric change that do not correspond to GABAergic anaesthetic induction.
 
 \begin{figure}
 	\begin{subfigure}[b]{0.5\textwidth}
-		\includegraphics[scale=0.35]{frontiers-2012-images-revised/effect_gamma_ee_yml-00143_ode-burst-thal-rev_yml-thal-rev-mod-1_2-0_5-1-save_yml-slow-thal.pdf}
-		\caption{$h_e (mV)$}
+		\includegraphics[scale=0.35]{frontiers-2012-images-revised/effect_gamma_ee_yml-00143_ode-burst-thal-rev_yml-thal-rev-mod-1_2-0_5-1-save_yml-he-thal.pdf}
+		\caption{$h_e$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[scale=0.35]{frontiers-2012-images-revised/effect_gamma_ee_yml-00143_ode-burst-thal-rev_yml-thal-rev-mod-1-0_5-1-save_yml-he-thal.pdf}
-		\caption{$h_e (mV)$}
+		\caption{$h_e$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[scale=0.35]{frontiers-2012-images-revised/effect_gamma_ee_yml-00143_ode-burst-thal-rev_yml-thal-rev-mod-0_9-0_5-1-save_yml-he-thal.pdf}
-		\caption{$h_e (mV)$}
+		\caption{$h_e$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[scale=0.35]{frontiers-2012-images-revised/effect_gamma_ee_yml-00143_ode-burst-thal-rev_yml-thal-rev-mod-1-0_7-1-save_yml-he-thal.pdf}
-		\caption{$h_e (mV)$}
+		\caption{$h_e$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[scale=0.35]{frontiers-2012-images-revised/effect_gamma_ee_yml-00143_ode-burst-thal-rev_yml-thal-rev-mod-1-1_1-1-save_yml-he-thal.pdf}
-		\caption{$h_e (mV)$}
+		\caption{$h_e$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[scale=0.35]{frontiers-2012-images-revised/effect_gamma_ee_yml-00143_ode-burst-thal-rev_yml-thal-rev-mod-1-1_3-1-save_yml-he-thal.pdf}
-		\caption{$h_e (mV)$}
+		\caption{$h_e$}
 	\end{subfigure}
 	\label{fig:00143}
-	\caption{Simulated induction of anaesthesia with the TA model. \\
-(a) Simulation begins with a resting EEG. 
-(b) Rate constants $\gamma_{ii}$ and $\gamma_{ie}$ are reduced, simulatating anaesthetic induction. (c) Further reduction in $\gamma_{ii}$ and $\gamma_{ie}$ bring about BS.
-(d) Increases in $\Gamma_{ii}$ and $\Gamma_{ie}$ and reductions in $\gamma_{ii}$ and $\gamma_{ie}$ from the resting state in (a) trigger BS. \\
+	\caption{Mean excitatory soma membrane potential ($h_e$) for a simulated induction of anaesthesia using the TA model. 
+Reductions in inhibitory post synaptic potential rate constants ($\gamma_{ii}$ and $\gamma_{ie}$) and increases in inhibitory post synaptic potential peak amplitudes ($\Gamma_{ii}$ and $\Gamma_{ie}$) are performed to simulate known GABAergic anaesthetic action.
+\\
+\\
+(a) Simulation begins with a resting EEG.\\ 
+(b) $\gamma_{ii}$ and $\gamma_{ie}$ are reduced, simulatating anaesthetic induction. (c) Further reduction in $\gamma_{ii}$ and $\gamma_{ie}$ brings about BS.\\
+(d) Increases in $\Gamma_{ii}$ and $\Gamma_{ie}$ and reductions in $\gamma_{ii}$ and $\gamma_{ie}$ from the resting state in (a) triggers BS. \\
 (e) and (f) $\Gamma_{ii}$ and $\Gamma_{ie}$ are further increased from their values in (d) bringing a transition to a slow wave.\\
-\\
-Simulation parameters are:\\
-(a) $\gamma_{ie} = 0.07924$, $\gamma_{ii} = 0.06251$, $\Gamma_{ie} = 0.69872$, $\Gamma_{ii} = 0.69021$\\
-(b) $\gamma_{ie} = 0.05209$, $\gamma_{ii} = 0.06604$, $\Gamma_{ie} = 0.69872$, $\Gamma_{ii} = 0.69021$\\
-(c) $\gamma_{ie} = 0.05943$, $\gamma_{ii} = 0.04688$, $\Gamma_{ie} = 0.69872$, $\Gamma_{ii} = 0.69021$\\
-(d) $\gamma_{ie} = 0.05209$, $\gamma_{ii} = 0.06604$, $\Gamma_{ie} = 0.97821$, $\Gamma_{ii} = 0.96629$\\
-(e) $\gamma_{ie} = 0.05209$, $\gamma_{ii} = 0.06604$, $\Gamma_{ie} = 1.53719$, $\Gamma_{ii} = 1.51845$\\
-(f) $\gamma_{ie} = 0.05209$, $\gamma_{ii} = 0.06604$, $\Gamma_{ie} = 1.81668$, $\Gamma_{ii} = 1.79454$\\
-\\
-For all other paramters see (APPENDIX)}
+(Please refer to the appendix for the parameters used in this simulation.)
+}
 \end{figure}
 
 \begin{figure}
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[scale=0.35]{frontiers-2012-images-revised/effect_gamma_ee_yml-00493_ode-burst-psp-res_yml-mod-res-5-1-1-1_yml-he-intra.pdf}
-		\caption{$h_e (mV)$}
+		\caption{$h_e$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[scale=0.35]{frontiers-2012-images-revised/effect_gamma_ee_yml-00493_ode-burst-psp-res_yml-mod-res-3-1-1-1_yml-he-intra.pdf}
-		\caption{$h_e (mV)$}
+		\caption{$h_e$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[scale=0.35]{frontiers-2012-images-revised/effect_gamma_ee_yml-00493_ode-burst-psp-res_yml-mod-res-3-2-1-1_yml-he-intra.pdf}
-		\caption{$h_e (mV)$}
+		\caption{$h_e$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[scale=0.35]{frontiers-2012-images-revised/effect_gamma_ee_yml-00493_ode-burst-psp-res_yml-mod-res-3-3-1-1_yml-he-intra.pdf}
-		\caption{$h_e (mV)$}
+		\caption{$h_e$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[scale=0.35]{frontiers-2012-images-revised/effect_gamma_ee_yml-00493_ode-burst-psp-res_yml-mod-res-0_9-1-1-1_yml-he-intra.pdf}
-		\caption{$h_e (mV)$}
+		\caption{$h_e$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.5\textwidth}
 		\includegraphics[scale=0.35]{frontiers-2012-images-revised/effect_gamma_ee_yml-00493_ode-burst-psp-res_yml-mod-res-0_5-1-1-1_yml-he-intra.pdf}
-		\caption{$h_e (mV)$}
+		\caption{$h_e$}
 	\end{subfigure}
 
 	\label{fig:intra_gamma}
-	\caption{Simulated induction of anaesthesia with the SIRU model. \\
-(a) Simulation begins with a resting EEG. 
-(b) Rate constants $\gamma_{ii}$ and $\gamma_{ie}$ are reduced, simulatating anaesthetic induction. (c)  Increases in $\Gamma_{ii}$ and $\Gamma_{ie}$  from (b) bring about BS.
+	\caption{Mean excitatory soma membrane potential ($h_e$) for a simulated induction of anaesthesia using the SIRU model. 
+Reductions in inhibitory post synaptic potential rate constants ($\gamma_{ii}$ and $\gamma_{ie}$) and increases in inhibitory post synaptic potential peak amplitudes ($\Gamma_{ii}$ and $\Gamma_{ie}$) are performed to simulate known GABAergic anaesthetic action.
+\\
+\\
+(a) Simulation begins with a resting EEG.\\ 
+(b) Rate constants $\gamma_{ii}$ and $\gamma_{ie}$ are reduced, simulatating anaesthetic induction. \\
+(c) Increases in $\Gamma_{ii}$ and $\Gamma_{ie}$  from (b) bring about BS.\\
 (d) Further increases in $\Gamma_{ii}$ and $\Gamma_{ie}$ alter bursting. \\
 (e) and (f) $\gamma_{ii}$ and $\gamma_{ie}$ are decreased from their values in (a) bringing a transition to BS.\\
-Simulation parameters are:\\
-(a) $\gamma_{ie} = 1.80757$, $\gamma_{ii} = 0.42574$, $\Gamma_{ie} = 1.36689$, $\Gamma_{ii} = 0.99961$\\
-(b) $\gamma_{ie} = 1.08454$, $\gamma_{ii} = 0.25544$, $\Gamma_{ie} = 1.36689$, $\Gamma_{ii} = 0.99961$\\
-(c) $\gamma_{ie} = 1.08454$, $\gamma_{ii} = 0.25544$, $\Gamma_{ie} = 2.73378$, $\Gamma_{ii} = 1.99922$\\
-(d) $\gamma_{ie} = 1.08454$, $\gamma_{ii} = 0.25544$, $\Gamma_{ie} = 4.10068$, $\Gamma_{ii} = 2.99883$\\
-(e) $\gamma_{ie} = 0.32536$, $\gamma_{ii} = 0.07663$, $\Gamma_{ie} = 1.36689$, $\Gamma_{ii} = 0.99961$\\
-(f) $\gamma_{ie} = 0.18076$, $\gamma_{ii} = 0.04257$, $\Gamma_{ie} = 1.36689$, $\Gamma_{ii} = 0.99961$\\
-For all other parameters please see appendix...
+(Please refer to the appendix for the parameters used in this simulation.)\\
 }
 \end{figure}
 
 \begin{figure}
 	\begin{subfigure}[b]{0.5\textwidth}
-		\includegraphics[scale=0.35]{chosen-frontiers-2012/00460-3-he-intra.pdf}
+		\includegraphics[scale=0.35]{frontiers-2012-images-revised/biphasic-gamma_yml-00460_ode-burst-psp-res_yml-mod-res-0_9-2-1-1_yml-he-intra.pdf}
 		\caption{$h_e (mV)$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.5\textwidth}
-		\includegraphics[scale=0.35]{chosen-frontiers-2012/00460-3-slow-intra.pdf}
-		\caption{$\zeta_e (UNITS)$}
+		\includegraphics[scale=0.35]{frontiers-2012-images-revised/biphasic-gamma_yml-00460_ode-burst-psp-res_yml-mod-res-0_9-2-1-1_yml-T_ee-intra.pdf}
+		\caption{$\Gamma_{ee}$}
 	\end{subfigure}
 	\begin{subfigure}[b]{0.5\textwidth}
-		\includegraphics[scale=0.35]{chosen-frontiers-2012/00460-0_7-he-intra.pdf}
-		\caption{$h_e (mV)$}
+		\includegraphics[scale=0.35]{frontiers-2012-images-revised/biphasic-gamma_yml-00460_ode-burst-psp-res_yml-mod-res-0_9-2-1-1_yml-T_ei-intra.pdf}
+		\caption{$\Gamma_{ei}$}
 	\end{subfigure}
-	\begin{subfigure}[b]{0.5\textwidth}
-		\includegraphics[scale=0.35]{chosen-frontiers-2012/00460-0_7-slow-intra.pdf}
-		\caption{$\zeta_e (UNITS)$}
-	\end{subfigure}
-      \label{fig:emerging_slow_zeta}
-	\caption{$h_e$ along with $\zeta_e$ for the model of synaptic/intracellular resource utilisation. 
-	Values as follows:
-	\ref{fig:460_a} and \ref{fig:460_b}: $\gamma_{ie}=1.1841867$, $\gamma_{ii}=0.09702306$, \ref{fig:460_a} and \ref{fig:460_b}:  $\gamma_{ie}=0.27631023$, $\gamma_{ii}=0.022638713999999997$. 
-	All other parameters:
-$\Lambda_{ee}: 0.418331295, \Lambda_{ei}: 0.418331295, N^{\alpha}_{ee}: 3524.127975, N^{\alpha}_{ei}: 1178.475832,
-N^{\beta}_{ee}: 4567.016139, N^{\beta}_{ei}: 2946.029337, N^{\beta}_{ie}: 705.6645138, N^{\beta}_{ii}: 155.6924316,
-\Gamma_{ee}: 1.030206899, \hat{\Gamma_{ei}}: 1.245480131, \hat{\Gamma_{ie}}: 1.661138507, \Gamma_{ii}: 1.144879622,
-g_e: 0.7, \gamma_{ee}: 0.71336694981, \gamma_{ei}: 0.53411167, \chi_{ee}: 700.0, \chi_{ei}: 700.0, h^{rest}_e: -79.27217543,
-h^{eq}_{ee}: -19.32193417, h^{eq}_{ei}: -8.307573166, h^{rest}_i: -76.08372036, h^{eq}_{ie}: -85.45750982,
-h^{eq}_{ii}: -84.48223465, \mu_e: -54.37736285, \mu_i: -54.60726943,
-p_{ee}: 6.8330303706, p_{ei}: 9.2679440497,
-p_{ie}: 0.0, p_{ii}: 0.0, \phi_{ie}: 0, \phi_{ii}: 0, S^{max}_e: 0.0637001, S^{max}_i: 0.0838227,
-\sigma_e: 4.16943943, \sigma_i: 2.126102814, \tau_e: 73.3, \tau_i: 75.2, \tau^{slow}: 3665.0,
-  v_{ee}: 0.839055, v_{ei}: 0.839055$
-}
+      \label{fig:emerging_slow_intra}
+	\caption{The SIRU model represents intracellular and synaptic resource utilisation as a reduction in the excitatory peak PSPs ($\Gamma_{ee}$ and $\Gamma_{ei}$). The emergence of simulated BS within this model is accompanied by low frequency oscillations in the excitatory peak PSPs ($\Gamma_{ee}$ and $\Gamma_{ei}$). 
+	(Please refer to the appendix for the parameters used in this simulation.)}
 \end{figure}
 
 \begin{figure}
 	\begin{subfigure}[b]{1\textwidth}
-		\includegraphics[scale=0.32]{chosen-frontiers-2012/00214-1-0_5-5-0_5-he-phi.pdf}
-		\includegraphics[scale=0.32]{chosen-frontiers-2012/00214-1-0_5-5-0_5-phi_ei-phi}
-		\caption{$h_e (mV)$ and $\phi_{ei}$}
+		\includegraphics[scale=0.32]{frontiers-2012-images-revised/biphasic-gamma_yml-00214_ode-phi-burst-split-v-1-0_2-5-0_5_yml-he-phi.pdf}
+		\includegraphics[scale=0.32]{frontiers-2012-images-revised/biphasic-gamma_yml-00214_ode-phi-burst-split-v-1-0_2-5-0_5_yml-phi_ei-phi.pdf}
+		\caption{$h_e$ and $\phi_{ei}$}
 	\end{subfigure}
 
 	\begin{subfigure}[b]{1\textwidth}
-		\includegraphics[scale=0.32]{chosen-frontiers-2012/00214-1-0_1-5-0_2-he-phi.pdf}
-		\includegraphics[scale=0.32]{chosen-frontiers-2012/00214-1-0_1-5-0_2-phi_ei-phi}
-		\caption{$h_e (mV)$ and $\phi_{ei}$}
+		\includegraphics[scale=0.32]{frontiers-2012-images-revised/biphasic-gamma_yml-00214_ode-phi-burst-split-v-1-0_05-5-0_5_yml-he-phi.pdf}
+		\includegraphics[scale=0.32]{frontiers-2012-images-revised/biphasic-gamma_yml-00214_ode-phi-burst-split-v-1-0_05-5-0_5_yml-phi_ei-phi.pdf}
+		\caption{$h_e$ and $\phi_{ei}$}
 	\end{subfigure}
 
 	\begin{subfigure}[b]{1\textwidth}
-		\includegraphics[scale=0.32]{chosen-frontiers-2012/00214-1-0_1-5-0_1-he-phi.pdf}
-		\includegraphics[scale=0.32]{chosen-frontiers-2012/00214-1-0_1-5-0_1-phi_ei-phi}
-		\caption{$h_e (mV)$ and $\phi_{ei}$}
+		\includegraphics[scale=0.32]{frontiers-2012-images-revised/biphasic-gamma_yml-00214_ode-phi-burst-split-v-1-0_03-5-0_5_yml-he-phi.pdf}
+		\includegraphics[scale=0.32]{frontiers-2012-images-revised/biphasic-gamma_yml-00214_ode-phi-burst-split-v-1-0_03-5-0_5_yml-phi_ei-phi.pdf}
+		\caption{$h_e$ and $\phi_{ei}$}
 	\end{subfigure}
 	\label{fig:phi_dyn}
-	\caption{Illustrating the emergence of a slow system ($\phi_{ei}$) as parameters $v_{ei}$ and $\Lambda_{ei}$ are decreased. \\
-	Parameter values as follows:\\
-	a. $v_{ei} = 0.4122915$ and $\Lambda_{ei} = 0.1943756305$\\
-	b. $v_{ei} = 0.0824583$ and $\Lambda_{ei} = 0.0777502522$\\
-	c. $v_{ei} = 0.0824583$ and $\Lambda_{ei} = 0.0388751261$\\
-All other parameters:\\
-$\Lambda_{ee}: 1.943756305, N^{\alpha}_{ee}: 2661.274299, N^{\alpha}_{ei}: 2415.41369,
-N^{\beta}_{ee}: 4537.657838, N^{\beta}_{ei}: 4285.318574, N^{\beta}_{ie}: 496.4015214, N^{\beta}_{ii}: 989.8177416,
-\Gamma_{ee}: 0.426272815, \Gamma_{ei}: 1.718762667, \Gamma_{ie}: 0.857083964, \Gamma_{ii}: 1.322388202,
-\gamma_{ee}: 0.78950312677, \gamma_{ei}: 0.82632296, \gamma_{ie}: 0.14776569,
-\gamma_{ii}: 0.04887233, h^{rest}_e: -75.54580909, h^{eq}_{ee}: -16.50733437, h^{eq}_{ei}: -2.729873877,
-h^{rest}_i: -75.55674507, h^{eq}_{ie}: -88.67197452, h^{eq}_{ii}: -85.43395694,
-\mu_e: -42.50180811, \mu_i: -48.70101116, p_{ee}: 7.1858700524, p_{ei}: 6.7944395893, p_{ie}: 0.0, p_{ii}: 0.0, \phi_{ie}: 0,
-\phi_{ii}: 0, S^{max}_e: 0.450176, S^{max}_i: 0.07468, \sigma_e: 5.024823991,
-\sigma_i: 3.22531141, \tau_e: 38.9, \tau_i: 137.859, v_{ee}: 0.824583$}
+	\caption{The reduction of conduction velocities ($v_{ee}$, $v_{ei}$) in the long range coupling system ($\phi_{ee}$, $\phi_{ei}$) brings low frequency oscillations that accompany simulated BS. \\
+	(a) Sustained limit cycle behaviour with $\phi_{ei}$ operating on the same timescale as the coupled inhibitory/excitatory system ($h_e$).\\
+           (b) $v_{ei}$ is reduced.\\
+ (c) a further reduction of $v_{ei}$ from its value in (b) brings BS in conjunction with low frequency oscillations in the long range coupling system ($\phi_{ei}$).\\
+(Please refer to the appendix for the parameters used in this simulation.)}
 \end{figure}
 
 \begin{figure}
-	\begin{subfigure}[b]{0.3\textwidth}
-		\includegraphics[scale=0.22]{chosen-frontiers-2012/00416-he-phi.pdf}
-		\caption{$h_e (mV)$}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[scale=0.32]{frontiers-2012-images-revised/effect_gamma_ee_yml-00416_ode-phi-burst_yml-phi-mod-1_2-2-1-_yml-he-phi.pdf}
+		\caption{$h_e$}
 	\end{subfigure}
-	\begin{subfigure}[b]{0.3\textwidth}
-		\includegraphics[scale=0.22]{chosen-frontiers-2012/00416-0_5-2-1-he-phi.pdf}
-		\caption{$h_e (mV)$}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[scale=0.32]{frontiers-2012-images-revised/effect_gamma_ee_yml-00416_ode-phi-burst_yml-phi-mod-1_1-2-1-_yml-he-phi.pdf}
+		\caption{$h_e$}
 	\end{subfigure}
-	\begin{subfigure}[b]{0.3\textwidth}
-		\includegraphics[scale=0.22]{chosen-frontiers-2012/00416-1_1-2-1-he-phi.pdf}
-		\caption{$h_e (mV)$}
+	\begin{subfigure}[b]{0.5\textwidth}
+		\includegraphics[scale=0.32]{frontiers-2012-images-revised/effect_gamma_ee_yml-00416_ode-phi-burst_yml-phi-mod-0_7-2-1-_yml-he-phi.pdf}
+		\caption{$h_e$}
 	\end{subfigure}
 
 	\label{fig:phi_fast_var}
-	\caption{Effect of modifying fast system parameters $\gamma_{ie}$, $\gamma_{ii}$, $\Gamma_{ie}$ and $\Gamma_{ii}$ with BS arising from slowing of the long range coupling in the cannonical model of Liley et al.\\
-	a. $\Gamma_{ie}: 1.42852881, \Gamma_{ii}: 0.14073783, \gamma_{ie}: 0.45787892, \gamma_{ii}: 0.09011466$ \\
-	b. $\Gamma_{ie}: 2.85705762, \Gamma_{ii}: 0.28147566, \gamma_{ie}: 0.22893946,  \gamma_{ii}: 0.04505733$\\
-	c. $\Gamma_{ie}: 2.85705762, \Gamma_{ii}: 0.28147566, \gamma_{ie}: 0.503666812,  \gamma_{ii}: 0.099126126$\\
-All other parameters:\\
-$\Lambda_{ee}: 0.33012064, \Lambda_{ei}: 0.033012064, N^{\alpha}_{ee}: 2342.99410942, N^{\alpha}_{ei}: 2635.01259668,
-N^{\beta}_{ee}: 4016.1981429, N^{\beta}_{ei}: 4356.20256437, N^{\beta}_{ie}: 634.73935613, N^{\beta}_{ii}: 473.38388612,
-\Gamma_{ee}: 0.13699266, \Gamma_{ei}: 0.4439827, \gamma_{ee}: 0.244953287255, \gamma_{ei}: 0.82969594, h^{rest}_e: -61.7485641, h^{eq}_{ee}: 5.73011624, h^{eq}_{ei}: 2.099135,
-h^{rest}_i: -64.46142322, h^{eq}_{ie}: -81.67044311, h^{eq}_{ii}: -82.29433835, \mu_e: -53.10048735, \mu_i: -53.68380602, p_{ee}: 3.6997382629, p_{ei}: 0.60015865013, p_{ie}: 0.0, p_{ii}: 0.0, \phi_{ie}: 0,
-\phi_{ii}: 0, S^{max}_e: 0.0930382, S^{max}_i: 0.0648537, \sigma_e: 4.64535035,
-\sigma_i: 3.10925431, \tau_e: 86.1876, \tau_i: 65.0391, v_{ee}: 0.160606, v_{ei}: 0.160606$
-}
-
+	\caption{Simulated induction of anaesthesia along with long range coupling $\phi_{ei}$ operating on a slowed timescale.\\
+	(a) Sustained limit cycle behaviour.\\
+           (b) Simulated anaesthetic induction was performed by a reduction in $\gamma_{ii}$ and $\gamma_{ie}$ bring about a modulation in spiking amplitude\\
+           (b) A further reduction in $\gamma_{ii}$ and $\gamma_{ie}$ from their values in (b) brings about BS\\
+	(Please refer to the appendix for the parameters used in this simulation.)}
 \end{figure}
 
 
@@ -714,30 +687,114 @@ per $^{\circ}{\rm C}$ for conduction velocity have been reported (Waxman 1980) .
 As BS has been observed associated with hypothermia(Schwartz et al, 1989; Akrawi et al 1996), we can conclude that  a slow system emerging in the long range coupling via a slowing of axonal conduction velocity is a possible route
 to BS.
 
-\subsection{Onset of bursting may emerge partially from parametric changes in the coupled inhibitory/excitatory system}
-Anaesthetic induction was simulated through the variation of model parameters ($\gamma_{ik}, \Gamma_{ik}, \Gamma_{ek}, \tau_i$). All of these parameters are present in the cannonical model and are related to the coupled excitotory/inhibitory system. It was seen that variation of these parameters could instigate BS when leaving the slow system parameters unchanged, producing widely varying bursting dynamics. The transition from tonic spiking to bursting was not always observed to follow a parametric contour that was consistent with the induction of anaesthesia, with increases (as opposed to decreases) in $\gamma_{ik}$ causing this transition in some cases. 
+\subsection{Onset of BS may emerge partially or entirely from parametric changes in the coupled inhibitory/excitatory system}
+Anaesthetic induction was simulated through the variation of model parameters ($\gamma_{ik}, \Gamma_{ik}$). All of these parameters are present in the cannonical model and are related to the coupled excitatory/inhibitory system. It was seen that variation of these parameters could instigate BS while leaving the slow timescale system parameters unchanged. These parametric changes were also observed to produce widely varying bursting dynamics. The transition from tonic spiking to bursting was not always observed to follow a parametric contour that was consistent with the induction of anaesthesia.
 
-A parametric alteration in the long range coupling produced a slow system that drove the simulated BS. Along with this a variation of model parameters ($\gamma_{ik}, \Gamma_{ik}, \Gamma_{ek}, \tau_i$) was able to instigate BS and vary its dynamics in the presence of this emergent slow system.
+A parametric alteration in the long range coupling produced a slow timescale system that underlay the simulated BS. Along with this a variation of model parameters ($\gamma_{ik}, \Gamma_{ik}$) was able to instigate BS and vary its dynamics in the presence of this emergent slow timescale system.
 
 There are still important questions outstanding regarding the effects of anaesthetics and their relationship to BS. Present knowledge of the effects of anaesthetics on parameters of the mean field model of Liley et al is restricted to cannonical model parameters. The effects of anaesthesia on the introduced slow systems in this investigation is not yet understood. 
 
-It is clear from this investigation that the changes in parameters that are known to vary under anaesthesia can affect and induce BS. It is not yet clear if this is the primary mechanism that triggers BS under anaesthetic conditions and further investigation is needed. 
-
-A larger scale analysis of parametric variation will need to be performed to help determine the underlying trigger for BS. This is needed to gain deeper understanding of how variations in the cannonical model parameters modify the underlying topological structure that drives BS.
+It is clear from this investigation that the changes in parameters that relate to known effects of anaesthetics can affect and induce BS and these changes may present themselves as a fundamental mechanism in the onset of BS. A larger scale analysis of parametric variation is needed to help determine the underlying trigger and topological structure relating to BS.
 
 \subsection{Multiple origins for bursting possible}
-This investigation has presented three possible mechanisms in which a slow system underlying BS could emerge. Intra-cortical and extra-cortical mechanisms were presented and all were able to display simulated BS. All of these mechanisms are plausible and it is thus conceivable that multiple modes of BS arising from anaesthesia are possible. Interactions between muliple slow mechanisms may also be involved in driving BS. Further work is needed to investigate the interactions
-between the introduced and emergent slow systems as each slow mechanism presented in this investigation was considered in isolation.
+This investigation has presented three possible mechanisms in which a slow timescale system underlying BS could emerge. Intra-cortical (long range coupling and SIRU) and extra-cortical (TA) mechanisms were presented and all were able to display simulated BS. All of these mechanisms are physiologically plausible and it is thus conceivable that multiple modes of BS arising from anaesthesia are possible. Interactions between muliple slow timescale systems may also be involved. As each slow timescale system presented in this investigation was considered in isolation further work is needed to investigate the interactions between the introduced and emergent slow timescale systems.
 
 \subsection{Further investigations}
 The current investigations have focussed on the spatially homogeneous case for the model of Liley et al. (i.e. $\nabla^2 =
 0$ in \ref{eq:phi}). The cortical phase synchrony(ref?) of burst suppression therefore has not as yet been investigated.
 
-This investigation considered each emergent slow system in isolation. There has not as yet been an investigation of the
-interactions between the presented emergent slow system in a unified model covering all the presented augmentations in this investigation.
+This investigation considered each emergent slow timescale system in isolation. There has not as yet been an investigation of the
+interactions between the presented emergent slow timescale system in a unified model covering all the presented augmentations in this investigation.
 
 A greater understanding of the effect that variation of the cannonical model parameters known to vary under anaesthesia have on instigating BS is needed. This is essential to help pinpoint the conditions under which anaesthesia triggers BS.
 
+\appendix
+\section{Appendix}
+\subsection{Simulation Parameter Sets}
+\subsubsection{Parameters for simulation presented in figure \ref{fig:00143}}
+\paragraph{Common parameters}
+$\Lambda_{ee} = 0.97961, \Lambda_{ei} = 0.97961, N^{\alpha}_{ee} = 3218.25773, N^{\alpha}_{ei} = 1725.76994,
+N^{\beta}_{ee} = 2555.55532, N^{\beta}_{ei} = 3955.40197, N^{\beta}_{ie} = 558.83565, N^{\beta}_{ii} = 805.76418,
+\Gamma_{ee} = 0.15173, \Gamma_{ei} = 0.27124, 
+ g = 0.7, \gamma_{ee} = 0.31475, \gamma_{ei} = 0.24595,  h_e^{rest} = -66.96585, h_{ee}^{eq} = 0.03533, h_{ei}^{eq} = -6.84352,
+h_i^{rest} = -77.90611, h_{ie}^{eq} = -85.52639, h_{ii}^{eq} = -85.43499,
+\mu_e = -50.73253, \mu_i = -51.66220,  \hat{p}_{ee} = 2.16873, \hat{p}_{ei} = 2.43422, p_{ie} = 0.0, p_{ii} = 0.0, \phi_{ie} = 0,
+\phi_{ii} = 0, S_e^{max} = 0.101903, S_i^{max} = 0.469, \sigma_e = 6.02439, \sigma_i = 4.21866,
+\rho_e = 800.0, \rho_i = 3200.0, \tau_e = 139.779, \tau_i = 22.5263, \tau^{slow} = 6988.95,
+v_{ee} = 0.68140, v_{ei} = 0.68140$
+\paragraph{Modified simulation parameters}
+(a) $\gamma_{ie} = 0.07924$, $\gamma_{ii} = 0.06251$, $\Gamma_{ie} = 0.69872$, $\Gamma_{ii} = 0.69021$\\
+(b) $\gamma_{ie} = 0.05209$, $\gamma_{ii} = 0.06604$, $\Gamma_{ie} = 0.69872$, $\Gamma_{ii} = 0.69021$\\
+(c) $\gamma_{ie} = 0.05943$, $\gamma_{ii} = 0.04688$, $\Gamma_{ie} = 0.69872$, $\Gamma_{ii} = 0.69021$\\
+(d) $\gamma_{ie} = 0.05209$, $\gamma_{ii} = 0.06604$, $\Gamma_{ie} = 0.97821$, $\Gamma_{ii} = 0.96629$\\
+(e) $\gamma_{ie} = 0.05209$, $\gamma_{ii} = 0.06604$, $\Gamma_{ie} = 1.53719$, $\Gamma_{ii} = 1.51845$\\
+(f) $\gamma_{ie} = 0.05209$, $\gamma_{ii} = 0.06604$, $\Gamma_{ie} = 1.81668$, $\Gamma_{ii} = 1.79454$\\
+
+
+\subsubsection{Parameters for simulation presented in figure \ref{fig:intra_gamma}}
+\paragraph{Common parameters}
+$\Lambda_{ee} = 0.77255, \Lambda_{ei} = 0.77255, N^{\alpha}_{ee} = 4111.52244, N^{\alpha}_{ei} = 2939.96568,
+N^{\beta}_{ee} = 2121.71866, N^{\beta}_{ei} = 3394.56035, N^{\beta}_{ie} =  846.44498, N^{\beta}_{ii} = 178.04925,
+\hat{\Gamma}_{ee} =  0.10367, \hat{\Gamma}_{ei} = 1.21771, 
+\chi_{ee} = 420.196, \chi_{ei} = 420.196, \gamma_{ee} = 0.07383,
+\gamma_{ei} = 0.82956, h_e^{rest} = -68.11516,
+h_{ee}^{eq} = -6.87622, h_{ei}^{eq} = -10.85385, h_i^{rest} = -79.2805, h_{ie}^{eq} = -78.14073,
+h_{ii}^{eq} = -89.33821, \mu_e = -45.58067, \mu_i = -46.22321,
+p_{ee} = 3.12714, p_{ei} = 5.15692,
+p_{ie} = 0.0, p_{ii}: 0.0, \phi_{ie} = 0, \phi_{ii} = 0, S_e^{max} = 0.11240, S_i^{max} = 0.17063,
+\sigma_e = 3.61819399, \sigma_i = 3.12887627, \tau_e = 21.0098, \tau_i = 77.73, 
+\tau^{slow}_{ee} = 420.196, \tau^{slow}_{ei} = 420.196, v_{ee} = 0.96791, v_{ei} = 0.96791$
+\paragraph{Modified simulation parameters}
+(a) $\gamma_{ie} = 1.80757$, $\gamma_{ii} = 0.42574$, $\Gamma_{ie} = 1.36689$, $\Gamma_{ii} = 0.99961$\\
+(b) $\gamma_{ie} = 1.08454$, $\gamma_{ii} = 0.25544$, $\Gamma_{ie} = 1.36689$, $\Gamma_{ii} = 0.99961$\\
+(c) $\gamma_{ie} = 1.08454$, $\gamma_{ii} = 0.25544$, $\Gamma_{ie} = 2.73378$, $\Gamma_{ii} = 1.99922$\\
+(d) $\gamma_{ie} = 1.08454$, $\gamma_{ii} = 0.25544$, $\Gamma_{ie} = 4.10068$, $\Gamma_{ii} = 2.99883$\\
+(e) $\gamma_{ie} = 0.32536$, $\gamma_{ii} = 0.07663$, $\Gamma_{ie} = 1.36689$, $\Gamma_{ii} = 0.99961$\\
+(f) $\gamma_{ie} = 0.18076$, $\gamma_{ii} = 0.04257$, $\Gamma_{ie} = 1.36689$, $\Gamma_{ii} = 0.99961$\\
+
+\subsubsection{Parameters used for figure \ref{fig:emerging_slow_intra}}
+$\Lambda_{ee} = 0.41833, \Lambda_{ei} =  0.41833, N^{\alpha}_{ee} = 3524.12798, N^{\alpha}_{ei} = 1178.47583,
+N^{\beta}_{ee} = 4567.01614, N^{\beta}_{ei} = 2946.02934, N^{\beta}_{ie} = 705.66451, N^{\beta}_{ii} = 155.69243,
+\hat{\Gamma}_{ee} = 1.03021, \hat{\Gamma}_{ei} = 1.24548, \Gamma_{ie} = 3.32228, \Gamma_{ii} = 2.28976,
+\chi_{ee} = 1290.08, \chi_{ei} = 1290.08, \gamma_{ee} = 0.71337, \gamma_{ei} = 0.53411,
+\gamma_{ie} = 0.35526, \gamma_{ii} = 0.02911, h_e^{rest} = -79.27218, h_{ee}^{eq} = -19.32193,
+h_{ei}^{eq} = -8.30757, h_i^{rest} = -76.08372, h_{ie}^{eq} = -85.45751, h_{ii}^{eq} = -84.48223,
+\mu_e: -54.37736, \mu_i: -54.60727, p_{ee}: 6.83303, p_{ei}: 9.26794, p_{ie}: 0.0, p_{ii}: 0.0,
+\phi_{ie}: 0, phi_{ii}: 0, S_e^{max} = 0.0637, S_i^{max} = 0.08382, \sigma_e = 4.16944,
+\sigma_i = 2.1261, \tau_e = 73.3, \tau_i = 75.2, \tau^{slow}_{ee} = 1612.6,
+  \tau^{slow}_{ei}: 1612.6, v_{ee} = 0.83906, v_{ei} = 0.83906$
+
+\subsubsection{Parameters for simulation presented in figure \ref{fig:phi_dyn}}
+\paragraph{Common parameters}
+$\Lambda_{ee} = 1.94376, \Lambda_{ei} = 0.19438, N^{\alpha}_{ee} = 2661.2743, N^{\alpha}_{ei} = 2415.41369,
+N^{\beta}_{ee} = 4537.65784, N^{\beta}_{ei} = 4285.31857, N^{\beta}_{ie} = 496.40152, N^{\beta}_{ii} = 989.81774,
+\Gamma_{ee} = 0.42627, \Gamma_{ei} = 1.71876, \Gamma_{ie} = 0.85708, \Gamma_{ii} = 1.32239,
+\gamma_{ee} = 0.78950, \gamma_{ei} = 0.82632, \gamma_{ie} = 0.14777,
+\gamma_{ii} = 0.04887, h_e^{rest} = -75.54581, h_{ee}^{eq} = -16.50733, h_{ei}^{eq} = -2.72987,
+h_i^{rest} = -75.55675, h_{ie}^{eq} = -88.67197, h_{ii}^{eq} = -85.43396, \mu_e = -42.50181, \mu_i = -48.70101, 
+p_{ee} = 7.18587, p_{ei} = 6.79444, p_{ie} = 0.0, p_{ii} = 0.0, phi_{ie} = 0,
+\phi_{ii} = 0, S_e^{max} = 0.45018, S_i^{max} = 0.07468, \sigma_e = 5.02482,
+\sigma_i = 3.22531, \tau_e = 38.9, \tau_i = 137.859, v_{ee} = 0.82458$
+\paragraph{Modified simulation parameters}
+(a) $v_{ei} = 0.16492$\\
+(b) $v_{ei} = 0.04123$\\
+(c) $v_{ei} = 0.02474$\\
+
+
+\subsubsection{Parameters for simulation presented in figure \ref{fig:phi_fast_var}}
+\paragraph{Common parameters}
+$\Lambda_{ee} = 0.33012064, \Lambda_{ee} = 0.033012064, N^{\alpha}_{ee} =  2342.99410942, N^{\alpha}_{ei} =  2635.01259668,
+N^{\beta}_{ee} =  4016.1981429, N^{\beta}_{ei} =  4356.20256437, N^{\beta}_{ie} =  634.73935613, N^{\beta}_{ii} =  473.38388612,
+\Gamma_{ee} = 0.13699266, \Gamma_{ei} = 0.4439827, \Gamma_{ie} = 2.85705762, \Gamma_{ii} = 0.28147566, \gamma_{ee} = 0.244953287255, \gamma_{ei} = 0.82969594, h_e^{rest} = -61.7485641, h_{ee}^{eq} = 5.73011624, h_{ei}^{eq} = 2.099135,
+h_i^{rest} = -64.46142322, h_{ie}^{eq} = -81.67044311, h_{ii}^{eq} = -82.29433835, \mu_e = -53.10048735, \mu_i = -53.68380602, p_{ee} = 3.6997382629, p_{ei} = 0.60015865013, p_{ie} = 0.0, p_{ii} = 0.0, \phi_{ie} = 0,
+\phi_{ii} = 0, S_e^{max} = 0.0930382, S_i^{max}= 0.0648537, \sigma_e = 4.64535035,
+\sigma_i = 3.10925431, \tau_e = 86.1876, \tau_i = 65.0391, \tau^{slow} = 1, v_{ee} = 0.160606,
+  v_{ei} = 0.160606$
+
+\paragraph{Modified simulation parameters}
+(a) $\gamma_{ii} = 0.10813$ and $\gamma_{ie} = 0.54945$\\
+(b) $\gamma_{ii} = 0.09913$ and $\gamma_{ie} = 0.50367$\\
+(c) $\gamma_{ii} = 0.06308$ and $\gamma_{ie} = 0.32052$\\
 
 \bibliography{frontiers_in_neuroscience_oct_2012}
 
