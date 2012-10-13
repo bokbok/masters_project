@@ -5,5 +5,5 @@ prefix = ARGV[1]
 
 Dir["parameterisations/#{prefix}**"].each do |file|
     puts file
-    `python python/display_#{type}.py #{file} save`
+    puts `python python/display_#{type}.py #{file} save`
 end
