@@ -28,12 +28,15 @@ if len(sys.argv) > 2 and sys.argv[2] == "save":
     figure("3")
     savefig("papers/frontiers-2012-images-revised/" + os.path.basename(sys.argv[1]).replace('.', '_') + "-he-phi.pdf", format = 'pdf')
     savefig("papers/frontiers-2012-images-revised/" + os.path.basename(sys.argv[1]).replace('.', '_') + "-he-phi.png", format = 'png')
+    savefig("papers/frontiers-2012-images-revised/" + os.path.basename(sys.argv[1]).replace('.', '_') + "-he-phi.eps", format = 'eps')
 
     figure("1")
     savefig("papers/frontiers-2012-images-revised/" + os.path.basename(sys.argv[1]).replace('.', '_') + "-phi_ee-phi.pdf", format = 'pdf')
     savefig("papers/frontiers-2012-images-revised/" + os.path.basename(sys.argv[1]).replace('.', '_') + "-phi_ee-phi.png", format = 'png')
+    savefig("papers/frontiers-2012-images-revised/" + os.path.basename(sys.argv[1]).replace('.', '_') + "-phi_ee-phi.eps", format = 'eps')
     figure("2")
     savefig("papers/frontiers-2012-images-revised/" + os.path.basename(sys.argv[1]).replace('.', '_') + "-phi_ei-phi.pdf", format = 'pdf')
     savefig("papers/frontiers-2012-images-revised/" + os.path.basename(sys.argv[1]).replace('.', '_') + "-phi_ei-phi.png", format = 'png')
+    savefig("papers/frontiers-2012-images-revised/" + os.path.basename(sys.argv[1]).replace('.', '_') + "-phi_ei-phi.eps", format = 'eps')
 else:
     show()

@@ -28,9 +28,11 @@ if len(sys.argv) > 2 and sys.argv[2] == "save":
     figure("3")
     savefig("papers/frontiers-2012-images-revised/" + os.path.basename(sys.argv[1]).replace('.', '_') + "-he-thal.pdf", format = 'pdf')
     savefig("papers/frontiers-2012-images-revised/" + os.path.basename(sys.argv[1]).replace('.', '_') + "-he-thal.png", format = 'png')
+    savefig("papers/frontiers-2012-images-revised/" + os.path.basename(sys.argv[1]).replace('.', '_') + "-he-thal.eps", format = 'eps')
 
     figure("1")
     savefig("papers/frontiers-2012-images-revised/" + os.path.basename(sys.argv[1]).replace('.', '_') + "-slow-thal.pdf", format = 'pdf')
     savefig("papers/frontiers-2012-images-revised/" + os.path.basename(sys.argv[1]).replace('.', '_') + "-slow-thal.png", format = 'png')
+    savefig("papers/frontiers-2012-images-revised/" + os.path.basename(sys.argv[1]).replace('.', '_') + "-slow-thal.eps", format = 'eps')
 else:
     show()
