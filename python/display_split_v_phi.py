@@ -22,7 +22,7 @@ linewidth = 1
 if len(sys.argv) > 2 and sys.argv[2] == "save":
     linewidth = 0.3
 
-equib = model.run([0, 10000]).run([0, 16000]).display(['h_e'], fig = "3", label= "mV", linewidth = linewidth).display(['phi_ee'], fig = "1", linewidth = linewidth).display(['phi_ei'], fig = "2", linewidth = linewidth)
+equib = model.run([0, 10000]).run([0, 6000]).display(['h_e'], fig = "3", label= "mV", linewidth = linewidth).display(['phi_ee'], fig = "1", linewidth = linewidth).display(['phi_ei'], fig = "2", linewidth = linewidth)
 
 if len(sys.argv) > 2 and sys.argv[2] == "save":
     figure("3")
