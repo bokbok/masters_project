@@ -1,5 +1,5 @@
 from model import LileySigmoidBurstThalamic
-from pylab import plot, show, figure, savefig
+from pylab import plot, show, figure, savefig, ylim
 import gc
 
 import os, sys, inspect
@@ -22,7 +22,7 @@ linewidth = 1
 if len(sys.argv) > 2 and sys.argv[2] == "save":
     linewidth = 0.3
 
-equib = model.run([0, 10000]).run([0, 16000]).display(['h_e'], fig = "3", label= "mV", linewidth = linewidth).display(['slow'], fig = "1", linewidth = linewidth)
+equib = model.run([0, 30000]).run([0, 16000]).display(['h_e'], fig = "3", label= "mV", linewidth = linewidth, yrange=[-75, -45]).display(['slow'], fig = "1", linewidth = linewidth)
 
 if len(sys.argv) > 2 and sys.argv[2] == "save":
     figure("3")

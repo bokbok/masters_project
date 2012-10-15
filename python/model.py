@@ -1,5 +1,5 @@
 from PyDSTool import *
-from pylab import plot, show, figure, draw, legend, xlabel, ylabel
+from pylab import plot, show, figure, draw, legend, xlabel, ylabel, ylim
 from mpl_toolkits.mplot3d import Axes3D
 
 from analysis import FFT
@@ -178,13 +178,14 @@ class LileyBase(object):
                             displayVar = displayVar,
                             freeVar = freeVar)
 
-    def display(self, vars, fig = "1", label = "", linewidth = 1):
+    def display(self, vars, fig = "1", label = "", linewidth = 1, yrange = None):
         if self.points == None:
             raise Error("Not run")
 
         for var in vars:
             figure(fig)
-
+            if yrange:
+                ylim(yrange)
             plot(self.points['t'] * self.timescale, self.points[var], label=var, linewidth = linewidth, color = 'black')
             xlabel(" t (s)")
             ylabel(label)
