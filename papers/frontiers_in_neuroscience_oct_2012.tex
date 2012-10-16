@@ -518,8 +518,11 @@ A large scale numerical bifurcation analysis was performed on previously generat
 Parameter sets that displayed a topological liklihood of supporting BS were investigated individually. Parameter sets that displayed a liklihood of bursting had various various slow timescale system parameters ($\tau^{slow}, g, \chi_{ek}, \rho_{ek}, v$ and $\Lambda_{ek}$) trialled in an attempt to produce BS. 
 
 All model simulations were performed numerically. Numerical integrations and bifurcation analysis of the aforementioned models were performed using the Python programming language, utilising
-the PyDSTool library (available from \url{http://sourceforge.net/projects/pydstool/}) running under 64 bit
-Linux. The Radau integrator that comes standard with PyDSTool was used for all integrations.
+the PyDSTool~\cite{PyDSTool} library running under 64 bit
+Linux. PyDSTool is a sophisticated, opensource dynamical systems modelling and analysis library providing a rich tool kit of ODE integrators and numerical bifurcation analysis tools.
+
+
+The Radau integrator that comes standard with PyDSTool was used for all integrations.
 Typical numerical settings used for the radau integrator were $init\_step = 1e-6$, $atol = 1e-15$, $rtol = 1e-16$ and
 $max\_pts = 40000000$.
 
