@@ -15,7 +15,10 @@ except ImportError:
 
 params = load(file(sys.argv[1], 'r'))
 
-run_params = params[sys.argv[2]]
+if len(sys.argv) > 2:
+    run_params = params[sys.argv[2]]
+else:
+    run_params = params.values()[0]
 
 model = LileyBase(params = run_params, timescale = "ms")
 
