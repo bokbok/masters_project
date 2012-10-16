@@ -8,6 +8,7 @@ class FFT:
 
     def compute(self):
         self.computed = fft(self.data)[1:self.data.size/2]
+        print "DeltaT " + str(self.deltaT)
         self.freqAxis = fftfreq(self.data.size, d=self.deltaT)[1:self.data.size/2]
 
         return self

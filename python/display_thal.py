@@ -15,14 +15,16 @@ except ImportError:
 
 params = load(file(sys.argv[1], 'r'))
 
-model = LileySigmoidBurstThalamic(params = params.values()[0], timescale = "ms")
+run_params = params.values()[0]
+model = LileySigmoidBurstThalamic(params = run_params, timescale = "ms")
 
 linewidth = 1
 
 if len(sys.argv) > 2 and sys.argv[2] == "save":
     linewidth = 0.3
 
-equib = model.run([0, 30000]).run([0, 16000]).display(['h_e'], fig = "3", label= "mV", linewidth = linewidth, yrange=[-75, -45]).display(['slow'], fig = "1", linewidth = linewidth).display(['phi_ee', 'phi_ei'], fig ="7")
+equib = model.run([0, 30000]).run([0, 16000]).display(['h_e'], fig = "3", label= "mV", linewidth = linewidth, yrange=[-75, -45]).display(['slow'], fig = "1", linewidth = linewidth, multiplier = run_params['thal_e']).display(['slow'], fig = "2", linewidth = linewidth, multiplier = run_params['thal_i'])
+equib.performFFT('h_e').display(fig = "11")
 
 if len(sys.argv) > 2 and sys.argv[2] == "save":
     figure("3")

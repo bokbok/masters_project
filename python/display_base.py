@@ -22,7 +22,9 @@ else:
 
 model = LileyBase(params = run_params, timescale = "ms")
 
-equib = model.run([0, 10000]).run([0, 40000]).display(['h_e'], fig = "3").display(['phi_ee', 'phi_ei'], fig = "1")
+equib = model.run([0, 10000]).run([0, 16000]).display(['h_e'], fig = "3").display(['phi_ee', 'phi_ei'], fig = "1")
+equib.performFFT('h_e').display(fig = "11")
+
 
 equib.displayPhasePlane3D('phi_ee', 'phi_ei', 'h_e')
 show()

@@ -77,7 +77,7 @@ class LileyBase(object):
         print equations
 
     def performFFT(self, axis):
-        deltaT = (self.points["t"][1] - self.points["t"][0])
+        deltaT = (self.points["t"][1] - self.points["t"][0]) / self.timescale
 
         fft = FFT(self.points[axis], deltaT, axis)
         fft.compute()
@@ -178,7 +178,7 @@ class LileyBase(object):
                             displayVar = displayVar,
                             freeVar = freeVar)
 
-    def display(self, vars, fig = "1", label = "", linewidth = 1, yrange = None):
+    def display(self, vars, fig = "1", label = "", linewidth = 1, yrange = None, multiplier = 1):
         if self.points == None:
             raise Error("Not run")
 
@@ -186,7 +186,7 @@ class LileyBase(object):
             figure(fig)
             if yrange:
                 ylim(yrange)
-            plot(self.points['t'] * self.timescale, self.points[var], label=var, linewidth = linewidth, color = 'black')
+            plot(self.points['t'] * self.timescale, self.points[var] * multiplier, label=var, linewidth = linewidth, color = 'black')
             xlabel(" t (s)")
             ylabel(label)
         return self
