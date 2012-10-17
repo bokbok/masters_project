@@ -23,8 +23,8 @@ linewidth = 1
 if len(sys.argv) > 2 and sys.argv[2] == "save":
     linewidth = 0.3
 
-equib = model.run([0, 30000]).run([0, 16000]).display(['h_e'], fig = "3", label= "mV", linewidth = linewidth, yrange=[-75, -45]).display(['slow'], fig = "1", linewidth = linewidth, multiplier = run_params['thal_e']).display(['slow'], fig = "2", linewidth = linewidth, multiplier = run_params['thal_i'])
-equib.performFFT('h_e').display(fig = "11")
+equib = model.run([0, 30000]).run([0, 16000]).display(['h_e'], fig = "3", label= "mV", linewidth = linewidth, yrange=[-95, -35]).display(['slow'], fig = "1", linewidth = linewidth, multiplier = run_params['thal_e']).display(['slow'], fig = "2", linewidth = linewidth, multiplier = run_params['thal_i'])
+#equib.performFFT('h_e').display(fig = "11")
 
 if len(sys.argv) > 2 and sys.argv[2] == "save":
     figure("3")
