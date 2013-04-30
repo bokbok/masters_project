@@ -27,8 +27,9 @@ int main(void)
 
 	Integrator integrator(100, 100, 0.00001, 100);
 
-	LileyMesh mesh(100, 100, 0.0001, 100);
+	LileyMesh mesh(10, 10, 0.0001, 100);
 
+	mesh.stepAndFlush(cout);
 	mesh.stepAndFlush(cout);
 
     cudaDeviceSynchronize();

@@ -8,29 +8,32 @@
 #ifndef STATESPACE_CUH_
 #define STATESPACE_CUH_
 
-__device__ __host__
-struct StateSpace
+class StateSpace
 {
-	double * _stateVars;
-	int _dims;
-
+public:
 	StateSpace()
 	{
 
 	}
 
+	__device__
 	double * stateVars()
 	{
 		return _stateVars;
 	}
 
 
+	__device__
 	int dims()
 	{
 		return _dims;
 	}
 
 	static StateSpace zero;
+
+private:
+	double * _stateVars;
+	int _dims;
 };
 
 

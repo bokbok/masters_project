@@ -16,7 +16,29 @@
 #include <thrust/copy.h>
 #include <vector>
 
+#include "DeviceMeshPoint.cuh"
+
 using namespace std;
+
+
+template<class T>
+__global__
+void __call(T * prev, T * curr, int width, int height, double delta)
+{
+	int x = blockDim.x * blockIdx.x + threadIdx.x;
+	int y = blockDim.y * blockIdx.y + threadIdx.y;
+
+
+	//printf("In call! %i %i", width, height);
+	//printf("In call! %i %i", x, y);
+	//printf("\nIn call! %p %p", prev, curr);
+	//printf("\nMesh point %p %p", &prev[x + y * width], &curr[x + y * width]);
+
+	DeviceMeshPoint<T> current(curr, width, height, x, y, delta);
+	DeviceMeshPoint<T> previous(prev, width, height, x, y, delta);
+
+	// Integrator.integrate(current, previous, t)
+}
 
 template<class T> class Mesh
 {
@@ -66,6 +88,15 @@ private:
 	{
 		thrust::device_vector<T> & current = _sheets[_sheet];
 		thrust::device_vector<T> & prev = _sheets[(_sheet - 1) % _sheets.size()];
+
+		thrust::device_ptr<T> & currentPtr = _pointers[_sheet];
+		thrust::device_ptr<T> & prevPtr = _pointers[(_sheet - 1) % _pointers.size()];
+
+		dim3 grid(_width / 10, _height / 10), block(10, 10);
+
+		printf("\nb4 kernel %p %p", (T *)thrust::raw_pointer_cast( prevPtr ), (T *)thrust::raw_pointer_cast( currentPtr ));
+		__call<<< grid, block >>>((T *)thrust::raw_pointer_cast( prevPtr ), (T *)thrust::raw_pointer_cast( currentPtr ), _width, _height, _delta);
+		cudaDeviceSynchronize();
 	}
 
 
