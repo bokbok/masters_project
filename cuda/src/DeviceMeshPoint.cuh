@@ -8,33 +8,42 @@
 #ifndef DEVICEMESH_CUH_
 #define DEVICEMESH_CUH_
 
+#include "StateSpace.cuh"
 
-template<class T>
+
+
 class DeviceMeshPoint
 {
 public:
 	__device__
-	DeviceMeshPoint(T * mesh, int width, int height, int x, int y, double delta) :
-		_mesh(mesh), _width(width), _height(height), _x(x), _y(y), _delta(delta)
+	DeviceMeshPoint(StateSpace * mesh, ParameterSpace & parameters, int width, int height, int x, int y, double delta) :
+		_mesh(mesh), _width(width), _height(height), _x(x), _y(y), _delta(delta), _parameters(parameters)
 	{
 
 	}
 
 	__device__
-	inline T * stateAt(int xOffset, int yOffset)
+	StateSpace & stateAt(int xOffset, int yOffset)
 	{
-		return &_mesh[((_x + xOffset) % _width) + ((_y + yOffset) % _height) * _width];
+		return _mesh[((_x + xOffset) % _width) + ((_y + yOffset) % _height) * _width];
 	}
 
 	__device__
-	inline T * state()
+	StateSpace & state()
 	{
 		return stateAt(0, 0);
 	}
 
+	__device__
+	ParameterSpace & parameters()
+	{
+		return _parameters;
+	}
+
 
 private:
-	T * _mesh;
+	StateSpace * _mesh;
+	ParameterSpace & _parameters;
 	int _width, _height;
 	int _x, _y;
 
