@@ -20,12 +20,18 @@ private:
 
 public:
 	__device__ __host__
-	Derivatives() {}
+	Derivatives()
+	{
+		for (int i = 0; i < MAX_EQUATIONS; i++)
+		{
+			_vals[i] = 0.0;
+		}
+	}
 
 	__device__
 	double & operator [](int index)
 	{
-		//CHECK_BOUNDS(index, MAX_EQUATIONS);
+		CHECK_BOUNDS(index, MAX_EQUATIONS);
 		return _vals[index];
 	}
 
@@ -42,6 +48,17 @@ public:
 		return res;
 	}
 
+	__device__
+	bool debugNanCheck()
+	{
+		bool statenan = false;
+		for (int i = 0; i < MAX_EQUATIONS; i++)
+		{
+			statenan |= isnan(_vals[i]);
+		}
+
+		return statenan;
+	}
 };
 
 

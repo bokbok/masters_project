@@ -14,27 +14,26 @@
 
 class Model
 {
+private:
+	double _e, _sqrt2;
+
 public:
 	enum Dimensions
 	{
-	    h_e,
-	    h_i,
-
-	    i_ee,
-	    i_ei,
-	    i_ie,
-	    i_ii,
-
-	    i_ee_t,
-	    i_ei_t,
-	    i_ie_t,
-	    i_ii_t,
-
-	    phi_ee,
-	    phi_ei,
-
-	    phi_ee_t,
-	    phi_ei_t
+		h_e,
+		h_i,
+		i_ee,
+		i_ei,
+		i_ie,
+		i_ii,
+		i_ee_t,
+		i_ei_t,
+		i_ie_t,
+		i_ii_t,
+		phi_ee,
+		phi_ei,
+		phi_ee_t,
+		phi_ei_t
 	};
 
 	enum Params
@@ -43,62 +42,53 @@ public:
 		tor_i,
 		h_e_rest,
 		h_i_rest,
-
 		h_ee_eq,
 		h_ei_eq,
 		h_ie_eq,
 		h_ii_eq,
-
 		gamma_ee,
 		gamma_ei,
 		gamma_ie,
 		gamma_ii,
-
 		T_ee,
 		T_ei,
 		T_ie,
 		T_ii,
-
 		N_beta_ee,
 		N_beta_ei,
 		N_beta_ie,
 		N_beta_ii,
-
 		N_alpha_ee,
 		N_alpha_ei,
-
 		s_e_max,
 		s_i_max,
-
 		mu_e,
 		mu_i,
-
 		sigma_e,
 		sigma_i,
-
 		p_ee,
 		p_ei,
 		p_ie,
 		p_ii,
-
 		phi_ie,
 		phi_ii,
-
 		v,
 		A_ee,
 		A_ei,
-
 		r_abs
 	};
 
 	__device__
-	Derivatives operator ()(StateSpace & state, DeviceMeshPoint & point)
+	Model()
 	{
-		printf("Computing derivatives\n");
-		Derivatives derivatives;
-		ParameterSpace & params = point.parameters();
+		_e = exp(1.0);
+		_sqrt2 = sqrt(2.0);
+	}
 
-		double e = exp(1.0);
+	__device__
+	Derivatives operator ()(StateSpace & state, ParameterSpace & params, DeviceMeshPoint & point)
+	{
+		Derivatives derivatives;
 
 		derivatives[h_e] = (1/params[tor_e]) * (-(state[h_e] - params[h_e_rest]) + (Y_e_h_e(state[h_e], params) * state[i_ee]) + (Y_i_h_e(state[h_e], params) * (state[i_ie])));
 		derivatives[h_i] = (1/params[tor_i]) * (-(state[h_i] - params[h_i_rest]) + (Y_e_h_i(state[h_i], params) * state[i_ei]) + (Y_i_h_i(state[h_i], params) * (state[i_ii])));
@@ -108,11 +98,11 @@ public:
 		derivatives[i_ie] = state[i_ie_t];
 		derivatives[i_ii] = state[i_ii_t];
 
-	    derivatives[i_ee_t] = -2 * params[gamma_ee] * state[i_ee_t] - (params[gamma_ee] * params[gamma_ee]) * state[i_ee] + params[T_ee] * params[gamma_ee] * e * (params[N_beta_ee] * s_e(state[h_e], params) + state[phi_ee] + params[p_ee]);
-	    derivatives[i_ei_t] = -2 * params[gamma_ei] * state[i_ei_t] - (params[gamma_ei] * params[gamma_ei]) * state[i_ei] + params[T_ei] * params[gamma_ei] * e * (params[N_beta_ei] * s_e(state[h_e], params) + state[phi_ei] + params[p_ei]);
+	    derivatives[i_ee_t] = -2 * params[gamma_ee] * state[i_ee_t] - (params[gamma_ee] * params[gamma_ee]) * state[i_ee] + params[T_ee] * params[gamma_ee] * _e * (params[N_beta_ee] * s_e(state[h_e], params) + state[phi_ee] + params[p_ee]);
+	    derivatives[i_ei_t] = -2 * params[gamma_ei] * state[i_ei_t] - (params[gamma_ei] * params[gamma_ei]) * state[i_ei] + params[T_ei] * params[gamma_ei] * _e * (params[N_beta_ei] * s_e(state[h_e], params) + state[phi_ei] + params[p_ei]);
 
-	    derivatives[i_ie_t] = -2 * params[gamma_ie] * state[i_ie_t] - (params[gamma_ie] * params[gamma_ie]) * state[i_ie] + params[T_ie] * params[gamma_ie] * e * (params[N_beta_ie] * s_i(state[h_i], params) + params[phi_ie] + params[p_ie]);
-	    derivatives[i_ii_t] = -2 * params[gamma_ii] * state[i_ii_t] - (params[gamma_ii] * params[gamma_ii]) * state[i_ii] + params[T_ii] * params[gamma_ii] * e * (params[N_beta_ii] * s_i(state[h_i], params) + params[phi_ii] + params[p_ii]);
+	    derivatives[i_ie_t] = -2 * params[gamma_ie] * state[i_ie_t] - (params[gamma_ie] * params[gamma_ie]) * state[i_ie] + params[T_ie] * params[gamma_ie] * _e * (params[N_beta_ie] * s_i(state[h_i], params) + params[phi_ie] + params[p_ie]);
+	    derivatives[i_ii_t] = -2 * params[gamma_ii] * state[i_ii_t] - (params[gamma_ii] * params[gamma_ii]) * state[i_ii] + params[T_ii] * params[gamma_ii] * _e * (params[N_beta_ii] * s_i(state[h_i], params) + params[phi_ii] + params[p_ii]);
 
 	    derivatives[phi_ee] = state[phi_ee_t];
 	    derivatives[phi_ee] = state[phi_ee_t];
@@ -152,17 +142,14 @@ public:
 	__device__
     double s_e(double h, ParameterSpace & params)
     {
-    	return params[s_e_max] / (1 + (1 - params[r_abs] * params[s_e_max]) * exp(-sqrt(2.0) * (h - params[mu_e]) / params[sigma_e]));
+    	return params[s_e_max] / (1 + (1 - params[r_abs] * params[s_e_max]) * exp(-_sqrt2 * (h - params[mu_e]) / params[sigma_e]));
     }
 
 	__device__
     double s_i(double h, ParameterSpace & params)
     {
-    	return params[s_i_max] / (1 + (1 - params[r_abs] * params[s_i_max]) * exp(-sqrt(2.0) * (h - params[mu_i]) / params[sigma_i]));
+    	return params[s_i_max] / (1 + (1 - params[r_abs] * params[s_i_max]) * exp(-_sqrt2 * (h - params[mu_i]) / params[sigma_i]));
     }
-
-
-
 };
 
 

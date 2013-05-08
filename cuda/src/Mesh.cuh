@@ -29,22 +29,25 @@ void __callStep(StateSpace * prev, StateSpace * curr, ParameterSpace * parameter
 	int x = blockDim.x * blockIdx.x + threadIdx.x;
 	int y = blockDim.y * blockIdx.y + threadIdx.y;
 
-
-	DeviceMeshPoint current(curr, *parameters, width, height, x, y, delta);
-	DeviceMeshPoint previous(prev, *parameters, width, height, x, y, delta);
+	DeviceMeshPoint current(curr, parameters, width, height, x, y, delta);
+	DeviceMeshPoint previous(prev, parameters, width, height, x, y, delta);
 
 	RungeKuttaIntegrator<Model> integrator(current, previous, t, deltaT);
 	integrator.integrateStep();
 }
 
+const int BLOCK_SIZE = 10;
 class Mesh
 {
 public:
-	Mesh(int width, int height, double delta, int flushSteps):
+	Mesh(int width, int height, double delta, int flushSteps, StateSpace initialConditions, ParameterSpace params):
 		_width(width),
 		_height(height),
 		_delta(delta),
-		_flushSteps(flushSteps)
+		_flushSteps(flushSteps),
+		_initialConditions(initialConditions),
+		_params(params),
+		_N(width * height)
 	{
 		allocate();
 	}
@@ -59,40 +62,54 @@ public:
 		cudaStep(t, deltaT);
 		_sheet++;
 
-		if (_sheet > _flushSteps)
+		if (_sheet == _flushSteps)
 		{
-			flush(out);
+			flush(out, t);
 			_sheet = 0;
 		}
 	}
 
 private:
-	int _width, _height;
+	int _width, _height, _N;
 	int _flushSteps;
+	StateSpace & _initialConditions;
+	ParameterSpace & _params;
 	double _delta;
 
-	vector< thrust::device_vector<StateSpace> > _sheets;
 	vector< thrust::device_ptr<StateSpace> > _pointers;
 	thrust::device_ptr<ParameterSpace> _parameters;
 
 	int _sheet;
 
-	void flush(ostream & out)
+	void flush(ostream & out, double t)
 	{
-		// output
+		cudaDeviceSynchronize();
+		printf("Flushing %f...\n", t);
+
+		for (int i = 0; i < _flushSteps; i++)
+		{
+			thrust::host_vector <StateSpace> buffer(_N);
+
+			thrust::device_vector<StateSpace> device(_pointers[i], _pointers[i] + _N);
+
+			thrust::copy(device.begin(), device.end(), buffer.begin());
+		}
 	}
 
 	void cudaStep(double t, double deltaT)
 	{
-		thrust::device_vector<StateSpace> & current = _sheets[_sheet];
-		thrust::device_vector<StateSpace> & prev = _sheets[(_sheet - 1) % _sheets.size()];
+		int prevIndex = _sheet - 1;
+
+		if (prevIndex < 0)
+		{
+			prevIndex = _flushSteps - 1;
+		}
 
 		thrust::device_ptr<StateSpace> & currentPtr = _pointers[_sheet];
-		thrust::device_ptr<StateSpace> & prevPtr = _pointers[(_sheet - 1) % _pointers.size()];
+		thrust::device_ptr<StateSpace> & prevPtr = _pointers[prevIndex];
 
-		dim3 grid(_width / 10, _height / 10), block(10, 10);
+		dim3 grid(_width / BLOCK_SIZE, _height / BLOCK_SIZE), block(BLOCK_SIZE, BLOCK_SIZE);
 
-		printf("\nb4 kernel %p %p", (StateSpace *)thrust::raw_pointer_cast( prevPtr ), (StateSpace *)thrust::raw_pointer_cast( currentPtr ));
 		__callStep<<< grid, block >>>((StateSpace *)thrust::raw_pointer_cast( prevPtr ), (StateSpace *)thrust::raw_pointer_cast( currentPtr ), (ParameterSpace *)thrust::raw_pointer_cast( _parameters ), _width, _height, _delta, t, deltaT);
 		//cudaDeviceSynchronize();
 	}
@@ -104,14 +121,11 @@ private:
 
 		for (int sheet = 0; sheet < _flushSteps; sheet++)
 		{
-			int N = _width * _height;
-			thrust::device_ptr<StateSpace> mem = thrust::device_new<StateSpace>(thrust::device_new<StateSpace>(N), StateSpace(), N);
+			thrust::device_ptr<StateSpace> mem = thrust::device_new<StateSpace>(thrust::device_new<StateSpace>(_N), _initialConditions, _N);
 
-			thrust::device_vector<StateSpace> v(mem, mem + N);
-			_sheets.push_back(v);
 			_pointers.push_back(mem);
 		}
-		_parameters = thrust::device_new<ParameterSpace>(thrust::device_new<ParameterSpace>(), ParameterSpace());
+		_parameters = thrust::device_new<ParameterSpace>(thrust::device_new<ParameterSpace>(_N), _params, _N);
 	}
 
 	void deallocate()

@@ -25,7 +25,7 @@ public:
 		}
 	}
 
-	__device__
+	__device__ __host__
 	double & operator [](int index)
 	{
 		CHECK_BOUNDS(index, MAX_PARAMS);
