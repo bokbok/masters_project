@@ -45,7 +45,6 @@ private:
 	{
 		pthread_mutex_init(&_dataMutex, NULL);
 		pthread_cond_init(&_dataAvailable, NULL);
-		printf("Waiting starting thread...\n");
 
 		pthread_create(&_thread, NULL, AsyncDataStream::start, this);
 	}
@@ -75,10 +74,7 @@ private:
 	void waitForData()
 	{
 		pthread_mutex_lock(&_dataMutex);
-		printf("Got lock\n");
-		printf("Waiting for data to write\n");
 		pthread_cond_wait(&_dataAvailable, &_dataMutex);
-		printf("Got data to write\n");
 		pthread_mutex_unlock(&_dataMutex);
 	}
 
