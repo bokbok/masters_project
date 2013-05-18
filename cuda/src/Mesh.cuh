@@ -19,12 +19,14 @@
 #include "DeviceMeshPoint.cuh"
 #include "RungeKuttaIntegrator.cuh"
 #include "liley/Model.cuh"
+#include "io/DataStream.cuh"
 
 using namespace std;
 
 
+template <class M>
 __global__
-void __callStep(StateSpace * prev, StateSpace * curr, ParameterSpace * parameters, int width, int height, double delta, double t, double deltaT)
+void __callStep(StateSpace * prev, StateSpace * curr, ParameterSpace * parameters, int width, int height, double delta, double t, double deltaT, M model)
 {
 	int x = blockDim.x * blockIdx.x + threadIdx.x;
 	int y = blockDim.y * blockIdx.y + threadIdx.y;
@@ -32,11 +34,12 @@ void __callStep(StateSpace * prev, StateSpace * curr, ParameterSpace * parameter
 	DeviceMeshPoint current(curr, parameters, width, height, x, y, delta);
 	DeviceMeshPoint previous(prev, parameters, width, height, x, y, delta);
 
-	RungeKuttaIntegrator<Model> integrator(current, previous, t, deltaT);
+	RungeKuttaIntegrator<M> integrator(current, previous, t, deltaT);
 	integrator.integrateStep();
 }
 
 const int BLOCK_SIZE = 10;
+template <class M>
 class Mesh
 {
 public:
@@ -57,14 +60,14 @@ public:
 		deallocate();
 	}
 
-	void stepAndFlush(double t, double deltaT, ostream & out)
+	void stepAndFlush(double t, double deltaT, DataStream & out)
 	{
 		cudaStep(t, deltaT);
 		_sheet++;
 
 		if (_sheet == _flushSteps)
 		{
-			flush(out, t);
+			flush(out);
 			_sheet = 0;
 		}
 	}
@@ -81,10 +84,11 @@ private:
 
 	int _sheet;
 
-	void flush(ostream & out, double t)
+	void flush(DataStream & out)
 	{
 		cudaDeviceSynchronize();
-		printf("Flushing %f...\n", t);
+		printf("Flushing ...\n");
+
 
 		for (int i = 0; i < _flushSteps; i++)
 		{
@@ -93,6 +97,7 @@ private:
 			thrust::device_vector<StateSpace> device(_pointers[i], _pointers[i] + _N);
 
 			thrust::copy(device.begin(), device.end(), buffer.begin());
+			out.write(buffer.data(), _width, _height);
 		}
 	}
 
@@ -110,8 +115,10 @@ private:
 
 		dim3 grid(_width / BLOCK_SIZE, _height / BLOCK_SIZE), block(BLOCK_SIZE, BLOCK_SIZE);
 
-		__callStep<<< grid, block >>>((StateSpace *)thrust::raw_pointer_cast( prevPtr ), (StateSpace *)thrust::raw_pointer_cast( currentPtr ), (ParameterSpace *)thrust::raw_pointer_cast( _parameters ), _width, _height, _delta, t, deltaT);
-		//cudaDeviceSynchronize();
+		__callStep<<< grid, block >>>((StateSpace *)thrust::raw_pointer_cast( prevPtr ),
+									  (StateSpace *)thrust::raw_pointer_cast( currentPtr ),
+									  (ParameterSpace *)thrust::raw_pointer_cast( _parameters ),
+									  _width, _height, _delta, t, deltaT, M());
 	}
 
 

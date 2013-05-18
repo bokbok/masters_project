@@ -78,7 +78,7 @@ public:
 		r_abs
 	};
 
-	__device__
+	__host__ __device__
 	Model()
 	{
 		_e = exp(1.0);

@@ -16,21 +16,42 @@ class StateSpace
 {
 private:
 	double _vals[MAX_EQUATIONS];
+	double _t;
+	int _numDimensions;
 
 public:
 	__device__ __host__
 	StateSpace()
 	{
-		for (int i = 0; i < MAX_EQUATIONS; i++)
+		_numDimensions = MAX_EQUATIONS;
+		for (int i = 0; i < _numDimensions; i++)
 		{
 			_vals[i] = 0.0;
 		}
 	}
 
+	__host__
+	double * data()
+	{
+		return _vals;
+	}
+
+	__host__
+	double t()
+	{
+		return _t;
+	}
+
+	__host__
+	int numDimensions()
+	{
+		return _numDimensions;
+	}
+
 	__device__ __host__
 	double & operator [](int index)
 	{
-		CHECK_BOUNDS(index, MAX_EQUATIONS);
+		CHECK_BOUNDS(index, _numDimensions);
 		return _vals[index];
 	}
 
@@ -39,7 +60,7 @@ public:
 	{
 		StateSpace res;
 
-		for (int i = 0; i < MAX_EQUATIONS; i++)
+		for (int i = 0; i < _numDimensions; i++)
 		{
 			res[i] = _vals[i] / val;
 		}
@@ -52,7 +73,7 @@ public:
 	{
 		StateSpace res;
 
-		for (int i = 0; i < MAX_EQUATIONS; i++)
+		for (int i = 0; i < _numDimensions; i++)
 		{
 			res[i] = _vals[i] * val;
 		}
@@ -61,9 +82,10 @@ public:
 	}
 
 	__device__
-	void update(StateSpace & val)
+	void update(double t, StateSpace & val)
 	{
-		for (int i = 0; i < MAX_EQUATIONS; i++)
+		_t = t;
+		for (int i = 0; i < _numDimensions; i++)
 		{
 			_vals[i] = val[i];
 		}
@@ -73,7 +95,7 @@ public:
 	StateSpace operator +(StateSpace &rhs)
 	{
 		StateSpace result;
-		for (int i = 0; i < MAX_EQUATIONS; i++)
+		for (int i = 0; i < _numDimensions; i++)
 		{
 			result[i] = _vals[i] + rhs[i];
 		}
@@ -85,7 +107,7 @@ public:
 	bool debugNanCheck()
 	{
 		bool statenan = false;
-		for (int i = 0; i < MAX_EQUATIONS; i++)
+		for (int i = 0; i < _numDimensions; i++)
 		{
 			statenan |= isnan(_vals[i]);
 		}

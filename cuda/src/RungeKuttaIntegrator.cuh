@@ -128,7 +128,7 @@ public:
 		StateSpace integrated = prev + div6;
 		NAN_CHECK(integrated, "integrated", _previous);
 
-		_current.state().update(integrated);
+		_current.state().update(_t, integrated);
 	}
 
 

@@ -6,6 +6,7 @@ using namespace std;
 
 #include "Mesh.cuh"
 #include "liley/Model.cuh"
+#include "io/FileDataStream.cuh"
 
 ParameterSpace initialiseParams()
 {
@@ -78,17 +79,14 @@ StateSpace initialConditions()
 const int STEPS = 1000;
 int main(void)
 {
-	size_t limit;
-	cudaDeviceGetLimit(&limit, cudaLimitStackSize);
-	printf(">>>>>> Stacksize % i \n\n\n\n", limit);
-	cudaDeviceSetLimit(cudaLimitStackSize, limit * 2);
-	Mesh mesh(100, 100, 0.0001, STEPS, initialConditions(), initialiseParams());
+	Mesh<Model> mesh(100, 100, 0.0001, STEPS, initialConditions(), initialiseParams());
 
 	double deltaT = 0.0001;
 
-	for (int i = 0; i < 100 * STEPS; i++)
+	FileDataStream out("/var/tmp/run.dat");
+	for (int i = 0; i < 10 * STEPS; i++)
 	{
-		mesh.stepAndFlush(i * deltaT, deltaT, cout);
+		mesh.stepAndFlush(i * deltaT, deltaT, out);
 	}
 
     cudaDeviceSynchronize();
