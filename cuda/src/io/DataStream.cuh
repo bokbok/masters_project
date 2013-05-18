@@ -13,6 +13,7 @@ class DataStream
 {
 public:
 	virtual void write(StateSpace * data, int width, int height) = 0;
+	virtual void waitToDrain() = 0;
 
 	virtual ~DataStream() {};
 };

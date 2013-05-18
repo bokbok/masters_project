@@ -34,7 +34,7 @@ void __callStep(StateSpace * prev, StateSpace * curr, ParameterSpace * parameter
 	DeviceMeshPoint current(curr, parameters, width, height, x, y, delta);
 	DeviceMeshPoint previous(prev, parameters, width, height, x, y, delta);
 
-	RungeKuttaIntegrator<M> integrator(current, previous, t, deltaT);
+	RungeKuttaIntegrator<M> integrator(current, previous, t, deltaT, delta);
 	integrator.integrateStep();
 }
 
@@ -82,6 +82,8 @@ private:
 	vector< thrust::device_ptr<StateSpace> > _pointers;
 	thrust::device_ptr<ParameterSpace> _parameters;
 
+	vector< thrust::host_vector <StateSpace> * > _hostBuffers;
+
 	int _sheet;
 
 	void flush(DataStream & out)
@@ -89,16 +91,19 @@ private:
 		cudaDeviceSynchronize();
 		printf("Flushing ...\n");
 
+		out.waitToDrain();
+		printf("Stream ready ...\n");
 
 		for (int i = 0; i < _flushSteps; i++)
 		{
-			thrust::host_vector <StateSpace> buffer(_N);
-
+			thrust::host_vector <StateSpace> * buffer = _hostBuffers[i];
 			thrust::device_vector<StateSpace> device(_pointers[i], _pointers[i] + _N);
 
-			thrust::copy(device.begin(), device.end(), buffer.begin());
-			out.write(buffer.data(), _width, _height);
+			thrust::copy(device.begin(), device.end(), buffer->begin());
+			out.write(buffer->data(), _width, _height);
 		}
+
+		printf("Flushed ...\n");
 	}
 
 	void cudaStep(double t, double deltaT)
@@ -129,8 +134,10 @@ private:
 		for (int sheet = 0; sheet < _flushSteps; sheet++)
 		{
 			thrust::device_ptr<StateSpace> mem = thrust::device_new<StateSpace>(thrust::device_new<StateSpace>(_N), _initialConditions, _N);
+			thrust::host_vector <StateSpace> * buffer = new thrust::host_vector <StateSpace>(_N);
 
 			_pointers.push_back(mem);
+			_hostBuffers.push_back(buffer);
 		}
 		_parameters = thrust::device_new<ParameterSpace>(thrust::device_new<ParameterSpace>(_N), _params, _N);
 	}

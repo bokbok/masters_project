@@ -86,69 +86,68 @@ public:
 	}
 
 	__device__
-	Derivatives operator ()(StateSpace & state, ParameterSpace & params, DeviceMeshPoint & point)
+	Derivatives operator ()(StateSpace & s, ParameterSpace & p, DeviceMeshPoint & point)
 	{
-		Derivatives derivatives;
+		Derivatives ddt;
+	    double vel = p[v];
+	    double vel2 = vel * vel;
 
-		derivatives[h_e] = (1/params[tor_e]) * (-(state[h_e] - params[h_e_rest]) + (Y_e_h_e(state[h_e], params) * state[i_ee]) + (Y_i_h_e(state[h_e], params) * (state[i_ie])));
-		derivatives[h_i] = (1/params[tor_i]) * (-(state[h_i] - params[h_i_rest]) + (Y_e_h_i(state[h_i], params) * state[i_ei]) + (Y_i_h_i(state[h_i], params) * (state[i_ii])));
+		ddt[h_e] = (1/p[tor_e]) * (-(s[h_e] - p[h_e_rest]) + (Y_e_h_e(s[h_e], p) * s[i_ee]) + (Y_i_h_e(s[h_e], p) * (s[i_ie])));
+		ddt[h_i] = (1/p[tor_i]) * (-(s[h_i] - p[h_i_rest]) + (Y_e_h_i(s[h_i], p) * s[i_ei]) + (Y_i_h_i(s[h_i], p) * (s[i_ii])));
 
-		derivatives[i_ee] = state[i_ee_t];
-		derivatives[i_ei] = state[i_ei_t];
-		derivatives[i_ie] = state[i_ie_t];
-		derivatives[i_ii] = state[i_ii_t];
+		ddt[i_ee] = s[i_ee_t];
+		ddt[i_ei] = s[i_ei_t];
+		ddt[i_ie] = s[i_ie_t];
+		ddt[i_ii] = s[i_ii_t];
 
-	    derivatives[i_ee_t] = -2 * params[gamma_ee] * state[i_ee_t] - (params[gamma_ee] * params[gamma_ee]) * state[i_ee] + params[T_ee] * params[gamma_ee] * _e * (params[N_beta_ee] * s_e(state[h_e], params) + state[phi_ee] + params[p_ee]);
-	    derivatives[i_ei_t] = -2 * params[gamma_ei] * state[i_ei_t] - (params[gamma_ei] * params[gamma_ei]) * state[i_ei] + params[T_ei] * params[gamma_ei] * _e * (params[N_beta_ei] * s_e(state[h_e], params) + state[phi_ei] + params[p_ei]);
+	    ddt[i_ee_t] = -2 * p[gamma_ee] * s[i_ee_t] - (p[gamma_ee] * p[gamma_ee]) * s[i_ee] + p[T_ee] * p[gamma_ee] * _e * (p[N_beta_ee] * s_e(s[h_e], p) + s[phi_ee] + p[p_ee]);
+	    ddt[i_ei_t] = -2 * p[gamma_ei] * s[i_ei_t] - (p[gamma_ei] * p[gamma_ei]) * s[i_ei] + p[T_ei] * p[gamma_ei] * _e * (p[N_beta_ei] * s_e(s[h_e], p) + s[phi_ei] + p[p_ei]);
 
-	    derivatives[i_ie_t] = -2 * params[gamma_ie] * state[i_ie_t] - (params[gamma_ie] * params[gamma_ie]) * state[i_ie] + params[T_ie] * params[gamma_ie] * _e * (params[N_beta_ie] * s_i(state[h_i], params) + params[phi_ie] + params[p_ie]);
-	    derivatives[i_ii_t] = -2 * params[gamma_ii] * state[i_ii_t] - (params[gamma_ii] * params[gamma_ii]) * state[i_ii] + params[T_ii] * params[gamma_ii] * _e * (params[N_beta_ii] * s_i(state[h_i], params) + params[phi_ii] + params[p_ii]);
+	    ddt[i_ie_t] = -2 * p[gamma_ie] * s[i_ie_t] - (p[gamma_ie] * p[gamma_ie]) * s[i_ie] + p[T_ie] * p[gamma_ie] * _e * (p[N_beta_ie] * s_i(s[h_i], p) + p[phi_ie] + p[p_ie]);
+	    ddt[i_ii_t] = -2 * p[gamma_ii] * s[i_ii_t] - (p[gamma_ii] * p[gamma_ii]) * s[i_ii] + p[T_ii] * p[gamma_ii] * _e * (p[N_beta_ii] * s_i(s[h_i], p) + p[phi_ii] + p[p_ii]);
 
-	    derivatives[phi_ee] = state[phi_ee_t];
-	    derivatives[phi_ee] = state[phi_ee_t];
+	    ddt[phi_ee] = s[phi_ee_t];
+	    ddt[phi_ee] = s[phi_ee_t];
 
-	    double vel = params[v];
-	    double vel_squared = vel * vel;
-
-	    derivatives[phi_ee_t] = -2 * vel * params[A_ee] * state[phi_ee_t] + vel_squared * (params[A_ee] * params[A_ee]) * (params[N_alpha_ee] * s_e(state[h_e], params) - state[phi_ee]);
-	    derivatives[phi_ei_t] = -2 * vel * params[A_ei] * state[phi_ei_t] + vel_squared * (params[A_ei] * params[A_ei]) * (params[N_alpha_ei] * s_e(state[h_e], params) - state[phi_ei]);
-		return derivatives;
+	    ddt[phi_ee_t] = -2 * vel * p[A_ee] * s[phi_ee_t] + vel2 * (p[A_ee] * p[A_ee]) * (p[N_alpha_ee] * s_e(s[h_e], p) - s[phi_ee]) + 3 * (point.laplacian(phi_ee)) / 2;
+	    ddt[phi_ei_t] = -2 * vel * p[A_ei] * s[phi_ei_t] + vel2 * (p[A_ei] * p[A_ei]) * (p[N_alpha_ei] * s_e(s[h_e], p) - s[phi_ei]) + 3 * (point.laplacian(phi_ei)) / 2;
+		return ddt;
 	}
 
 	__device__
-	double Y_e_h_e(double h_e, ParameterSpace & params)
+	double Y_e_h_e(double h_e, ParameterSpace & p)
 	{
-		return (params[h_ee_eq] - h_e) / abs(params[h_ee_eq] - params[h_e_rest]);
+		return (p[h_ee_eq] - h_e) / abs(p[h_ee_eq] - p[h_e_rest]);
 	}
 
 	__device__
-	double Y_e_h_i(double h_i, ParameterSpace & params)
+	double Y_e_h_i(double h_i, ParameterSpace & p)
 	{
-		return (params[h_ei_eq] - h_i) / abs(params[h_ei_eq] - params[h_i_rest]);
+		return (p[h_ei_eq] - h_i) / abs(p[h_ei_eq] - p[h_i_rest]);
 	}
 
 	__device__
-	double Y_i_h_e(double h_e, ParameterSpace & params)
+	double Y_i_h_e(double h_e, ParameterSpace & p)
 	{
-		return (params[h_ie_eq] - h_e) / abs(params[h_ie_eq] - params[h_e_rest]);
+		return (p[h_ie_eq] - h_e) / abs(p[h_ie_eq] - p[h_e_rest]);
 	}
 
 	__device__
-	double Y_i_h_i(double h_i, ParameterSpace & params)
+	double Y_i_h_i(double h_i, ParameterSpace & p)
 	{
-		return (params[h_ii_eq] - h_i) / abs(params[h_ii_eq] - params[h_i_rest]);
+		return (p[h_ii_eq] - h_i) / abs(p[h_ii_eq] - p[h_i_rest]);
 	}
 
 	__device__
-    double s_e(double h, ParameterSpace & params)
+    double s_e(double h, ParameterSpace & p)
     {
-    	return params[s_e_max] / (1 + (1 - params[r_abs] * params[s_e_max]) * exp(-_sqrt2 * (h - params[mu_e]) / params[sigma_e]));
+    	return p[s_e_max] / (1 + (1 - p[r_abs] * p[s_e_max]) * exp(-_sqrt2 * (h - p[mu_e]) / p[sigma_e]));
     }
 
 	__device__
-    double s_i(double h, ParameterSpace & params)
+    double s_i(double h, ParameterSpace & p)
     {
-    	return params[s_i_max] / (1 + (1 - params[r_abs] * params[s_i_max]) * exp(-_sqrt2 * (h - params[mu_i]) / params[sigma_i]));
+    	return p[s_i_max] / (1 + (1 - p[r_abs] * p[s_i_max]) * exp(-_sqrt2 * (h - p[mu_i]) / p[sigma_i]));
     }
 };
 

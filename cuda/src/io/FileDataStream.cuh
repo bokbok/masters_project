@@ -10,6 +10,7 @@
 
 #include <string>
 #include <fstream>
+#include <vector>
 
 using namespace std;
 
@@ -17,6 +18,7 @@ class FileDataStream : public DataStream
 {
 private:
 	string _path;
+	vector<int> _dimensions;
 
 	ofstream _out;
 
@@ -33,30 +35,36 @@ private:
 	}
 
 public:
-	FileDataStream(string path):
-		_path(path)
+	FileDataStream(string path, vector<int> dimensions):
+		_path(path), _dimensions(dimensions)
 	{
 		open();
+	}
+
+	virtual void waitToDrain()
+	{
 	}
 
 	virtual void write(StateSpace * data, int width, int height)
 	{
 		_out << "t=" << data[0].t();
+
 		for (int x = 0; x < width; x++)
 		{
 			for (int y = 0; y < height; y++)
 			{
 				StateSpace & state = data[x + y * width];
 				_out << endl << "(" << x << "," << y << "):";
-				for (int dim = 0; dim < state.numDimensions(); dim++)
+
+				for (int col = 0; col < _dimensions.size(); col++)
 				{
-					double val = state[dim];
+					double val = state[_dimensions[col]];
 					_out << val << " ";
 				}
 			}
 		}
-		_out << endl;
 
+		_out << endl;
 	}
 
 	virtual ~FileDataStream()

@@ -39,8 +39,8 @@ class RungeKuttaIntegrator
 {
 public:
 	__device__
-	RungeKuttaIntegrator(DeviceMeshPoint curr, DeviceMeshPoint prev, double t, double deltaT):
-		_current(curr), _previous(prev), _t(t), _deltaT(deltaT)
+	RungeKuttaIntegrator(DeviceMeshPoint curr, DeviceMeshPoint prev, double t, double deltaT, double delta):
+		_current(curr), _previous(prev), _t(t), _deltaT(deltaT), _deltaSpatial(delta)
 	{
 	}
 
@@ -134,7 +134,7 @@ public:
 
 private:
 	DeviceMeshPoint _current, _previous;
-	double _t, _deltaT;
+	double _t, _deltaT, _deltaSpatial;
 
 	T _model;
 };

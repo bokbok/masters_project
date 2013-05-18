@@ -61,6 +61,31 @@ public:
 		return parametersAt(0, 0);
 	}
 
+	__device__
+	double d2dx2(int dim)
+	{
+		double xMinus = stateAt(-1, 0)[dim];
+		double x = state()[dim];
+		double xPlus = stateAt(1, 0)[dim];
+
+		return (xMinus - 2 * x + xPlus) / _delta;
+	}
+
+	__device__
+	double d2dy2(int dim)
+	{
+		double yMinus = stateAt(0, -1)[dim];
+		double y = state()[dim];
+		double yPlus = stateAt(0, 1)[dim];
+
+		return (yMinus - 2 * y + yPlus) / _delta;
+	}
+
+	__device__
+	double laplacian(int dim)
+	{
+		return d2dy2(dim) + d2dx2(dim);
+	}
 
 	__device__
 	ParameterSpace & parametersAt(int xOffset, int yOffset)

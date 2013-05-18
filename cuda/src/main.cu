@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <vector>
 
 using namespace std;
 
@@ -7,6 +8,7 @@ using namespace std;
 #include "Mesh.cuh"
 #include "liley/Model.cuh"
 #include "io/FileDataStream.cuh"
+#include "io/AsyncDataStream.cuh"
 
 ParameterSpace initialiseParams()
 {
@@ -76,19 +78,32 @@ StateSpace initialConditions()
 	return initialConditions;
 }
 
+std::vector<int> dimensions()
+{
+	std::vector<int> dims;
+	dims.push_back(Model::h_e);
+	dims.push_back(Model::h_i);
+
+	return dims;
+}
+
 const int STEPS = 1000;
+const double T_SIM = 10;
+
 int main(void)
 {
-	Mesh<Model> mesh(100, 100, 0.0001, STEPS, initialConditions(), initialiseParams());
+	Mesh<Model> mesh(100, 100, 0.1, STEPS, initialConditions(), initialiseParams());
 
 	double deltaT = 0.0001;
 
-	FileDataStream out("/var/tmp/run.dat");
-	for (int i = 0; i < 10 * STEPS; i++)
+	FileDataStream file("/var/tmp/run.dat", dimensions());
+	AsyncDataStream out(file);
+	for (int i = 0; i < T_SIM / deltaT; i++)
 	{
 		mesh.stepAndFlush(i * deltaT, deltaT, out);
 	}
 
+	out.waitToDrain();
     cudaDeviceSynchronize();
     printf("%s\n", cudaGetErrorString( cudaGetLastError() ) );
 	return 0;
