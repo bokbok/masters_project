@@ -91,6 +91,16 @@ public:
 		}
 	}
 
+	__host__
+	void randomise(double deviation, StateSpace & from)
+	{
+		for (int i = 0; i < _numDimensions; i++)
+		{
+			_vals[i] = from[i] * (1 + deviation * ((rand() % 200) - 100) / 100);
+
+		}
+	}
+
 	__device__
 	StateSpace operator +(StateSpace &rhs)
 	{

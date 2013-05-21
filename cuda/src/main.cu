@@ -7,10 +7,13 @@ using namespace std;
 
 #include "Mesh.cuh"
 #include "liley/Model.cuh"
+#include "liley/SIRUModel.cuh"
 #include "io/FileDataStream.cuh"
 #include "io/AsyncDataStream.cuh"
 
-ParameterSpace initialiseParams()
+#include "Simulation.cuh"
+
+ParameterSpace initialiseParamsBase()
 {
 	ParameterSpace params;
 	params[Model::tor_e] = 138.3660;
@@ -68,17 +71,102 @@ ParameterSpace initialiseParams()
 	return params;
 }
 
-StateSpace initialConditions()
+
+ParameterSpace initialiseParamsSIRU()
+{
+	ParameterSpace params;
+	params[SIRUModel::tor_e] = 138.3660;
+	params[SIRUModel::tor_i] = 89.3207;
+	params[SIRUModel::h_e_rest] = -68.1355;
+	params[SIRUModel::h_i_rest] = -77.2602;
+
+	params[SIRUModel::h_ee_eq] = -15.8527;
+	params[SIRUModel::h_ei_eq] = 7.4228;
+	params[SIRUModel::h_ie_eq] = -85.9896;
+	params[SIRUModel::h_ii_eq] = -84.5363;
+
+	params[SIRUModel::gamma_ee] = 0.4393;
+	params[SIRUModel::gamma_ei] = 0.2350;
+	params[SIRUModel::gamma_ie] = 0.0791;
+	params[SIRUModel::gamma_ii] = 0.0782;
+
+	params[SIRUModel::T_ee_p] = 0.3127;
+	params[SIRUModel::T_ei_p] = 0.9426;
+	params[SIRUModel::T_ie_p] = 0.4947;
+	params[SIRUModel::T_ii_p] = 1.4122;
+
+	params[SIRUModel::N_beta_ee] = 4582.0661;
+	params[SIRUModel::N_beta_ei] = 4198.1829;
+	params[SIRUModel::N_beta_ie] = 989.5281;
+	params[SIRUModel::N_beta_ii] = 531.9419;
+
+	params[SIRUModel::N_alpha_ee] = 4994.4860;
+	params[SIRUModel::N_alpha_ei] = 2222.9060;
+
+	params[SIRUModel::s_e_max] = 0.2801;
+	params[SIRUModel::s_i_max] = 0.1228;
+
+	params[SIRUModel::mu_e] = -47.1364;
+	params[SIRUModel::mu_i] = -45.3751;
+
+	params[SIRUModel::mus_e] = 0.001;
+	params[SIRUModel::mus_i] = 0.001;
+
+	params[SIRUModel::sigma_e] = 2.6120;
+	params[SIRUModel::sigma_i] = 2.8294;
+
+	params[SIRUModel::p_ee] = 3.6032;
+	params[SIRUModel::p_ei] = 0.3639;
+	params[SIRUModel::p_ie] = 0;
+	params[SIRUModel::p_ii] = 0;
+
+	params[SIRUModel::phi_ie] = 0;
+	params[SIRUModel::phi_ii] = 0;
+
+	params[SIRUModel::A_ee] = 0.2433;
+	params[SIRUModel::A_ei] = 0.2433;
+
+	params[SIRUModel::v] = 0.1714;
+
+	params[SIRUModel::r_abs] = 0;
+
+	params[SIRUModel::k_i] = 0.1;
+	params[SIRUModel::k_e] = 0.2;
+	params[SIRUModel::e_i] = 1.8;
+	params[SIRUModel::e_e] = 1.5;
+
+	return params;
+}
+
+
+StateSpace initialConditionsBase()
 {
 	StateSpace initialConditions;
 
-	initialConditions[Model::h_e] = -22.1355;
-	initialConditions[Model::h_i] = -22.2602;
+	initialConditions[Model::h_e] = -68.1355;
+	initialConditions[Model::h_i] = -77.2602;
 
 	return initialConditions;
 }
 
-std::vector<int> dimensions()
+StateSpace initialConditionsSIRU()
+{
+	StateSpace initialConditions;
+
+	initialConditions[SIRUModel::h_e] = 0;
+	initialConditions[SIRUModel::h_i] = 0;
+
+	initialConditions[SIRUModel::T_ee] = 0.3127;
+	initialConditions[SIRUModel::T_ei] = 0.9426;
+	initialConditions[SIRUModel::T_ie] = 0.4947;
+	initialConditions[SIRUModel::T_ii] = 1.4122;
+
+	return initialConditions;
+}
+
+
+
+std::vector<int> dimensionsBase()
 {
 	std::vector<int> dims;
 	dims.push_back(Model::h_e);
@@ -87,21 +175,36 @@ std::vector<int> dimensions()
 	return dims;
 }
 
+std::vector<int> dimensionsSIRU()
+{
+	std::vector<int> dims;
+	dims.push_back(SIRUModel::h_e);
+	dims.push_back(SIRUModel::h_i);
+	dims.push_back(SIRUModel::T_ii);
+	dims.push_back(SIRUModel::T_ie);
+	dims.push_back(SIRUModel::T_ei);
+	dims.push_back(SIRUModel::T_ee);
+	dims.push_back(SIRUModel::phi_ee);
+	dims.push_back(SIRUModel::phi_ei);
+
+	return dims;
+}
+
+
 const int STEPS = 1000;
+const int MESH_SIZE = 10;
 const double T_SIM = 10;
+const double DELTA_T = 0.0001;
+const double DELTA = 10;
 
 int main(void)
 {
-	Mesh<Model> mesh(100, 100, 0.1, STEPS, initialConditions(), initialiseParams());
-
-	double deltaT = 0.0001;
-
-	FileDataStream file("/var/tmp/run.dat", dimensions());
+	FileDataStream file("/var/tmp/run.dat", dimensionsSIRU());
 	AsyncDataStream out(file);
-	for (int i = 0; i < T_SIM / deltaT; i++)
-	{
-		mesh.stepAndFlush(i * deltaT, deltaT, out);
-	}
+
+	Simulation<SIRUModel> sim(MESH_SIZE, MESH_SIZE, STEPS, T_SIM, DELTA_T, DELTA, initialConditionsSIRU(), initialiseParamsSIRU(), 0.0001);
+
+	sim.run(out);
 
 	out.waitToDrain();
     cudaDeviceSynchronize();

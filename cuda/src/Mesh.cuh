@@ -43,7 +43,7 @@ template <class M>
 class Mesh
 {
 public:
-	Mesh(int width, int height, double delta, int flushSteps, StateSpace initialConditions, ParameterSpace params):
+	Mesh(int width, int height, double delta, int flushSteps, StateSpace * initialConditions, ParameterSpace params):
 		_width(width),
 		_height(height),
 		_delta(delta),
@@ -75,7 +75,7 @@ public:
 private:
 	int _width, _height, _N;
 	int _flushSteps;
-	StateSpace & _initialConditions;
+	StateSpace * _initialConditions;
 	ParameterSpace & _params;
 	double _delta;
 
@@ -131,10 +131,12 @@ private:
 	{
 		_sheet = 0;
 
+		thrust::host_vector<StateSpace> ics(_initialConditions, _initialConditions + _N);
 		for (int sheet = 0; sheet < _flushSteps; sheet++)
 		{
-			thrust::device_ptr<StateSpace> mem = thrust::device_new<StateSpace>(thrust::device_new<StateSpace>(_N), _initialConditions, _N);
+			thrust::device_ptr<StateSpace> mem = thrust::device_new<StateSpace>(_N);
 			thrust::host_vector <StateSpace> * buffer = new thrust::host_vector <StateSpace>(_N);
+			thrust::copy(ics.begin(), ics.end(), mem);
 
 			_pointers.push_back(mem);
 			_hostBuffers.push_back(buffer);
