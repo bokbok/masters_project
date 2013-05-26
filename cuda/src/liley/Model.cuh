@@ -106,7 +106,7 @@ public:
 	    ddt[i_ie_t] = -2 * p[gamma_ie] * s[i_ie_t] - (p[gamma_ie] * p[gamma_ie]) * s[i_ie] + p[T_ie] * p[gamma_ie] * _e * (p[N_beta_ie] * s_i(s[h_i], p) + p[phi_ie] + p[p_ie]);
 	    ddt[i_ii_t] = -2 * p[gamma_ii] * s[i_ii_t] - (p[gamma_ii] * p[gamma_ii]) * s[i_ii] + p[T_ii] * p[gamma_ii] * _e * (p[N_beta_ii] * s_i(s[h_i], p) + p[phi_ii] + p[p_ii]);
 
-	    ddt[phi_ee] = s[phi_ee_t];
+	    ddt[phi_ei] = s[phi_ei_t];
 	    ddt[phi_ee] = s[phi_ee_t];
 
 	    ddt[phi_ee_t] = -2 * vel * p[A_ee] * s[phi_ee_t] + vel2 * (p[A_ee] * p[A_ee]) * (p[N_alpha_ee] * s_e(s[h_e], p) - s[phi_ee]) + 3 * (point.laplacian(phi_ee)) / 2;

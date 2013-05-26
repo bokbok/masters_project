@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <vector>
+#include <map>
 
 using namespace std;
 
@@ -9,6 +10,7 @@ using namespace std;
 #include "liley/Model.cuh"
 #include "liley/SIRUModel.cuh"
 #include "io/FileDataStream.cuh"
+#include "io/MemoryMappedFileDataStream.cuh"
 #include "io/AsyncDataStream.cuh"
 
 #include "Simulation.cuh"
@@ -175,34 +177,39 @@ std::vector<int> dimensionsBase()
 	return dims;
 }
 
-std::vector<int> dimensionsSIRU()
+std::map<string, int> dimensionsSIRU()
 {
-	std::vector<int> dims;
-	dims.push_back(SIRUModel::h_e);
-	dims.push_back(SIRUModel::h_i);
-	dims.push_back(SIRUModel::T_ii);
-	dims.push_back(SIRUModel::T_ie);
-	dims.push_back(SIRUModel::T_ei);
-	dims.push_back(SIRUModel::T_ee);
-	dims.push_back(SIRUModel::phi_ee);
-	dims.push_back(SIRUModel::phi_ei);
+	std::map<string, int> dims;
+	dims["h_e"] = SIRUModel::h_e;
+	dims["h_i"] = SIRUModel::h_i;
+	dims["T_ii"] = SIRUModel::T_ii;
+	dims["T_ie"] = SIRUModel::T_ie;
+	dims["T_ei"] = SIRUModel::T_ei;
+	dims["T_ee"] = SIRUModel::T_ee;
+	//dims["phi_ee"] = SIRUModel::phi_ee;
+	//dims["phi_ei"] = SIRUModel::phi_ei;
 
 	return dims;
 }
 
+typedef FileDataStream FileStream;
 
-const int STEPS = 1000;
-const int MESH_SIZE = 10;
-const double T_SIM = 10;
+const int STEPS = 1000 / 25;
+const int MESH_SIZE = 500;
+const double T_SIM = 15;
 const double DELTA_T = 0.0001;
-const double DELTA = 10;
+const double DELTA = 0.1;
+const double RANDOMISE_FRACTION = 1e-20;
+
+//const char * OUTPUT_PATH = "/var/tmp/run.dat";
+const char * OUTPUT_PATH = "/terra/run.dat";
 
 int main(void)
 {
-	FileDataStream file("/var/tmp/run.dat", dimensionsSIRU());
+	FileStream file(OUTPUT_PATH, dimensionsSIRU());
 	AsyncDataStream out(file);
 
-	Simulation<SIRUModel> sim(MESH_SIZE, MESH_SIZE, STEPS, T_SIM, DELTA_T, DELTA, initialConditionsSIRU(), initialiseParamsSIRU(), 0.0001);
+	Simulation<SIRUModel> sim(MESH_SIZE, MESH_SIZE, STEPS, T_SIM, DELTA_T, DELTA, initialConditionsSIRU(), initialiseParamsSIRU(), RANDOMISE_FRACTION);
 
 	sim.run(out);
 

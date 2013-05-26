@@ -10,7 +10,7 @@
 
 #include <string>
 #include <fstream>
-#include <vector>
+#include <map>
 
 using namespace std;
 
@@ -18,15 +18,14 @@ class FileDataStream : public DataStream
 {
 private:
 	string _path;
-	vector<int> _dimensions;
+	map<string, int> _dimensions;
 
 	ofstream _out;
-
-
 
 	void open()
 	{
 		_out.open(_path.c_str());
+		_out.precision(5);
 	}
 
 	void close()
@@ -34,11 +33,24 @@ private:
 		_out.close();
 	}
 
+	void writeHeaders()
+	{
+		map<string, int>::iterator iter;
+
+		for(iter = _dimensions.begin(); iter != _dimensions.end(); ++iter)
+		{
+			_out << iter->first << " ";
+		}
+
+		_out << endl;
+	}
+
 public:
-	FileDataStream(string path, vector<int> dimensions):
+	FileDataStream(string path, map<string, int> dimensions):
 		_path(path), _dimensions(dimensions)
 	{
 		open();
+		writeHeaders();
 	}
 
 	virtual void waitToDrain()
@@ -47,6 +59,8 @@ public:
 
 	virtual void write(StateSpace * data, int width, int height)
 	{
+		map<string, int>::iterator iter;
+
 		_out << "t=" << data[0].t();
 
 		for (int x = 0; x < width; x++)
@@ -54,17 +68,17 @@ public:
 			for (int y = 0; y < height; y++)
 			{
 				StateSpace & state = data[x + y * width];
-				_out << endl << "(" << x << "," << y << "):";
+				_out << "\n" << "(" << x << "," << y << "):";
 
-				for (int col = 0; col < _dimensions.size(); col++)
+				for (iter = _dimensions.begin(); iter != _dimensions.end(); ++iter)
 				{
-					double val = state[_dimensions[col]];
+					double val = state[iter->second];
 					_out << val << " ";
 				}
 			}
 		}
 
-		_out << endl;
+		_out << '\n';
 	}
 
 	virtual ~FileDataStream()
