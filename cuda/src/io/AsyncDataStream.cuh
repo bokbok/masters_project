@@ -40,6 +40,7 @@ private:
 	std::queue<Write *> _queue;
 
 	volatile bool _exit;
+	volatile bool _empty;
 
 	void startWriteThread()
 	{
@@ -74,7 +75,9 @@ private:
 	void waitForData()
 	{
 		pthread_mutex_lock(&_dataMutex);
+		_empty = true;
 		pthread_cond_wait(&_dataAvailable, &_dataMutex);
+		_empty = false;
 		pthread_mutex_unlock(&_dataMutex);
 	}
 
@@ -130,14 +133,14 @@ public:
 		}
 		while (!empty())
 		{
-			usleep(10);
+			usleep(100);
 		}
 	}
 
 	bool empty()
 	{
 		pthread_mutex_lock(&_dataMutex);
-		bool result = _queue.empty();
+		bool result = _empty;
 		pthread_mutex_unlock(&_dataMutex);
 
 		return result;
@@ -151,6 +154,16 @@ public:
 	virtual ~AsyncDataStream()
 	{
 		stop();
+		cleanup();
+	}
+
+	void cleanup()
+	{
+		Write * write;
+		while((write = nextWrite()) != NULL)
+		{
+			delete write;
+		}
 	}
 
 };

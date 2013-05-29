@@ -35,7 +35,7 @@ private:
 	}
 
 public:
-	Simulation(int width, int height, int flushSteps, double length,
+	Simulation(int width, int height, int bufferSize, int reportSteps, double length,
 			   double deltaT, double delta, StateSpace initialConditions,
 			   ParameterSpace params, double icFluctuation):
 		_width(width),
@@ -48,7 +48,7 @@ public:
 		_icFluctuation(icFluctuation)
 	{
 		printf("Allocating mesh......");
-		_mesh = new Mesh<T>(width, height, delta, flushSteps, randomiseInitialConditions(), params);
+		_mesh = new Mesh<T>(width, height, delta, bufferSize, reportSteps, randomiseInitialConditions(), params);
 		printf("Done......");
 	}
 

@@ -12,6 +12,8 @@ using namespace std;
 #include "io/FileDataStream.cuh"
 #include "io/MemoryMappedFileDataStream.cuh"
 #include "io/AsyncDataStream.cuh"
+#include "io/CompositeDataStream.cuh"
+#include "io/visual/FrameRenderingDataStream.cuh"
 
 #include "Simulation.cuh"
 
@@ -186,34 +188,46 @@ std::map<string, int> dimensionsSIRU()
 	dims["T_ie"] = SIRUModel::T_ie;
 	dims["T_ei"] = SIRUModel::T_ei;
 	dims["T_ee"] = SIRUModel::T_ee;
-	//dims["phi_ee"] = SIRUModel::phi_ee;
-	//dims["phi_ei"] = SIRUModel::phi_ei;
+	dims["phi_ee"] = SIRUModel::phi_ee;
+	dims["phi_ei"] = SIRUModel::phi_ei;
 
 	return dims;
 }
 
 typedef FileDataStream FileStream;
 
-const int STEPS = 1000 / 25;
-const int MESH_SIZE = 500;
-const double T_SIM = 15;
+const int BUFFER_SIZE = 1000 / 25;
+const int REPORT_STEPS = 100;
+const int MESH_SIZE = 100;
+const double T_SIM = 120;
 const double DELTA_T = 0.0001;
-const double DELTA = 0.1;
-const double RANDOMISE_FRACTION = 1e-20;
+const double DELTA = 10;
+const double RANDOMISE_FRACTION = 1e-4;
 
 //const char * OUTPUT_PATH = "/var/tmp/run.dat";
 const char * OUTPUT_PATH = "/terra/run.dat";
+const char * RENDER_PATH = "/terra/run_images";
 
 int main(void)
 {
 	FileStream file(OUTPUT_PATH, dimensionsSIRU());
-	AsyncDataStream out(file);
+	AsyncDataStream fileOut(file);
 
-	Simulation<SIRUModel> sim(MESH_SIZE, MESH_SIZE, STEPS, T_SIM, DELTA_T, DELTA, initialConditionsSIRU(), initialiseParamsSIRU(), RANDOMISE_FRACTION);
+	FrameRenderingDataStream renderer(RENDER_PATH, MESH_SIZE, MESH_SIZE, SIRUModel::h_e, 10);
+	AsyncDataStream renderOut(renderer);
+
+	vector<DataStream *> streams;
+	streams.push_back(&fileOut);
+	streams.push_back(&renderOut);
+
+	CompositeDataStream out(streams);
+
+
+	Simulation<SIRUModel> sim(MESH_SIZE, MESH_SIZE, BUFFER_SIZE, REPORT_STEPS, T_SIM, DELTA_T, DELTA, initialConditionsSIRU(), initialiseParamsSIRU(), RANDOMISE_FRACTION);
 
 	sim.run(out);
 
-	out.waitToDrain();
+	fileOut.waitToDrain();
     cudaDeviceSynchronize();
     printf("%s\n", cudaGetErrorString( cudaGetLastError() ) );
 	return 0;
