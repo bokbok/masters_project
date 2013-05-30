@@ -14,8 +14,11 @@ using namespace std;
 #include "io/AsyncDataStream.cuh"
 #include "io/CompositeDataStream.cuh"
 #include "io/visual/FrameRenderingDataStream.cuh"
+#include "io/visual/TraceRenderingDataStream.cuh"
 
 #include "Simulation.cuh"
+#include <ctime>
+
 
 ParameterSpace initialiseParamsBase()
 {
@@ -194,36 +197,68 @@ std::map<string, int> dimensionsSIRU()
 	return dims;
 }
 
+
+
 typedef FileDataStream FileStream;
 
 const int BUFFER_SIZE = 1000 / 25;
 const int REPORT_STEPS = 100;
 const int MESH_SIZE = 100;
 const double T_SIM = 120;
-const double DELTA_T = 0.0001;
+const double DELTA_T = 0.0001; //make smaller for tighter mesh
 const double DELTA = 10;
-const double RANDOMISE_FRACTION = 1e-4;
+const double RANDOMISE_FRACTION = 0.1;
 
 //const char * OUTPUT_PATH = "/var/tmp/run.dat";
 const char * OUTPUT_PATH = "/terra/run.dat";
-const char * RENDER_PATH = "/terra/run_images";
+const char * RENDER_PATH = "/terra/runs";
+
+string runPath()
+{
+	double sysTime = time(0);
+
+	char buf[600];
+	sprintf(buf, "%i", (int) sysTime);
+
+	mkdir(RENDER_PATH, 0777);
+	return string(RENDER_PATH) + "/" + buf;
+}
+
 
 int main(void)
 {
-	FileStream file(OUTPUT_PATH, dimensionsSIRU());
+	srand(time(NULL));
+	string path = runPath();
+	mkdir(path.c_str(), 0777);
+
+	FileStream file(path + "/run.dat", dimensionsSIRU());
 	AsyncDataStream fileOut(file);
 
-	FrameRenderingDataStream renderer(RENDER_PATH, MESH_SIZE, MESH_SIZE, SIRUModel::h_e, 10);
+	FrameRenderingDataStream renderer(path, MESH_SIZE, MESH_SIZE, SIRUModel::h_e, 10);
 	AsyncDataStream renderOut(renderer);
+
+	TraceRenderingDataStream trace(path, MESH_SIZE, MESH_SIZE, SIRUModel::h_e, MESH_SIZE / 2, 100, DELTA_T);
+	AsyncDataStream traceOut(trace);
+
 
 	vector<DataStream *> streams;
 	streams.push_back(&fileOut);
 	streams.push_back(&renderOut);
+	streams.push_back(&traceOut);
 
 	CompositeDataStream out(streams);
 
 
-	Simulation<SIRUModel> sim(MESH_SIZE, MESH_SIZE, BUFFER_SIZE, REPORT_STEPS, T_SIM, DELTA_T, DELTA, initialConditionsSIRU(), initialiseParamsSIRU(), RANDOMISE_FRACTION);
+	Simulation<SIRUModel> sim(MESH_SIZE,
+							  MESH_SIZE,
+							  BUFFER_SIZE,
+							  REPORT_STEPS,
+							  T_SIM,
+							  DELTA_T,
+							  DELTA,
+							  initialConditionsSIRU(),
+							  initialiseParamsSIRU(),
+							  RANDOMISE_FRACTION);
 
 	sim.run(out);
 

@@ -121,8 +121,8 @@ public:
 	    ddt[phi_ee] = s[phi_ee_t];
 	    ddt[phi_ei] = s[phi_ei_t];
 
-	    ddt[phi_ee_t] = -2 * vel * p[A_ee] * s[phi_ee_t] + vel2 * (p[A_ee] * p[A_ee]) * (p[N_alpha_ee] * s_e(s[h_e], p) - s[phi_ee]) + 3 * (point.laplacian(phi_ee)) / 2;
-	    ddt[phi_ei_t] = -2 * vel * p[A_ei] * s[phi_ei_t] + vel2 * (p[A_ei] * p[A_ei]) * (p[N_alpha_ei] * s_e(s[h_e], p) - s[phi_ei]) + 3 * (point.laplacian(phi_ei)) / 2;
+	    ddt[phi_ee_t] = -2 * vel * p[A_ee] * s[phi_ee_t] + vel2 * (p[A_ee] * p[A_ee]) * (p[N_alpha_ee] * s_e(s[h_e], p) - s[phi_ee]) + 3 * vel2 * (point.laplacian(phi_ee)) / 2;
+	    ddt[phi_ei_t] = -2 * vel * p[A_ei] * s[phi_ei_t] + vel2 * (p[A_ei] * p[A_ei]) * (p[N_alpha_ei] * s_e(s[h_e], p) - s[phi_ei]) + 3 * vel2 * (point.laplacian(phi_ei)) / 2;
 		return ddt;
 	}
 

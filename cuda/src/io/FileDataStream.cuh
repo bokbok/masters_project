@@ -25,7 +25,7 @@ private:
 	void open()
 	{
 		_out.open(_path.c_str());
-		_out.precision(5);
+		_out.precision(15);
 	}
 
 	void close()

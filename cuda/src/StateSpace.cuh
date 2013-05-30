@@ -9,6 +9,7 @@
 #define STATESPACE_CUH_
 
 #include "common.cuh"
+#include <math.h>
 
 #include "ParameterSpace.cuh"
 const int MAX_EQUATIONS=40;
@@ -96,9 +97,14 @@ public:
 	{
 		for (int i = 0; i < _numDimensions; i++)
 		{
-			_vals[i] = from[i] * (1 + deviation * ((rand() % 200) - 100) / 100);
-
+			_vals[i] = from[i] * (1 + random() * deviation);
 		}
+	}
+
+	__host__
+	double random()
+	{
+		return (double)(rand() % 200 - 100) / 100;
 	}
 
 	__device__

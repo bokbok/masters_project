@@ -14,7 +14,6 @@
 #include <string>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <ctime>
 
 #include <mgl2/mgl.h>
 
@@ -32,7 +31,6 @@ private:
 
 	double * _mesh;
 
-
 	int _currentStep;
 	int _meshSize, _width, _height;
 
@@ -43,12 +41,7 @@ private:
 	void prepareOutputPath()
 	{
 		mkdir(_outputPath.c_str(), 0777);
-		double sysTime = time(0);
-
-		char buf[600];
-		sprintf(buf, "%i", (int) sysTime);
-		_fullOutputPath = (_outputPath + "/" + buf);
-
+		_fullOutputPath = _outputPath + "/rms";
 		mkdir(_fullOutputPath.c_str(), 0777);
 	}
 
@@ -99,8 +92,8 @@ private:
 		graph.Box();
 		graph.Dens(data);
 
-		sprintf(buf, "%i", _fileCount);
-		string filename = _fullOutputPath + "/" + buf + ".png";
+		sprintf(buf, "%05d", _fileCount);
+		string filename = _fullOutputPath + "/rms_" + buf + ".png";
 		printf(filename.c_str());
 		graph.WritePNG(filename.c_str(), "");
 		printf("Writing RMS frame - Done\n");

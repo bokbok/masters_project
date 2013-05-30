@@ -41,7 +41,7 @@ private:
 public:
 	__device__
 	DeviceMeshPoint(StateSpace * mesh, ParameterSpace * parameters, int width, int height, int x, int y, double delta) :
-		_mesh(mesh), _width(width), _height(height), _x(x), _y(y), _delta(delta), _parameters(parameters) { }
+		_mesh(mesh), _width(width), _height(height), _x(x), _y(y), _delta(delta), _parameters(parameters), _delta2(delta * delta) { }
 
 	__device__
 	StateSpace & stateAt(int xOffset, int yOffset)
@@ -68,7 +68,7 @@ public:
 		double x = state()[dim];
 		double xPlus = stateAt(1, 0)[dim];
 
-		return (xMinus - 2 * x + xPlus) / _delta;
+		return (xMinus - 2 * x + xPlus) / _delta2;
 	}
 
 	__device__
@@ -78,7 +78,7 @@ public:
 		double y = state()[dim];
 		double yPlus = stateAt(0, 1)[dim];
 
-		return (yMinus - 2 * y + yPlus) / _delta;
+		return (yMinus - 2 * y + yPlus) / _delta2;
 	}
 
 	__device__
@@ -111,7 +111,7 @@ private:
 	int _width, _height;
 	int _x, _y;
 
-	double _delta;
+	double _delta, _delta2;
 };
 
 
