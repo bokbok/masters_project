@@ -37,6 +37,7 @@ private:
 	int _fileCount;
 
 	double _latestT;
+	double _restingVal;
 
 	void prepareOutputPath()
 	{
@@ -53,7 +54,7 @@ private:
 		{
 			_mesh = new double[_meshSize];
 
-			zeroMesh();
+			zeroMesh(_mesh);
 		}
 	}
 
@@ -62,11 +63,11 @@ private:
 		delete[] _mesh;
 	}
 
-	void zeroMesh()
+	void zeroMesh(double * mesh)
 	{
 		for (int i = 0; i < _meshSize; i++)
 		{
-			_mesh[i] = 0.0;
+			mesh[i] = 0.0;
 		}
 	}
 
@@ -76,7 +77,7 @@ private:
 		double rms[_meshSize];
 		for (int i = 0; i < _meshSize; i++)
 		{
-			rms[i] = (100 - sqrt(_mesh[i] / (double)_outputInterval)) / 100;
+			rms[i] = (sqrt(_mesh[i] / (double)_outputInterval) - 7.5) / 15;
 		}
 
 		mglGraph graph;
@@ -92,6 +93,7 @@ private:
 		graph.Box();
 		graph.Dens(data);
 
+
 		sprintf(buf, "%05d", _fileCount);
 		string filename = _fullOutputPath + "/rms_" + buf + ".png";
 		printf(filename.c_str());
@@ -104,7 +106,8 @@ private:
 		_latestT = data[0].t();
 		for (int i = 0; i < _meshSize; i++)
 		{
-			_mesh[i] += data[i][_dimensionToPlot] * data[i][_dimensionToPlot];
+			double val = data[i][_dimensionToPlot] - _restingVal;
+			_mesh[i] += val * val;
 		}
 
 		_currentStep++;
@@ -113,12 +116,12 @@ private:
 		if (_currentStep == 0)
 		{
 			writeRMSFrame();
-			zeroMesh();
+			zeroMesh(_mesh);
 		}
 	}
 
 public:
-	FrameRenderingDataStream(string outputPath, int width, int height, int dimensionToPlot, int outputInterval) :
+	FrameRenderingDataStream(string outputPath, int width, int height, int dimensionToPlot, int outputInterval, double restingVal) :
 		_outputPath(outputPath),
 		_dimensionToPlot(dimensionToPlot),
 		_outputInterval(outputInterval),
@@ -127,7 +130,8 @@ public:
 		_width(width),
 		_height(height),
 		_fileCount(0),
-		_latestT(0.0)
+		_latestT(0.0),
+		_restingVal(restingVal)
 	{
 		prepareOutputPath();
 		allocateMesh(width, height);

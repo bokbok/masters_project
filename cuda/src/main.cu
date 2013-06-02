@@ -8,7 +8,8 @@ using namespace std;
 
 #include "Mesh.cuh"
 #include "liley/Model.cuh"
-#include "liley/SIRUModel.cuh"
+#include "liley/SIRU1Model.cuh"
+#include "liley/SIRU2Model.cuh"
 #include "io/FileDataStream.cuh"
 #include "io/MemoryMappedFileDataStream.cuh"
 #include "io/AsyncDataStream.cuh"
@@ -79,71 +80,141 @@ ParameterSpace initialiseParamsBase()
 }
 
 
-ParameterSpace initialiseParamsSIRU()
+ParameterSpace initialiseParamsSIRU2()
 {
 	ParameterSpace params;
-	params[SIRUModel::tor_e] = 138.3660;
-	params[SIRUModel::tor_i] = 89.3207;
-	params[SIRUModel::h_e_rest] = -68.1355;
-	params[SIRUModel::h_i_rest] = -77.2602;
+	params[SIRU2Model::tor_e] = 138.3660;
+	params[SIRU2Model::tor_i] = 89.3207;
+	params[SIRU2Model::h_e_rest] = -68.1355;
+	params[SIRU2Model::h_i_rest] = -77.2602;
 
-	params[SIRUModel::h_ee_eq] = -15.8527;
-	params[SIRUModel::h_ei_eq] = 7.4228;
-	params[SIRUModel::h_ie_eq] = -85.9896;
-	params[SIRUModel::h_ii_eq] = -84.5363;
+	params[SIRU2Model::h_ee_eq] = -15.8527;
+	params[SIRU2Model::h_ei_eq] = 7.4228;
+	params[SIRU2Model::h_ie_eq] = -85.9896;
+	params[SIRU2Model::h_ii_eq] = -84.5363;
 
-	params[SIRUModel::gamma_ee] = 0.4393;
-	params[SIRUModel::gamma_ei] = 0.2350;
-	params[SIRUModel::gamma_ie] = 0.0791;
-	params[SIRUModel::gamma_ii] = 0.0782;
+	params[SIRU2Model::gamma_ee] = 0.4393;
+	params[SIRU2Model::gamma_ei] = 0.2350;
+	params[SIRU2Model::gamma_ie] = 0.0791;
+	params[SIRU2Model::gamma_ii] = 0.0782;
 
-	params[SIRUModel::T_ee_p] = 0.3127;
-	params[SIRUModel::T_ei_p] = 0.9426;
-	params[SIRUModel::T_ie_p] = 0.4947;
-	params[SIRUModel::T_ii_p] = 1.4122;
+	params[SIRU2Model::T_ee_p] = 0.3127;
+	params[SIRU2Model::T_ei_p] = 0.9426;
+	params[SIRU2Model::T_ie_p] = 0.4947;
+	params[SIRU2Model::T_ii_p] = 1.4122;
 
-	params[SIRUModel::N_beta_ee] = 4582.0661;
-	params[SIRUModel::N_beta_ei] = 4198.1829;
-	params[SIRUModel::N_beta_ie] = 989.5281;
-	params[SIRUModel::N_beta_ii] = 531.9419;
+	params[SIRU2Model::theta_e] = -46;
+	params[SIRU2Model::theta_i] = -46;
 
-	params[SIRUModel::N_alpha_ee] = 4994.4860;
-	params[SIRUModel::N_alpha_ei] = 2222.9060;
 
-	params[SIRUModel::s_e_max] = 0.2801;
-	params[SIRUModel::s_i_max] = 0.1228;
+	params[SIRU2Model::N_beta_ee] = 4582.0661;
+	params[SIRU2Model::N_beta_ei] = 4198.1829;
+	params[SIRU2Model::N_beta_ie] = 989.5281;
+	params[SIRU2Model::N_beta_ii] = 531.9419;
 
-	params[SIRUModel::mu_e] = -47.1364;
-	params[SIRUModel::mu_i] = -45.3751;
+	params[SIRU2Model::N_alpha_ee] = 4994.4860;
+	params[SIRU2Model::N_alpha_ei] = 2222.9060;
 
-	params[SIRUModel::mus_e] = 0.001;
-	params[SIRUModel::mus_i] = 0.001;
+	params[SIRU2Model::s_e_max] = 0.2801;
+	params[SIRU2Model::s_i_max] = 0.1228;
 
-	params[SIRUModel::sigma_e] = 2.6120;
-	params[SIRUModel::sigma_i] = 2.8294;
+	params[SIRU2Model::mu_e] = -47.1364;
+	params[SIRU2Model::mu_i] = -45.3751;
 
-	params[SIRUModel::p_ee] = 3.6032;
-	params[SIRUModel::p_ei] = 0.3639;
-	params[SIRUModel::p_ie] = 0;
-	params[SIRUModel::p_ii] = 0;
+	params[SIRU2Model::mus_e] = 0.001;
+	params[SIRU2Model::mus_i] = 0.001;
 
-	params[SIRUModel::phi_ie] = 0;
-	params[SIRUModel::phi_ii] = 0;
+	params[SIRU2Model::sigma_e] = 2.6120;
+	params[SIRU2Model::sigma_i] = 2.8294;
 
-	params[SIRUModel::A_ee] = 0.2433;
-	params[SIRUModel::A_ei] = 0.2433;
+	params[SIRU2Model::p_ee] = 3.6032;
+	params[SIRU2Model::p_ei] = 0.3639;
+	params[SIRU2Model::p_ie] = 0;
+	params[SIRU2Model::p_ii] = 0;
 
-	params[SIRUModel::v] = 0.1714;
+	params[SIRU2Model::phi_ie] = 0;
+	params[SIRU2Model::phi_ii] = 0;
 
-	params[SIRUModel::r_abs] = 0;
+	params[SIRU2Model::A_ee] = 0.2433;
+	params[SIRU2Model::A_ei] = 0.2433;
 
-	params[SIRUModel::k_i] = 0.1;
-	params[SIRUModel::k_e] = 0.2;
-	params[SIRUModel::e_i] = 1.8;
-	params[SIRUModel::e_e] = 1.5;
+	params[SIRU2Model::v] = 0.1714;
+
+	params[SIRU2Model::r_abs] = 0;
+
+	params[SIRU2Model::k_i] = 0.3;
+	params[SIRU2Model::k_e] = 0.3;
+	params[SIRU2Model::e_i] = 1e-6;
+	params[SIRU2Model::e_e] = 1e-6;
 
 	return params;
 }
+
+ParameterSpace initialiseParamsSIRU1()
+{
+	ParameterSpace params;
+	params[SIRU1Model::tor_e] = 138.3660;
+	params[SIRU1Model::tor_i] = 89.3207;
+	params[SIRU1Model::h_e_rest] = -68.1355;
+	params[SIRU1Model::h_i_rest] = -77.2602;
+
+	params[SIRU1Model::h_ee_eq] = -15.8527;
+	params[SIRU1Model::h_ei_eq] = 7.4228;
+	params[SIRU1Model::h_ie_eq] = -85.9896;
+	params[SIRU1Model::h_ii_eq] = -84.5363;
+
+	params[SIRU1Model::gamma_ee] = 0.4393;
+	params[SIRU1Model::gamma_ei] = 0.2350;
+	params[SIRU1Model::gamma_ie] = 0.0791;
+	params[SIRU1Model::gamma_ii] = 0.0782;
+
+	params[SIRU1Model::theta_e] = 0.1818;
+	params[SIRU1Model::theta_i] = 0.1818;
+
+	params[SIRU1Model::N_beta_ee] = 4582.0661;
+	params[SIRU1Model::N_beta_ei] = 4198.1829;
+	params[SIRU1Model::N_beta_ie] = 989.5281;
+	params[SIRU1Model::N_beta_ii] = 531.9419;
+
+	params[SIRU1Model::N_alpha_ee] = 4994.4860;
+	params[SIRU1Model::N_alpha_ei] = 2222.9060;
+
+	params[SIRU1Model::s_e_max] = 0.2801;
+	params[SIRU1Model::s_i_max] = 0.1228;
+
+	params[SIRU1Model::mu_e] = -47.1364;
+	params[SIRU1Model::mu_i] = -45.3751;
+
+	params[SIRU1Model::mus_ee] = 0;
+	params[SIRU1Model::mus_ei] = 0;
+	params[SIRU1Model::mus_ie] = 0;
+	params[SIRU1Model::mus_ii] = 0.001;
+
+
+	params[SIRU1Model::sigma_e] = 2.6120;
+	params[SIRU1Model::sigma_i] = 2.8294;
+
+	params[SIRU1Model::p_ee] = 3.6032;
+	params[SIRU1Model::p_ei] = 0.3639;
+	params[SIRU1Model::p_ie] = 0;
+	params[SIRU1Model::p_ii] = 0;
+
+	params[SIRU1Model::phi_ie] = 0;
+	params[SIRU1Model::phi_ii] = 0;
+
+	params[SIRU1Model::A_ee] = 0.2433;
+	params[SIRU1Model::A_ei] = 0.2433;
+
+	params[SIRU1Model::v] = 0.1714;
+
+	params[SIRU1Model::r_abs] = 0;
+
+	params[SIRU1Model::k_i] = 10;
+	params[SIRU1Model::k_e] = 10;
+
+	return params;
+}
+
 
 
 StateSpace initialConditionsBase()
@@ -156,17 +227,32 @@ StateSpace initialConditionsBase()
 	return initialConditions;
 }
 
-StateSpace initialConditionsSIRU()
+StateSpace initialConditionsSIRU2()
 {
 	StateSpace initialConditions;
 
-	initialConditions[SIRUModel::h_e] = 0;
-	initialConditions[SIRUModel::h_i] = 0;
+	initialConditions[SIRU2Model::h_e] = 0;
+	initialConditions[SIRU2Model::h_i] = 0;
 
-	initialConditions[SIRUModel::T_ee] = 0.3127;
-	initialConditions[SIRUModel::T_ei] = 0.9426;
-	initialConditions[SIRUModel::T_ie] = 0.4947;
-	initialConditions[SIRUModel::T_ii] = 1.4122;
+	initialConditions[SIRU2Model::T_ee] = 0.3127;
+	initialConditions[SIRU2Model::T_ei] = 0.9426;
+	initialConditions[SIRU2Model::T_ie] = 0.4947;
+	initialConditions[SIRU2Model::T_ii] = 1.4122;
+
+	return initialConditions;
+}
+
+StateSpace initialConditionsSIRU1()
+{
+	StateSpace initialConditions;
+
+	initialConditions[SIRU1Model::h_e] = 0;
+	initialConditions[SIRU1Model::h_i] = 0;
+
+	initialConditions[SIRU1Model::T_ee] = 0.3127;
+	initialConditions[SIRU1Model::T_ei] = 0.9426;
+	initialConditions[SIRU1Model::T_ie] = 0.4947;
+	initialConditions[SIRU1Model::T_ii] = 1.4122;
 
 	return initialConditions;
 }
@@ -185,14 +271,14 @@ std::vector<int> dimensionsBase()
 std::map<string, int> dimensionsSIRU()
 {
 	std::map<string, int> dims;
-	dims["h_e"] = SIRUModel::h_e;
-	dims["h_i"] = SIRUModel::h_i;
-	dims["T_ii"] = SIRUModel::T_ii;
-	dims["T_ie"] = SIRUModel::T_ie;
-	dims["T_ei"] = SIRUModel::T_ei;
-	dims["T_ee"] = SIRUModel::T_ee;
-	dims["phi_ee"] = SIRUModel::phi_ee;
-	dims["phi_ei"] = SIRUModel::phi_ei;
+	dims["h_e"] = SIRU2Model::h_e;
+	dims["h_i"] = SIRU2Model::h_i;
+	dims["T_ii"] = SIRU2Model::T_ii;
+	dims["T_ie"] = SIRU2Model::T_ie;
+	dims["T_ei"] = SIRU2Model::T_ei;
+	dims["T_ee"] = SIRU2Model::T_ee;
+	dims["phi_ee"] = SIRU2Model::phi_ee;
+	dims["phi_ei"] = SIRU2Model::phi_ei;
 
 	return dims;
 }
@@ -202,16 +288,15 @@ std::map<string, int> dimensionsSIRU()
 typedef FileDataStream FileStream;
 
 const int BUFFER_SIZE = 1000 / 25;
-const int REPORT_STEPS = 100;
+const int REPORT_STEPS = 30;
 const int MESH_SIZE = 100;
 const double T_SIM = 120;
 const double DELTA_T = 0.0001; //make smaller for tighter mesh
 const double DELTA = 10;
 const double RANDOMISE_FRACTION = 0.1;
+//const double RANDOMISE_FRACTION = 0;
 
-//const char * OUTPUT_PATH = "/var/tmp/run.dat";
-const char * OUTPUT_PATH = "/terra/run.dat";
-const char * RENDER_PATH = "/terra/runs";
+const char * OUTPUT_PATH = "/terra/runs";
 
 string runPath()
 {
@@ -220,8 +305,8 @@ string runPath()
 	char buf[600];
 	sprintf(buf, "%i", (int) sysTime);
 
-	mkdir(RENDER_PATH, 0777);
-	return string(RENDER_PATH) + "/" + buf;
+	mkdir(OUTPUT_PATH, 0777);
+	return string(OUTPUT_PATH) + "/" + buf;
 }
 
 
@@ -234,30 +319,35 @@ int main(void)
 	FileStream file(path + "/run.dat", dimensionsSIRU());
 	AsyncDataStream fileOut(file);
 
-	FrameRenderingDataStream renderer(path, MESH_SIZE, MESH_SIZE, SIRUModel::h_e, 10);
+	FrameRenderingDataStream renderer(path, MESH_SIZE, MESH_SIZE, SIRU1Model::h_e, REPORT_STEPS, initialiseParamsSIRU1()[SIRU1Model::h_e_rest]);
 	AsyncDataStream renderOut(renderer);
 
-	TraceRenderingDataStream trace(path, MESH_SIZE, MESH_SIZE, SIRUModel::h_e, MESH_SIZE / 2, 100, DELTA_T);
-	AsyncDataStream traceOut(trace);
+
+	TraceRenderingDataStream heTrace(path, MESH_SIZE, MESH_SIZE, SIRU1Model::h_e, MESH_SIZE / 2, REPORT_STEPS, DELTA_T, -30, -80);
+	AsyncDataStream heTraceOut(heTrace);
+
+	TraceRenderingDataStream pspTrace(path, MESH_SIZE, MESH_SIZE, SIRU1Model::T_ii, MESH_SIZE / 2, REPORT_STEPS, DELTA_T, 0, 2);
+	AsyncDataStream pspTraceOut(pspTrace);
 
 
 	vector<DataStream *> streams;
 	streams.push_back(&fileOut);
 	streams.push_back(&renderOut);
-	streams.push_back(&traceOut);
+	streams.push_back(&heTraceOut);
+	streams.push_back(&pspTraceOut);
 
 	CompositeDataStream out(streams);
 
 
-	Simulation<SIRUModel> sim(MESH_SIZE,
+	Simulation<SIRU1Model> sim(MESH_SIZE,
 							  MESH_SIZE,
 							  BUFFER_SIZE,
 							  REPORT_STEPS,
 							  T_SIM,
 							  DELTA_T,
 							  DELTA,
-							  initialConditionsSIRU(),
-							  initialiseParamsSIRU(),
+							  initialConditionsSIRU1(),
+							  initialiseParamsSIRU1(),
 							  RANDOMISE_FRACTION);
 
 	sim.run(out);

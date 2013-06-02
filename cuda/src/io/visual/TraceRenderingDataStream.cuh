@@ -10,6 +10,7 @@
 
 #include "../DataStream.cuh"
 #include <string>
+#include <list>
 
 #include <mgl2/mgl.h>
 #include <sys/stat.h>
@@ -28,9 +29,11 @@ private:
 	int _outputInterval, _outputSteps;
 	double _deltaT;
 
+	double _minY,_maxY;
+
 	int _currentStep;
 	int _fileCount;
-	map< string, vector<double> > _traces;
+	map< string, list<double> > _traces;
 
 	void allocateBuffer()
 	{
@@ -38,7 +41,7 @@ private:
 		{
 			for (int y = 0; y < _height; y+= _outputInterval)
 			{
-				_traces[traceKey(x, y)] = vector<double>();
+				_traces[traceKey(x, y)] = list<double>();
 			}
 		}
 	}
@@ -62,7 +65,7 @@ private:
 				_traces[key].push_back(data[x + _width * y][_dimensionToPlot]);
 				if (_traces[key].size() > MAX_BUFFER)
 				{
-					_traces[key].pop_back();
+					_traces[key].pop_front();
 				}
 			}
 		}
@@ -73,6 +76,27 @@ private:
 		mkdir(_outputPath.c_str(), 0777);
 		_fullOutputPath = _outputPath + "/trace";
 		mkdir(_fullOutputPath.c_str(), 0777);
+		char buf[32];
+		sprintf(buf, "/%i", _dimensionToPlot);
+		_fullOutputPath += buf;
+		mkdir(_fullOutputPath.c_str(), 0777);
+	}
+
+	void copy(double * buffer, list<double> & vals)
+	{
+		for (int i = 0; i < MAX_BUFFER; i++)
+		{
+			buffer[i] = 0;
+		}
+
+
+		list<double>::iterator iter;
+		int i = MAX_BUFFER;
+
+		for (iter = vals.end(); iter != vals.begin(); --iter)
+		{
+			buffer[--i] = *iter;
+		}
 	}
 
 	void renderOutToFile()
@@ -83,16 +107,18 @@ private:
 
 		graph.SetOrigin(0,0,0);
 
-		graph.SetRange('y', -100, -20);
+		graph.SetRange('y', _minY, _maxY);
 
 
-		map<string, vector<double> >::iterator iter;
+		map<string, list<double> >::iterator iter;
 
 		int plotCount = 0;
 		for (iter = _traces.begin(); iter != _traces.end(); ++iter)
 		{
 			string name = (*iter).first;
-			mglData data((*iter).second.size(), (*iter).second.data());
+			double buffer[MAX_BUFFER];
+			copy(buffer, (*iter).second);
+			mglData data(MAX_BUFFER, buffer);
 
 			graph.SubPlot(2,2,plotCount++,name.c_str());
 			graph.Box();
@@ -103,9 +129,9 @@ private:
 
 		char buf[64];
 		sprintf(buf, "%05d", _fileCount);
-		string filename = _fullOutputPath + "/trace_" + buf + ".png";
-		printf(filename.c_str());
-		graph.WritePNG(filename.c_str(), "");
+		string filename = _fullOutputPath + "/trace_" + buf;
+		graph.WritePNG((filename + ".png").c_str(), "");
+		graph.WriteEPS((filename + ".eps").c_str(), "");
 
 		_fileCount++;
 		printf("Writing Trace frame - Done\n");
@@ -114,7 +140,10 @@ private:
 public:
 	TraceRenderingDataStream(string outputPath, int width,
 							int height, int dimensionToPlot,
-							int outputInterval, int outputSteps, double deltaT):
+							int outputInterval, int outputSteps,
+							double deltaT,
+							double minY,
+							double maxY):
 		_outputPath(outputPath),
 		_width(width),
 		_height(height),
@@ -123,7 +152,9 @@ public:
 		_outputSteps(outputSteps),
 		_deltaT(deltaT),
 		_currentStep(0),
-		_fileCount(1)
+		_fileCount(1),
+		_minY(minY),
+		_maxY(maxY)
 	{
 		createDirs();
 		allocateBuffer();

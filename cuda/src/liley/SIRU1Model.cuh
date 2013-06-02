@@ -1,14 +1,14 @@
 /*
- * SIRU.cuh
+ * SIRU1Model.cuh
  *
- *  Created on: 19/05/2013
+ *  Created on: 01/06/2013
  *      Author: matt
  */
 
-#ifndef SIRU_CUH_
-#define SIRU_CUH_
+#ifndef SIRU1MODEL_CUH_
+#define SIRU1MODEL_CUH_
 
-class SIRUModel
+class SIRU1Model
 {
 private:
 	double _e, _sqrt2;
@@ -54,12 +54,14 @@ public:
 		T_ei_p,
 		T_ie_p,
 		T_ii_p,
-		mus_e,
-		mus_i,
+		mus_ii,
+		mus_ei,
+		mus_ie,
+		mus_ee,
+		theta_i,
+		theta_e,
 		k_i,
 		k_e,
-		e_i,
-		e_e,
 		N_beta_ee,
 		N_beta_ei,
 		N_beta_ie,
@@ -85,7 +87,7 @@ public:
 	};
 
 	__host__ __device__
-	SIRUModel()
+	SIRU1Model()
 	{
 		_e = exp(1.0);
 		_sqrt2 = sqrt(2.0);
@@ -106,11 +108,11 @@ public:
 		ddt[i_ie] = s[i_ie_t];
 		ddt[i_ii] = s[i_ii_t];
 
-		ddt[T_ii] = p[mus_i] * (p[T_ii_p] / (1 + exp(p[k_i] * (s[h_i] - p[e_i]))) - s[T_ii]);
-		ddt[T_ie] = p[mus_i] * (p[T_ie_p] / (1 + exp(p[k_i] * (s[h_i] - p[e_i]))) - s[T_ie]);
+		ddt[T_ii] = p[mus_ii] * (p[theta_i] - p[k_i] * s_i(s[h_i], p));
+		ddt[T_ie] = p[mus_ie] * (p[theta_i] - p[k_i] * s_i(s[h_i], p));
 
-		ddt[T_ei] = p[mus_e] * (p[T_ei_p] / (1 + exp(p[k_e] * (s[h_e] - p[e_e]))) - s[T_ei]);
-		ddt[T_ee] = p[mus_e] * (p[T_ee_p] / (1 + exp(p[k_e] * (s[h_e] - p[e_e]))) - s[T_ee]);
+		ddt[T_ei] = p[mus_ei] * (p[theta_e] - p[k_e] * s_e(s[h_e], p));
+		ddt[T_ee] = p[mus_ee] * (p[theta_e] - p[k_e] * s_e(s[h_e], p));
 
 	    ddt[i_ee_t] = -2 * p[gamma_ee] * s[i_ee_t] - (p[gamma_ee] * p[gamma_ee]) * s[i_ee] + s[T_ee] * p[gamma_ee] * _e * (p[N_beta_ee] * s_e(s[h_e], p) + s[phi_ee] + p[p_ee]);
 	    ddt[i_ei_t] = -2 * p[gamma_ei] * s[i_ei_t] - (p[gamma_ei] * p[gamma_ei]) * s[i_ei] + s[T_ei] * p[gamma_ei] * _e * (p[N_beta_ei] * s_e(s[h_e], p) + s[phi_ei] + p[p_ei]);
@@ -164,4 +166,4 @@ public:
 };
 
 
-#endif /* SIRU_CUH_ */
+#endif /* SIRU1MODEL_CUH_ */

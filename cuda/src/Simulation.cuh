@@ -60,9 +60,10 @@ public:
 	void run(DataStream & out)
 	{
 		printf("Starting simulation......\n");
+		double deltaTMs = _deltaT / 1e-3;
 		for (int i = 0; i < _length / _deltaT; i++)
 		{
-			_mesh->stepAndFlush(i * _deltaT, _deltaT / 1e-3, out);
+			_mesh->stepAndFlush(i * _deltaT, deltaTMs, out);
 		}
 	}
 
