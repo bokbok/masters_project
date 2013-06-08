@@ -14,6 +14,7 @@ using namespace std;
 #include "io/MemoryMappedFileDataStream.cuh"
 #include "io/AsyncDataStream.cuh"
 #include "io/CompositeDataStream.cuh"
+#include "io/monitor/ConvergenceMonitor.cuh"
 #include "io/visual/FrameRenderingDataStream.cuh"
 #include "io/visual/TraceRenderingDataStream.cuh"
 
@@ -244,7 +245,7 @@ StateSpace initialConditionsSIRU2()
 
 StateSpace initialConditionsSIRU1()
 {
-	StateSpace initialConditions;
+	StateSpace initialConditions(SIRU1Model::NUM_DIMENSIONS);
 
 	initialConditions[SIRU1Model::h_e] = 0;
 	initialConditions[SIRU1Model::h_i] = 0;
@@ -268,17 +269,17 @@ std::vector<int> dimensionsBase()
 	return dims;
 }
 
-std::map<string, int> dimensionsSIRU()
+std::map<string, int> dimensionsSIRU1()
 {
 	std::map<string, int> dims;
-	dims["h_e"] = SIRU2Model::h_e;
-	dims["h_i"] = SIRU2Model::h_i;
-	dims["T_ii"] = SIRU2Model::T_ii;
-	dims["T_ie"] = SIRU2Model::T_ie;
-	dims["T_ei"] = SIRU2Model::T_ei;
-	dims["T_ee"] = SIRU2Model::T_ee;
-	dims["phi_ee"] = SIRU2Model::phi_ee;
-	dims["phi_ei"] = SIRU2Model::phi_ei;
+	dims["h_e"] = SIRU1Model::h_e;
+	dims["h_i"] = SIRU1Model::h_i;
+	dims["T_ii"] = SIRU1Model::T_ii;
+	dims["T_ie"] = SIRU1Model::T_ie;
+	dims["T_ei"] = SIRU1Model::T_ei;
+	dims["T_ee"] = SIRU1Model::T_ee;
+	dims["phi_ee"] = SIRU1Model::phi_ee;
+	dims["phi_ei"] = SIRU1Model::phi_ei;
 
 	return dims;
 }
@@ -288,12 +289,13 @@ std::map<string, int> dimensionsSIRU()
 typedef FileDataStream FileStream;
 
 const int BUFFER_SIZE = 1000 / 25;
-const int REPORT_STEPS = 30;
+const int REPORT_STEPS = 200;
+const int RENDER_STEPS = 200;
 const int MESH_SIZE = 100;
-const double T_SIM = 120;
-const double DELTA_T = 0.0001; //make smaller for tighter mesh
-const double DELTA = 10;
-const double RANDOMISE_FRACTION = 0.1;
+const double T_SIM = 65;
+const double DELTA_T = 0.000005;
+const double DELTA = 0.2; //make smaller for tighter mesh
+const double RANDOMISE_FRACTION = 0.01;
 //const double RANDOMISE_FRACTION = 0;
 
 const char * OUTPUT_PATH = "/terra/runs";
@@ -316,18 +318,21 @@ int main(void)
 	string path = runPath();
 	mkdir(path.c_str(), 0777);
 
-	FileStream file(path + "/run.dat", dimensionsSIRU());
+	FileStream file(path + "/run.dat", dimensionsSIRU1());
 	AsyncDataStream fileOut(file);
 
-	FrameRenderingDataStream renderer(path, MESH_SIZE, MESH_SIZE, SIRU1Model::h_e, REPORT_STEPS, initialiseParamsSIRU1()[SIRU1Model::h_e_rest]);
+	FrameRenderingDataStream renderer(path, MESH_SIZE, MESH_SIZE, SIRU1Model::h_e, RENDER_STEPS, initialiseParamsSIRU1()[SIRU1Model::h_e_rest]);
 	AsyncDataStream renderOut(renderer);
 
 
-	TraceRenderingDataStream heTrace(path, MESH_SIZE, MESH_SIZE, SIRU1Model::h_e, MESH_SIZE / 2, REPORT_STEPS, DELTA_T, -30, -80);
+	TraceRenderingDataStream heTrace(path, MESH_SIZE, MESH_SIZE, SIRU1Model::h_e, MESH_SIZE / 2, RENDER_STEPS, DELTA_T, -30, -80);
 	AsyncDataStream heTraceOut(heTrace);
 
-	TraceRenderingDataStream pspTrace(path, MESH_SIZE, MESH_SIZE, SIRU1Model::T_ii, MESH_SIZE / 2, REPORT_STEPS, DELTA_T, 0, 2);
+	TraceRenderingDataStream pspTrace(path, MESH_SIZE, MESH_SIZE, SIRU1Model::T_ii, MESH_SIZE / 2, RENDER_STEPS, DELTA_T, 0, 2);
 	AsyncDataStream pspTraceOut(pspTrace);
+
+	ConvergenceMonitor monitor;
+	AsyncDataStream convergenceStream(monitor);
 
 
 	vector<DataStream *> streams;
@@ -335,6 +340,7 @@ int main(void)
 	streams.push_back(&renderOut);
 	streams.push_back(&heTraceOut);
 	streams.push_back(&pspTraceOut);
+	streams.push_back(&convergenceStream);
 
 	CompositeDataStream out(streams);
 

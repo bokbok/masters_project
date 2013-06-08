@@ -60,73 +60,46 @@ public:
 		StateSpace prev = _previous.state();
 		ParameterSpace params = _previous.parameters();
 
-		NAN_CHECK(prev, "prev", _previous);
-		DUMP(prev, "prev", 0, 0);
-
 		Derivatives f1 = _model(prev, params, _previous);
 		StateSpace k1 = f1 * _deltaT;
-		DUMP(f1, "f1", 0, 0);
-		DUMP(k1, "k1", 0, 0);
-
-		NAN_CHECK(f1, "f1", _previous);
-		NAN_CHECK(k1, "k1", _previous);
 
 		StateSpace k1Div2 = (k1 / 2.0);
-		NAN_CHECK(k1Div2, "k1Div2", _previous);
 
 		StateSpace f2Pt = prev + k1Div2;
-		NAN_CHECK(f2Pt, "f2Pt", _previous);
 
 		Derivatives f2 = _model(f2Pt, params, _previous);
 		StateSpace k2 = f2 * _deltaT;
-		NAN_CHECK(f2, "f2", _previous);
-		NAN_CHECK(k2, "k2", _previous);
 
 
 		StateSpace k2Div2 = (k1 / 2.0);
-		NAN_CHECK(k2Div2, "k2Div2", _previous);
 
 		StateSpace f3Pt = prev + k2Div2;
-		NAN_CHECK(f3Pt, "f3Pt", _previous);
 
 		Derivatives f3 = _model(f3Pt, params, _previous);
 
 		StateSpace k3 = f3 * _deltaT;
-		NAN_CHECK(f3, "f3", _previous);
-		NAN_CHECK(k3, "k3", _previous);
 
 		StateSpace k3Div2 = (k1 / 2.0);
-		NAN_CHECK(k3Div2, "k3Div2", _previous);
 
 		StateSpace f4Pt = prev + k3Div2;
-		NAN_CHECK(f4Pt, "f4Pt", _previous);
 
 		Derivatives f4 = _model(f4Pt, params, _previous);
-		NAN_CHECK(f4, "f4", _previous);
 		StateSpace k4 = f4 * _deltaT;
-		NAN_CHECK(k4, "k4", _previous);
 
 
 		StateSpace k2Mul2 = k2 * 2.0;
-		NAN_CHECK(k2Mul2, "k2Mul2", _previous);
 
 		StateSpace k3Mul2 = k3 * 2.0;
-		NAN_CHECK(k3Mul2, "k3Mul2", _previous);
 
 		StateSpace add1 = k1 + k2Mul2;
-		NAN_CHECK(add1, "add1", _previous);
 
 		StateSpace add2 = k3Mul2 + k4;
-		NAN_CHECK(add2, "add2", _previous);
 
 		StateSpace add = add1 + add2;
-		NAN_CHECK(add, "add", _previous);
 
 		StateSpace div6 = add / 6;
-		NAN_CHECK(div6, "div6", _previous);
 
 		StateSpace integrated = prev + div6;
-		NAN_CHECK(integrated, "integrated", _previous);
 
 		_current.state().update(_t, integrated);
 	}

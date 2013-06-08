@@ -11,10 +11,12 @@
 #include "StateSpace.cuh"
 
 
-
 class DeviceMeshPoint
 {
 private:
+	bool _laplacianCached[MAX_EQUATIONS];
+	double _laplacians[MAX_EQUATIONS];
+
 	__device__
 	int index(int xOffset, int yOffset)
 	{
@@ -41,7 +43,14 @@ private:
 public:
 	__device__
 	DeviceMeshPoint(StateSpace * mesh, ParameterSpace * parameters, int width, int height, int x, int y, double delta) :
-		_mesh(mesh), _width(width), _height(height), _x(x), _y(y), _delta(delta), _parameters(parameters), _delta2(delta * delta) { }
+		_mesh(mesh), _width(width), _height(height), _x(x), _y(y), _delta(delta), _parameters(parameters), _delta2(delta * delta)
+	{
+		for (int i = 0; i < MAX_EQUATIONS; i++)
+		{
+			_laplacianCached[i] = false;
+			_laplacians[i] = 0.0;
+		}
+	}
 
 	__device__
 	StateSpace & stateAt(int xOffset, int yOffset)
@@ -59,6 +68,12 @@ public:
 	ParameterSpace & parameters()
 	{
 		return parametersAt(0, 0);
+	}
+
+	__device__
+	double laxVal(int dim)
+	{
+		return (stateAt(-1, 0)[dim] + stateAt(1, 0)[dim] + stateAt(0, -1)[dim] + stateAt(0, 1)[dim]) / 4;
 	}
 
 	__device__
@@ -84,7 +99,12 @@ public:
 	__device__
 	double laplacian(int dim)
 	{
-		return d2dy2(dim) + d2dx2(dim);
+		if (!_laplacianCached[dim])
+		{
+			_laplacians[dim] = d2dy2(dim) + d2dx2(dim);
+			_laplacianCached[dim] = true;
+		}
+		return _laplacians[dim];
 	}
 
 	__device__

@@ -20,15 +20,20 @@ private:
 	double _t;
 	int _numDimensions;
 
-public:
 	__device__ __host__
-	StateSpace()
+	void construct()
 	{
-		_numDimensions = MAX_EQUATIONS;
-		for (int i = 0; i < _numDimensions; i++)
+		for (int i = 0; i < MAX_EQUATIONS; i++)
 		{
 			_vals[i] = 0.0;
 		}
+	}
+
+public:
+	__device__ __host__
+	StateSpace(int numDimensions = MAX_EQUATIONS) : _numDimensions(numDimensions)
+	{
+		construct();
 	}
 
 	__host__
@@ -59,7 +64,7 @@ public:
 	__device__
 	StateSpace operator /(double val)
 	{
-		StateSpace res;
+		StateSpace res(_numDimensions);
 
 		for (int i = 0; i < _numDimensions; i++)
 		{
@@ -72,7 +77,7 @@ public:
 	__device__
 	StateSpace operator *(double val)
 	{
-		StateSpace res;
+		StateSpace res(_numDimensions);
 
 		for (int i = 0; i < _numDimensions; i++)
 		{
@@ -110,7 +115,7 @@ public:
 	__device__
 	StateSpace operator +(StateSpace &rhs)
 	{
-		StateSpace result;
+		StateSpace result(_numDimensions);
 		for (int i = 0; i < _numDimensions; i++)
 		{
 			result[i] = _vals[i] + rhs[i];
@@ -119,8 +124,8 @@ public:
 
 	}
 
-	__device__
-	bool debugNanCheck()
+	__device__ __host__
+	bool nan()
 	{
 		bool statenan = false;
 		for (int i = 0; i < _numDimensions; i++)

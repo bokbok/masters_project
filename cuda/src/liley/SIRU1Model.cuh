@@ -14,6 +14,7 @@ private:
 	double _e, _sqrt2;
 
 public:
+	static const int NUM_DIMENSIONS = 18;
 	enum Dimensions
 	{
 		h_e,
@@ -94,9 +95,9 @@ public:
 	}
 
 	__device__
-	Derivatives operator ()(StateSpace & s, ParameterSpace & p, DeviceMeshPoint & point)
+	Derivatives operator ()(StateSpace & s, ParameterSpace & p, DeviceMeshPoint & pt)
 	{
-		Derivatives ddt;
+		Derivatives ddt(NUM_DIMENSIONS);
 	    double vel = p[v];
 	    double vel2 = vel * vel;
 
@@ -123,8 +124,8 @@ public:
 	    ddt[phi_ee] = s[phi_ee_t];
 	    ddt[phi_ei] = s[phi_ei_t];
 
-	    ddt[phi_ee_t] = -2 * vel * p[A_ee] * s[phi_ee_t] + vel2 * (p[A_ee] * p[A_ee]) * (p[N_alpha_ee] * s_e(s[h_e], p) - s[phi_ee]) + 3 * vel2 * (point.laplacian(phi_ee)) / 2;
-	    ddt[phi_ei_t] = -2 * vel * p[A_ei] * s[phi_ei_t] + vel2 * (p[A_ei] * p[A_ei]) * (p[N_alpha_ei] * s_e(s[h_e], p) - s[phi_ei]) + 3 * vel2 * (point.laplacian(phi_ei)) / 2;
+	    ddt[phi_ee_t] = -2 * vel * p[A_ee] * s[phi_ee_t] + vel2 * (p[A_ee] * p[A_ee]) * (p[N_alpha_ee] * s_e(s[h_e], p) - s[phi_ee]) + 3 * vel2 * (pt.laplacian(phi_ee)) / 2;
+	    ddt[phi_ei_t] = -2 * vel * p[A_ei] * s[phi_ei_t] + vel2 * (p[A_ei] * p[A_ei]) * (p[N_alpha_ei] * s_e(s[h_e], p) - s[phi_ei]) + 3 * vel2 * (pt.laplacian(phi_ei)) / 2;
 		return ddt;
 	}
 

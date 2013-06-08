@@ -10,17 +10,15 @@
 
 #include "common.cuh"
 #include "StateSpace.cuh"
-//const int MAX_EQUATIONS=40;
 
 class Derivatives
 {
 private:
 	double _vals[MAX_EQUATIONS];
-	int _equationCount;
+	int _numEquations;
 
-public:
 	__device__ __host__
-	Derivatives()
+	void construct()
 	{
 		for (int i = 0; i < MAX_EQUATIONS; i++)
 		{
@@ -28,19 +26,27 @@ public:
 		}
 	}
 
+public:
+	__device__ __host__
+	Derivatives(int numEquations = MAX_EQUATIONS) :
+		_numEquations(numEquations)
+	{
+		construct();
+	}
+
 	__device__
 	double & operator [](int index)
 	{
-		CHECK_BOUNDS(index, MAX_EQUATIONS);
+		CHECK_BOUNDS(index, _numEquations);
 		return _vals[index];
 	}
 
 	__device__
 	StateSpace operator *(double mult)
 	{
-		StateSpace res;
+		StateSpace res(_numEquations);
 
-		for (int i = 0; i < MAX_EQUATIONS; i++)
+		for (int i = 0; i < _numEquations; i++)
 		{
 			res[i] = _vals[i] * mult;
 		}

@@ -53,7 +53,8 @@ public:
 		_initialConditions(initialConditions),
 		_params(params),
 		_N(width * height),
-		_transferBuffer(_N)
+		_transferBuffer(_N),
+		_flushCount(0)
 	{
 		allocate();
 	}
@@ -82,26 +83,27 @@ private:
 	ParameterSpace & _params;
 	double _delta;
 
+	int _flushCount;
+
 	vector< thrust::device_ptr<StateSpace> > _pointers;
 	thrust::device_ptr<ParameterSpace> _parameters;
 	thrust::host_vector<StateSpace> _transferBuffer;
 
 	void flush(DataStream & out)
 	{
-		printf("Waiting for work to complete ...\n");
 		cudaDeviceSynchronize();
-		printf("Flushing ...\n");
 
 		out.waitToDrain();
-		printf("Stream ready ...\n");
 
 		int sheetToWrite = _stepNum % _bufferSize;
 		thrust::device_vector<StateSpace> device(_pointers[sheetToWrite], _pointers[sheetToWrite] + _N);
 
 		thrust::copy(device.begin(), device.end(), _transferBuffer.begin());
+
 		out.write(_transferBuffer.data(), _width, _height);
 
-		printf("Flushed ...\n");
+		_flushCount++;
+		printf("Flushed(%i) t=%f\n", _flushCount, _transferBuffer.data()[0].t());
 	}
 
 	void cudaStep(double t, double deltaT)
@@ -134,7 +136,6 @@ private:
 		{
 			thrust::device_ptr<StateSpace> mem = thrust::device_new<StateSpace>(_N);
 			thrust::copy(ics.begin(), ics.end(), mem);
-
 			_pointers.push_back(mem);
 		}
 		_parameters = thrust::device_new<ParameterSpace>(thrust::device_new<ParameterSpace>(_N), _params, _N);
