@@ -71,12 +71,6 @@ public:
 	}
 
 	__device__
-	double laxVal(int dim)
-	{
-		return (stateAt(-1, 0)[dim] + stateAt(1, 0)[dim] + stateAt(0, -1)[dim] + stateAt(0, 1)[dim]) / 4;
-	}
-
-	__device__
 	double d2dx2(int dim)
 	{
 		double xMinus = stateAt(-1, 0)[dim];

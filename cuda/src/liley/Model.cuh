@@ -8,7 +8,6 @@
 #ifndef MODEL_CUH_
 #define MODEL_CUH_
 
-#include "../Derivatives.cuh"
 #include "../StateSpace.cuh"
 #include "../DeviceMeshPoint.cuh"
 
@@ -86,9 +85,8 @@ public:
 	}
 
 	__device__
-	Derivatives operator ()(StateSpace & s, ParameterSpace & p, DeviceMeshPoint & point)
+	void operator ()(double * ddt, double * s, ParameterSpace & p, DeviceMeshPoint & point)
 	{
-		Derivatives ddt;
 	    double vel = p[v];
 	    double vel2 = vel * vel;
 
@@ -111,7 +109,6 @@ public:
 
 	    ddt[phi_ee_t] = -2 * vel * p[A_ee] * s[phi_ee_t] + vel2 * (p[A_ee] * p[A_ee]) * (p[N_alpha_ee] * s_e(s[h_e], p) - s[phi_ee]) + 3 * (point.laplacian(phi_ee)) / 2;
 	    ddt[phi_ei_t] = -2 * vel * p[A_ei] * s[phi_ei_t] + vel2 * (p[A_ei] * p[A_ei]) * (p[N_alpha_ei] * s_e(s[h_e], p) - s[phi_ei]) + 3 * (point.laplacian(phi_ei)) / 2;
-		return ddt;
 	}
 
 	__device__

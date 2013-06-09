@@ -21,4 +21,6 @@
 			}
 #endif
 
+const int BLOCK_SIZE = 10;
+
 #endif /* COMMON_CUH_ */

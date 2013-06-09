@@ -104,7 +104,6 @@ private:
 		printf("Writing Trace frame\n");
 		mglGraph graph;
 
-
 		graph.SetOrigin(0,0,0);
 
 		graph.SetRange('y', _minY, _maxY);

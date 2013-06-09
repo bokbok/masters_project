@@ -48,7 +48,7 @@ public:
 		return _t;
 	}
 
-	__host__
+	__device__ __host__
 	int numDimensions()
 	{
 		return _numDimensions;
@@ -59,6 +59,12 @@ public:
 	{
 		CHECK_BOUNDS(index, _numDimensions);
 		return _vals[index];
+	}
+
+	__device__ __host__
+	operator double *()
+	{
+		return _vals;
 	}
 
 	__device__
@@ -97,9 +103,20 @@ public:
 		}
 	}
 
+	__device__
+	void update(double t, double * val)
+	{
+		_t = t;
+		for (int i = 0; i < _numDimensions; i++)
+		{
+			_vals[i] = val[i];
+		}
+	}
+
 	__host__
 	void randomise(double deviation, StateSpace & from)
 	{
+		_numDimensions = from._numDimensions;
 		for (int i = 0; i < _numDimensions; i++)
 		{
 			_vals[i] = from[i] * (1 + random() * deviation);

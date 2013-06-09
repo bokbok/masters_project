@@ -20,9 +20,11 @@
 #include "RungeKuttaIntegrator.cuh"
 #include "liley/Model.cuh"
 #include "io/DataStream.cuh"
+#include "common.cuh"
+
+#include <time.h>
 
 using namespace std;
-
 
 template <class M>
 __global__
@@ -34,11 +36,10 @@ void __callStep(StateSpace * prev, StateSpace * curr, ParameterSpace * parameter
 	DeviceMeshPoint current(curr, parameters, width, height, x, y, delta);
 	DeviceMeshPoint previous(prev, parameters, width, height, x, y, delta);
 
-	RungeKuttaIntegrator<M> integrator(current, previous, t, deltaT, delta);
+	RungeKuttaIntegrator<M> integrator(current, previous, t, deltaT, delta, blockIdx.x, blockIdx.y);
 	integrator.integrateStep();
 }
 
-const int BLOCK_SIZE = 10;
 template <class M>
 class Mesh
 {
@@ -57,6 +58,7 @@ public:
 		_flushCount(0)
 	{
 		allocate();
+		cudaFuncSetCacheConfig(__callStep<M>, cudaFuncCachePreferL1);
 	}
 
 	virtual ~Mesh()
@@ -91,19 +93,20 @@ private:
 
 	void flush(DataStream & out)
 	{
+		clock_t start = clock();
 		cudaDeviceSynchronize();
 
 		out.waitToDrain();
-
+		clock_t transferStart = clock();
 		int sheetToWrite = _stepNum % _bufferSize;
 		thrust::device_vector<StateSpace> device(_pointers[sheetToWrite], _pointers[sheetToWrite] + _N);
 
 		thrust::copy(device.begin(), device.end(), _transferBuffer.begin());
 
 		out.write(_transferBuffer.data(), _width, _height);
-
+		clock_t finish = clock();
 		_flushCount++;
-		printf("Flushed(%i) t=%f\n", _flushCount, _transferBuffer.data()[0].t());
+		printf("Flushed(%i)(time taken:%i ms, transfer time:%i ms) t=%f\n", _flushCount, (finish - start) / 1000, (finish - transferStart) / 1000,_transferBuffer.data()[0].t());
 	}
 
 	void cudaStep(double t, double deltaT)
