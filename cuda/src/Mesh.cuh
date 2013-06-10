@@ -92,13 +92,12 @@ private:
 
 	void flush(DataStream & out)
 	{
+		int sheetToWrite = _stepNum % _bufferSize;
+
 		clock_t start = clock();
 		cudaDeviceSynchronize();
 
-		out.waitToDrain();
 		clock_t transferStart = clock();
-		int sheetToWrite = _stepNum % _bufferSize;
-
 		Buffer * buffer = new Buffer(_pointers[sheetToWrite], _width, _height, _N);
 		buffer->checkOut();
 		out.write(buffer);
