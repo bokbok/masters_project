@@ -24,14 +24,16 @@ public:
 
 	}
 
-	virtual void write(StateSpace * data, int width, int height)
+	virtual void write(Buffer * data)
 	{
 		vector<DataStream *>::iterator iter;
 
+		data->checkOut();
 		for (iter = _streams.begin(); iter != _streams.end(); ++iter)
 		{
-			(*iter)->write(data, width, height);
+			(*iter)->write(data);
 		}
+		data->release();
 	}
 
 	virtual void waitToDrain()

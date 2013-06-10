@@ -11,12 +11,12 @@ using namespace std;
 #include "liley/SIRU1Model.cuh"
 #include "liley/SIRU2Model.cuh"
 #include "io/FileDataStream.cuh"
-#include "io/MemoryMappedFileDataStream.cuh"
 #include "io/AsyncDataStream.cuh"
 #include "io/CompositeDataStream.cuh"
 #include "io/monitor/ConvergenceMonitor.cuh"
 #include "io/visual/FrameRenderingDataStream.cuh"
 #include "io/visual/TraceRenderingDataStream.cuh"
+#include "io/visual/UITraceDataStream.cuh"
 
 #include "Simulation.cuh"
 #include <ctime>
@@ -289,8 +289,8 @@ std::map<string, int> dimensionsSIRU1()
 typedef FileDataStream FileStream;
 
 const int BUFFER_SIZE = 1000 / 25;
-const int REPORT_STEPS = 200;
-const int RENDER_STEPS = 200;
+const int REPORT_STEPS = 400;
+const int RENDER_STEPS = 100;
 const int MESH_SIZE = 100;
 const double T_SIM = 65;
 const double DELTA_T = 0.000005;
@@ -325,11 +325,14 @@ int main(void)
 	AsyncDataStream renderOut(renderer);
 
 
-	TraceRenderingDataStream heTrace(path, MESH_SIZE, MESH_SIZE, SIRU1Model::h_e, MESH_SIZE / 2, RENDER_STEPS, DELTA_T, -30, -80);
+	TraceRenderingDataStream heTrace(path, MESH_SIZE, MESH_SIZE, SIRU1Model::h_e, MESH_SIZE / 5, RENDER_STEPS, DELTA_T, -30, -80);
 	AsyncDataStream heTraceOut(heTrace);
 
 	TraceRenderingDataStream pspTrace(path, MESH_SIZE, MESH_SIZE, SIRU1Model::T_ii, MESH_SIZE / 2, RENDER_STEPS, DELTA_T, 0, 2);
 	AsyncDataStream pspTraceOut(pspTrace);
+
+//	UITraceDataStream uiTrace(MESH_SIZE, MESH_SIZE, SIRU1Model::h_e, MESH_SIZE / 2, RENDER_STEPS, DELTA_T, -30, -80);
+//	AsyncDataStream uiTraceOut(uiTrace);
 
 	ConvergenceMonitor monitor;
 	AsyncDataStream convergenceStream(monitor);
@@ -340,6 +343,7 @@ int main(void)
 	streams.push_back(&renderOut);
 	streams.push_back(&heTraceOut);
 	streams.push_back(&pspTraceOut);
+//	streams.push_back(&uiTraceOut);
 	streams.push_back(&convergenceStream);
 
 	CompositeDataStream out(streams);

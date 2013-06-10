@@ -13,7 +13,8 @@
 
 #include "ParameterSpace.cuh"
 const int MAX_EQUATIONS=40;
-class StateSpace
+
+class __align__(128) StateSpace
 {
 private:
 	double _vals[MAX_EQUATIONS];
@@ -111,6 +112,12 @@ public:
 		{
 			_vals[i] = val[i];
 		}
+	}
+
+	__device__
+	void setT(double t)
+	{
+		_t = t;
 	}
 
 	__host__

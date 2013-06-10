@@ -14,24 +14,19 @@
 class Write
 {
 private:
-	Buffer * _data;
+	StateSpace * _data;
 	int _width, _height;
 
 public:
-	Write(Buffer * data) :
-		_data(data)
+	Write(StateSpace * data, int width, int height) :
+		_data(data), _width(width), _height(height)
 	{
-		_data->checkOut();
+
 	}
 
 	void to(DataStream & stream)
 	{
-		stream.write(_data);
-	}
-
-	~Write()
-	{
-		_data->release();
+		stream.write(_data, _width, _height);
 	}
 };
 
@@ -131,9 +126,9 @@ public:
 		return NULL;
 	}
 
-	virtual void write(Buffer * data)
+	virtual void write(StateSpace * data, int width, int height)
 	{
-		Write * write = new Write(data);
+		Write * write = new Write(data, width, height);
 		queue(write);
 	}
 

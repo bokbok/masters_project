@@ -18,13 +18,13 @@ class ConvergenceMonitor : public DataStream
 public:
 	ConvergenceMonitor(){}
 
-	virtual void write(StateSpace * data, int width, int height)
+	virtual void write(Buffer * data)
 	{
-		int N = width * height;
+		int N = data->length();
 
 		for (int i = 0; i < N; i++)
 		{
-			if (data[i].nan())
+			if ((*data)[i].nan())
 			{
 				cerr << "Convergence failed!" << endl;
 				exit(-1);

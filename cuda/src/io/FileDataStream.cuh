@@ -57,17 +57,18 @@ public:
 	{
 	}
 
-	virtual void write(StateSpace * data, int width, int height)
+	virtual void write(Buffer * data)
 	{
+		data->checkOut();
 		map<string, int>::iterator iter;
 
-		_out << "t=" << data[0].t();
+		_out << "t=" << (*data)[0].t();
 
-		for (int x = 0; x < width; x++)
+		for (int x = 0; x < data->width(); x++)
 		{
-			for (int y = 0; y < height; y++)
+			for (int y = 0; y < data->height(); y++)
 			{
-				StateSpace & state = data[x + y * width];
+				StateSpace & state = (*data)[x + y * data->width()];
 				_out << "\n" << "(" << x << "," << y << "):";
 
 				for (iter = _dimensions.begin(); iter != _dimensions.end(); ++iter)
@@ -79,6 +80,7 @@ public:
 		}
 
 		_out << '\n';
+		data->release();
 	}
 
 	virtual ~FileDataStream()

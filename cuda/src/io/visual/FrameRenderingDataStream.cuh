@@ -101,12 +101,12 @@ private:
 		printf("Writing RMS frame - Done\n");
 	}
 
-	void updateMesh(StateSpace * data)
+	void updateMesh(Buffer * data)
 	{
-		_latestT = data[0].t();
+		_latestT = (*data)[0].t();
 		for (int i = 0; i < _meshSize; i++)
 		{
-			double val = data[i][_dimensionToPlot] - _restingVal;
+			double val = (*data)[i][_dimensionToPlot] - _restingVal;
 			_mesh[i] += val * val;
 		}
 
@@ -138,9 +138,11 @@ public:
 	}
 
 
-	virtual void write(StateSpace * data, int width, int height)
+	virtual void write(Buffer * data)
 	{
+		data->checkOut();
 		updateMesh(data);
+		data->release();
 	}
 
 	virtual void waitToDrain() {}
