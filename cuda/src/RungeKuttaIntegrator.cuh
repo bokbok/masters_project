@@ -32,6 +32,7 @@
 	#define DUMP(s, name, xv, yv)
 #endif // RK_DEBUG
 
+#include "common.cuh"
 
 
 template <class T>
@@ -40,7 +41,7 @@ class RungeKuttaIntegrator
 public:
 	__device__
 	RungeKuttaIntegrator(DeviceMeshPoint curr, DeviceMeshPoint prev, double t, double deltaT):
-		_current(curr), _previous(prev), _t(t), _deltaT(deltaT)
+		_current(curr), _previous(prev), _t(t), _deltaT(deltaT), _model(prev.parameters(), prev)
 	{
 	}
 
@@ -55,14 +56,14 @@ public:
 	//        k4 = h * f;
 	//////////////////////////////////
 	__device__
-	void integrateStep()
+	inline void integrateStep()
 	{
-		double state[MAX_EQUATIONS];
+		double state[BLOCK_SIZE * BLOCK_SIZE * MAX_EQUATIONS];
 		double derivatives[MAX_EQUATIONS];
 		double integrated[MAX_EQUATIONS];
 
 		StateSpace & prev = _previous.state();
-		ParameterSpace & params = _previous.parameters();
+		double * params = _previous.parameters();
 
 		_model(derivatives, prev, params, _previous);
 

@@ -57,6 +57,7 @@ public:
 		_N(width * height),
 		_flushCount(0)
 	{
+		M::precalculate(params);
 		allocate();
 		cudaFuncSetCacheConfig(__callStep<M>, cudaFuncCachePreferL1);
 	}

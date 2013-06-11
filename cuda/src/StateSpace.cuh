@@ -56,14 +56,14 @@ public:
 	}
 
 	__device__ __host__
-	double & operator [](int index)
+	inline double & operator [](int index)
 	{
 		CHECK_BOUNDS(index, _numDimensions);
 		return _vals[index];
 	}
 
 	__device__ __host__
-	operator double *()
+	inline operator double *()
 	{
 		return _vals;
 	}
@@ -95,7 +95,7 @@ public:
 	}
 
 	__device__
-	void update(double t, StateSpace & val)
+	inline void update(double t, StateSpace & val)
 	{
 		_t = t;
 		for (int i = 0; i < _numDimensions; i++)
@@ -105,7 +105,7 @@ public:
 	}
 
 	__device__
-	void update(double t, double * val)
+	inline void update(double t, double * val)
 	{
 		_t = t;
 		for (int i = 0; i < _numDimensions; i++)

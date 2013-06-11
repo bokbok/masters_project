@@ -14,10 +14,7 @@
 class DeviceMeshPoint
 {
 private:
-	bool _laplacianCached[MAX_EQUATIONS];
-	double _laplacians[MAX_EQUATIONS];
-
-	__device__
+	inline __device__
 	int index(int xOffset, int yOffset)
 	{
 		int xIdx = fixFor((_x + xOffset), _width);
@@ -25,7 +22,7 @@ private:
 		return xIdx + yIdx * _width;
 	}
 
-	__device__
+	inline __device__
 	int fixFor(int idx, int max)
 	{
 		if (idx < 0)
@@ -42,36 +39,31 @@ private:
 
 public:
 	__device__
-	DeviceMeshPoint(StateSpace * mesh, ParameterSpace * parameters, int width, int height, int x, int y, double delta) :
+	inline DeviceMeshPoint(StateSpace * mesh, ParameterSpace * parameters, int width, int height, int x, int y, double delta) :
 		_mesh(mesh), _width(width), _height(height), _x(x), _y(y), _delta(delta), _parameters(parameters), _delta2(delta * delta)
 	{
-		for (int i = 0; i < MAX_EQUATIONS; i++)
-		{
-			_laplacianCached[i] = false;
-			_laplacians[i] = 0.0;
-		}
 	}
 
 	__device__
-	StateSpace & stateAt(int xOffset, int yOffset)
+	inline StateSpace & stateAt(int xOffset, int yOffset)
 	{
 		return _mesh[index(xOffset, yOffset)];
 	}
 
 	__device__
-	StateSpace & state()
+	inline StateSpace & state()
 	{
 		return stateAt(0, 0);
 	}
 
 	__device__
-	ParameterSpace & parameters()
+	inline ParameterSpace & parameters()
 	{
 		return parametersAt(0, 0);
 	}
 
 	__device__
-	double d2dx2(int dim)
+	inline double d2dx2(int dim)
 	{
 		double xMinus = stateAt(-1, 0)[dim];
 		double x = state()[dim];
@@ -81,7 +73,7 @@ public:
 	}
 
 	__device__
-	double d2dy2(int dim)
+	inline double d2dy2(int dim)
 	{
 		double yMinus = stateAt(0, -1)[dim];
 		double y = state()[dim];
@@ -91,18 +83,13 @@ public:
 	}
 
 	__device__
-	double laplacian(int dim)
+	inline double laplacian(int dim)
 	{
-		if (!_laplacianCached[dim])
-		{
-			_laplacians[dim] = d2dy2(dim) + d2dx2(dim);
-			_laplacianCached[dim] = true;
-		}
-		return _laplacians[dim];
+		return d2dy2(dim) + d2dx2(dim);
 	}
 
 	__device__
-	ParameterSpace & parametersAt(int xOffset, int yOffset)
+	inline ParameterSpace & parametersAt(int xOffset, int yOffset)
 	{
 		return _parameters[index(xOffset, yOffset)];
 	}

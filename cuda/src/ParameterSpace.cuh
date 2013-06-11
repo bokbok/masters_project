@@ -10,7 +10,7 @@
 
 const int MAX_PARAMS = 100;
 
-class ParameterSpace
+class __align__(128) ParameterSpace
 {
 private:
 	double _vals[MAX_PARAMS];
@@ -26,10 +26,16 @@ public:
 	}
 
 	__device__ __host__
-	double & operator [](int index)
+	inline double & operator [](int index)
 	{
 		CHECK_BOUNDS(index, MAX_PARAMS);
 		return _vals[index];
+	}
+
+	__device__
+	operator double *()
+	{
+		return _vals;
 	}
 
 
