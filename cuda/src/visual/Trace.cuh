@@ -134,7 +134,7 @@ public:
 		render(graph);
 
 		graph.WritePNG((filenameWithoutExtension + ".png").c_str(), "");
-		graph.WriteEPS((filenameWithoutExtension + ".eps").c_str(), "");
+		//graph.WriteEPS((filenameWithoutExtension + ".eps").c_str(), "");
 
 		printf("Writing Trace frame - Done\n");
 	}

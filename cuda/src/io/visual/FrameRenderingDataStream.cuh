@@ -89,10 +89,10 @@ private:
 		sprintf(buf, "t = %f", _latestT);
 
 		graph.Title(buf);
-
+		graph.Rotate(50,30);
+		graph.Light(true);
 		graph.Box();
-		graph.Dens(data);
-
+		graph.Surf(data);
 
 		sprintf(buf, "%05d", _fileCount);
 		string filename = _fullOutputPath + "/rms_" + buf + ".png";

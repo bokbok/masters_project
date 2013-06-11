@@ -105,11 +105,29 @@
 								<option id="nvcc.compiler.option.level.832611739" name="Generate host debug information (-g)" superClass="nvcc.compiler.option.level"/>
 								<option defaultValue="nvcc.compiler.optimization.level.most" id="nvcc.compiler.optimization.level.2053185467" name="Optimization Level" superClass="nvcc.compiler.optimization.level" valueType="enumerated"/>
 								<option id="nvcc.compiler.pic.200825515" name="Position Independent Code (-fPIC)" superClass="nvcc.compiler.pic"/>
+								<option id="nvcc.compiler.def.symbols.1904586236" superClass="nvcc.compiler.def.symbols" valueType="definedSymbols">
+									<listOptionValue builtIn="false" value="_LARGE_FILES"/>
+									<listOptionValue builtIn="false" value="_FILE_OFFSET_BITS=64"/>
+									<listOptionValue builtIn="false" value="__WXGTK__"/>
+								</option>
+								<option id="nvcc.compiler.include.paths.1056367744" superClass="nvcc.compiler.include.paths" valueType="includePath">
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/cuda/lib}&quot;"/>
+									<listOptionValue builtIn="false" value="/usr/lib/x86_64-linux-gnu/wx/include/gtk2-unicode-release-2.8"/>
+								</option>
+								<option id="nvcc.compiler.usefastmath.474588258" superClass="nvcc.compiler.usefastmath" value="false" valueType="boolean"/>
 								<inputType id="nvcc.compiler.input.cu.249436831" superClass="nvcc.compiler.input.cu"/>
 								<inputType id="nvcc.compiler.input.cpp.787792410" superClass="nvcc.compiler.input.cpp"/>
 								<inputType id="nvcc.compiler.input.c.1637872420" superClass="nvcc.compiler.input.c"/>
 							</tool>
 							<tool id="nvcc.linker.base.1154674110" name="NVCC Linker" superClass="nvcc.linker.base">
+								<option id="nvcc.linker.option.libs.303535524" superClass="nvcc.linker.option.libs" valueType="libs">
+									<listOptionValue builtIn="false" value="mgl"/>
+									<listOptionValue builtIn="false" value="mgl-qt"/>
+									<listOptionValue builtIn="false" value="mgl-glut"/>
+								</option>
+								<option id="nvcc.linker.option.paths.1511066329" superClass="nvcc.linker.option.paths" valueType="libPaths">
+									<listOptionValue builtIn="false" value="/usr/local/lib"/>
+								</option>
 								<inputType id="nvcc.linker.input.229217188" superClass="nvcc.linker.input">
 									<additionalInput kind="additionalinputdependency" paths="$(USER_OBJS)"/>
 									<additionalInput kind="additionalinput" paths="$(LIBS)"/>

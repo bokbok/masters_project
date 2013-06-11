@@ -289,10 +289,10 @@ std::map<string, int> dimensionsSIRU1()
 typedef FileDataStream FileStream;
 
 const int BUFFER_SIZE = 1000 / 25;
-const int REPORT_STEPS = 400;
-const int RENDER_STEPS = 100;
+const int REPORT_STEPS = 200;
+const int RENDER_STEPS = 400;
 const int MESH_SIZE = 100;
-const double T_SIM = 65;
+const double T_SIM = 180;
 const double DELTA_T = 0.000005;
 const double DELTA = 0.2; //make smaller for tighter mesh
 const double RANDOMISE_FRACTION = 0.01;
