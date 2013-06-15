@@ -247,8 +247,8 @@ StateSpace initialConditionsSIRU1()
 {
 	StateSpace initialConditions(SIRU1Model::NUM_DIMENSIONS);
 
-	initialConditions[SIRU1Model::h_e] = 0;
-	initialConditions[SIRU1Model::h_i] = 0;
+	initialConditions[SIRU1Model::h_e] = -68.1355;
+	initialConditions[SIRU1Model::h_i] = -77.2602;
 
 	initialConditions[SIRU1Model::T_ee] = 0.3127;
 	initialConditions[SIRU1Model::T_ei] = 0.9426;
@@ -290,12 +290,12 @@ typedef FileDataStream FileStream;
 
 const int BUFFER_SIZE = 1000 / 25;
 const int REPORT_STEPS = 200;
-const int RENDER_STEPS = 400;
+const int RENDER_STEPS = 200;
 const int MESH_SIZE = 100;
-const double T_SIM = 180;
-const double DELTA_T = 0.000005;
-const double DELTA = 0.2; //make smaller for tighter mesh
-const double RANDOMISE_FRACTION = 0.01;
+const double T_SIM = 120;
+const double DELTA_T = 0.000002;
+const double DELTA = 0.1; //make smaller for tighter mesh
+const double RANDOMISE_FRACTION = 0.20;
 //const double RANDOMISE_FRACTION = 0;
 
 const char * OUTPUT_PATH = "/terra/runs";
@@ -331,7 +331,7 @@ int main(void)
 	TraceRenderingDataStream pspTrace(path, MESH_SIZE, MESH_SIZE, SIRU1Model::T_ii, MESH_SIZE / 2, RENDER_STEPS, DELTA_T, 0, 2);
 	AsyncDataStream pspTraceOut(pspTrace);
 
-//	UITraceDataStream uiTrace(MESH_SIZE, MESH_SIZE, SIRU1Model::h_e, MESH_SIZE / 2, RENDER_STEPS, DELTA_T, -30, -80);
+//	UITraceDataStream uiTrace(MESH_SIZE, MESH_SIZE, SIRU1Model::h_e, MESH_SIZE / 2, RENDER_STEPS / 10, DELTA_T, -30, -80);
 //	AsyncDataStream uiTraceOut(uiTrace);
 
 	ConvergenceMonitor monitor;
@@ -348,6 +348,11 @@ int main(void)
 
 	CompositeDataStream out(streams);
 
+	vector<int> randomiseParams;
+
+	randomiseParams.push_back(SIRU1Model::T_ii);
+	randomiseParams.push_back(SIRU1Model::h_e);
+	randomiseParams.push_back(SIRU1Model::h_i);
 
 	Simulation<SIRU1Model> sim(MESH_SIZE,
 							  MESH_SIZE,
@@ -358,7 +363,8 @@ int main(void)
 							  DELTA,
 							  initialConditionsSIRU1(),
 							  initialiseParamsSIRU1(),
-							  RANDOMISE_FRACTION);
+							  RANDOMISE_FRACTION,
+							  randomiseParams);
 
 	sim.run(out);
 

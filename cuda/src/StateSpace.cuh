@@ -10,6 +10,9 @@
 
 #include "common.cuh"
 #include <math.h>
+#include <vector>
+
+using namespace std;
 
 #include "ParameterSpace.cuh"
 const int MAX_EQUATIONS=40;
@@ -121,12 +124,19 @@ public:
 	}
 
 	__host__
-	void randomise(double deviation, StateSpace & from)
+	void randomise(double deviation, StateSpace & from, vector<int> & randomiseParams)
 	{
 		_numDimensions = from._numDimensions;
-		for (int i = 0; i < _numDimensions; i++)
+		vector<int>::iterator iter;
+
+		for (int i =0; i < _numDimensions; i++)
 		{
-			_vals[i] = from[i] * (1 + random() * deviation);
+			_vals[i] = from[i];
+		}
+
+		for (iter = randomiseParams.begin(); iter != randomiseParams.end(); ++iter)
+		{
+			_vals[*iter] = _vals[*iter] * (1 + random() * deviation);
 		}
 	}
 

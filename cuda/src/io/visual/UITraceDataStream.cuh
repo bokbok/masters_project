@@ -21,7 +21,7 @@ class UITraceDataStream : public DataStream
 private:
 	Trace _trace;
 	int _currentStep, _renderSteps;
-	mglGLUT _graph;
+	mglGraph _graph;
 
 	//pthread_t _thread;
 
@@ -38,13 +38,8 @@ public:
 		_trace(width, height, dimensionToPlot, outputInterval, deltaT, minY, maxY, 512),
 		_currentStep(0),
 		_renderSteps(renderSteps),
-		_graph(fake, "Live Trace")
+		_graph()
 	{
-	}
-
-	static int fake(mglGraph * graph)
-	{
-		return 0;
 	}
 
 	virtual void write(Buffer * data)
@@ -55,10 +50,8 @@ public:
 
 		if (_currentStep % _renderSteps == 0)
 		{
-			_graph.NewFrame();
 			_trace.render(_graph);
-			_graph.EndFrame();
-			//_graph.Update();
+			_graph.ShowImage("View");
 		}
 		data->release();
 	}

@@ -19,7 +19,7 @@ private:
 
 	Mesh<T> * _mesh;
 
-	StateSpace * randomiseInitialConditions()
+	StateSpace * randomiseInitialConditions(vector<int> & randomiseParams)
 	{
 		StateSpace * result = new StateSpace[_width * _height];
 
@@ -27,7 +27,7 @@ private:
 		{
 			for (int y = 0; y < _height; y++)
 			{
-				result[x + y * _width].randomise(_icFluctuation, _initialConditions);
+				result[x + y * _width].randomise(_icFluctuation, _initialConditions, randomiseParams);
 			}
 		}
 
@@ -37,7 +37,7 @@ private:
 public:
 	Simulation(int width, int height, int bufferSize, int reportSteps, double length,
 			   double deltaT, double delta, StateSpace initialConditions,
-			   ParameterSpace params, double icFluctuation):
+			   ParameterSpace params, double icFluctuation, vector<int> & randomiseParams):
 		_width(width),
 		_height(height),
 		_length(length),
@@ -48,7 +48,7 @@ public:
 		_icFluctuation(icFluctuation)
 	{
 		printf("Allocating mesh......");
-		_mesh = new Mesh<T>(width, height, delta, bufferSize, reportSteps, randomiseInitialConditions(), params);
+		_mesh = new Mesh<T>(width, height, delta, bufferSize, reportSteps, randomiseInitialConditions(randomiseParams), params);
 		printf("Done......");
 	}
 
