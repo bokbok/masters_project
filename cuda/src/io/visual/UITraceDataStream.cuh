@@ -11,7 +11,7 @@
 #include "../DataStream.cuh"
 #include "../../visual/Trace.cuh"
 #include <mgl2/mgl.h>
-#include <mgl2/glut.h>
+//#include <mgl2/glut.h>
 //#include <mgl2/qt.h>
 //#include <pthread.h>
 
