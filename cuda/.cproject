@@ -46,8 +46,6 @@
 							<tool id="nvcc.linker.base.1083062509" name="NVCC Linker" superClass="nvcc.linker.base">
 								<option id="nvcc.linker.option.libs.1706778990" name="Libraries (-l)" superClass="nvcc.linker.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="mgl"/>
-									<listOptionValue builtIn="false" value="mgl-qt"/>
-									<listOptionValue builtIn="false" value="mgl-glut"/>
 								</option>
 								<option id="nvcc.linker.option.paths.1288047423" name="Library search path (-L)" superClass="nvcc.linker.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="/usr/local/lib"/>
@@ -74,6 +72,7 @@
 				<executable devicelink="false">
 					<sass major="3" minor="0"/>
 					<ptx major="3" minor="0"/>
+					<sass major="2" minor="1"/>
 				</executable>
 				<editor-arch major="3" minor="0"/>
 			</storageModule>
@@ -105,27 +104,25 @@
 								<option id="nvcc.compiler.option.level.832611739" name="Generate host debug information (-g)" superClass="nvcc.compiler.option.level"/>
 								<option defaultValue="nvcc.compiler.optimization.level.most" id="nvcc.compiler.optimization.level.2053185467" name="Optimization Level" superClass="nvcc.compiler.optimization.level" valueType="enumerated"/>
 								<option id="nvcc.compiler.pic.200825515" name="Position Independent Code (-fPIC)" superClass="nvcc.compiler.pic"/>
-								<option id="nvcc.compiler.def.symbols.1904586236" superClass="nvcc.compiler.def.symbols" valueType="definedSymbols">
+								<option id="nvcc.compiler.def.symbols.1904586236" name="Defined symbols (-D)" superClass="nvcc.compiler.def.symbols" valueType="definedSymbols">
 									<listOptionValue builtIn="false" value="_LARGE_FILES"/>
 									<listOptionValue builtIn="false" value="_FILE_OFFSET_BITS=64"/>
 									<listOptionValue builtIn="false" value="__WXGTK__"/>
 								</option>
-								<option id="nvcc.compiler.include.paths.1056367744" superClass="nvcc.compiler.include.paths" valueType="includePath">
+								<option id="nvcc.compiler.include.paths.1056367744" name="Include paths (-I)" superClass="nvcc.compiler.include.paths" valueType="includePath">
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/cuda/lib}&quot;"/>
 									<listOptionValue builtIn="false" value="/usr/lib/x86_64-linux-gnu/wx/include/gtk2-unicode-release-2.8"/>
 								</option>
-								<option id="nvcc.compiler.usefastmath.474588258" superClass="nvcc.compiler.usefastmath" value="false" valueType="boolean"/>
+								<option id="nvcc.compiler.usefastmath.474588258" name="Make use of fast math library (-use_fast_math)" superClass="nvcc.compiler.usefastmath" value="false" valueType="boolean"/>
 								<inputType id="nvcc.compiler.input.cu.249436831" superClass="nvcc.compiler.input.cu"/>
 								<inputType id="nvcc.compiler.input.cpp.787792410" superClass="nvcc.compiler.input.cpp"/>
 								<inputType id="nvcc.compiler.input.c.1637872420" superClass="nvcc.compiler.input.c"/>
 							</tool>
 							<tool id="nvcc.linker.base.1154674110" name="NVCC Linker" superClass="nvcc.linker.base">
-								<option id="nvcc.linker.option.libs.303535524" superClass="nvcc.linker.option.libs" valueType="libs">
+								<option id="nvcc.linker.option.libs.303535524" name="Libraries (-l)" superClass="nvcc.linker.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="mgl"/>
-									<listOptionValue builtIn="false" value="mgl-qt"/>
-									<listOptionValue builtIn="false" value="mgl-glut"/>
 								</option>
-								<option id="nvcc.linker.option.paths.1511066329" superClass="nvcc.linker.option.paths" valueType="libPaths">
+								<option id="nvcc.linker.option.paths.1511066329" name="Library search path (-L)" superClass="nvcc.linker.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="/usr/local/lib"/>
 								</option>
 								<inputType id="nvcc.linker.input.229217188" superClass="nvcc.linker.input">
@@ -184,10 +181,10 @@
 		<scannerConfigBuildInfo instanceId="com.nvidia.cuda.ide.configuration.debug.620468800;com.nvidia.cuda.ide.configuration.debug.620468800.1224612154;nvcc.compiler.base.1202452117;nvcc.compiler.input.c.852951087">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.nvidia.cuda.ide.build.NVCCPerProjectProfile"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.nvidia.cuda.ide.configuration.debug.620468800;com.nvidia.cuda.ide.configuration.debug.620468800.837187014;nvcc.compiler.base.1265029608;nvcc.compiler.input.c.1075250773">
+		<scannerConfigBuildInfo instanceId="com.nvidia.cuda.ide.configuration.debug.620468800;com.nvidia.cuda.ide.configuration.debug.620468800.1224612154;nvcc.compiler.base.1202452117;nvcc.compiler.input.cu.1377715094">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.nvidia.cuda.ide.build.NVCCPerProjectProfile"/>
 		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="com.nvidia.cuda.ide.configuration.debug.620468800;com.nvidia.cuda.ide.configuration.debug.620468800.1224612154;nvcc.compiler.base.1202452117;nvcc.compiler.input.cu.1377715094">
+		<scannerConfigBuildInfo instanceId="com.nvidia.cuda.ide.configuration.debug.620468800;com.nvidia.cuda.ide.configuration.debug.620468800.837187014;nvcc.compiler.base.1265029608;nvcc.compiler.input.c.1075250773">
 			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId="com.nvidia.cuda.ide.build.NVCCPerProjectProfile"/>
 		</scannerConfigBuildInfo>
 	</storageModule>
