@@ -8,6 +8,7 @@
 #ifndef PARAMETERSPACE_CUH_
 #define PARAMETERSPACE_CUH_
 
+
 const int MAX_PARAMS = 100;
 
 class __align__(128) ParameterSpace

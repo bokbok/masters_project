@@ -7,6 +7,8 @@
 
 #ifndef SIRU2_CUH_
 #define SIRU2_CUH_
+#include "../ParameterSpace.cuh"
+#include "../DeviceMeshPoint.cuh"
 
 class SIRU2Model
 {
@@ -15,6 +17,7 @@ private:
 		   _1_5_vel2_laplacian_phi_ei;
 
 public:
+	static const int NUM_DIMENSIONS = 18;
 	enum Dimensions
 	{
 		h_e,
@@ -182,11 +185,11 @@ public:
 		ddt[i_ie] = s[i_ie_t];
 		ddt[i_ii] = s[i_ii_t];
 
-		ddt[T_ii] = p[mus_i] * ((p[T_ii_p] / (1 + exp(p[k_i] * (s[h_i] - p[E_i]))))  - s[T_ii]);
-		ddt[T_ie] = p[mus_i] * ((p[T_ie_p] / (1 + exp(p[k_i] * (s[h_i] - p[E_i]))))  - s[T_ie]);
+		ddt[T_ii] = p[mus_i] * ((p[T_ii_p] / (1 + exp(p[k_i] * (s[h_i] - p[theta_i]))))  - s[T_ii]);
+		ddt[T_ie] = p[mus_i] * ((p[T_ie_p] / (1 + exp(p[k_i] * (s[h_i] - p[theta_i]))))  - s[T_ie]);
 
-		ddt[T_ei] = p[mus_e] * ((p[T_ei_p] / (1 + exp(p[k_e] * (s[h_e] - p[E_e]))))  - s[T_ei]);
-		ddt[T_ee] = p[mus_e] * ((p[T_ee_p] / (1 + exp(p[k_e] * (s[h_e] - p[E_e]))))  - s[T_ee]);
+		ddt[T_ei] = p[mus_e] * ((p[T_ei_p] / (1 + exp(p[k_e] * (s[h_e] - p[theta_e]))))  - s[T_ei]);
+		ddt[T_ee] = p[mus_e] * ((p[T_ee_p] / (1 + exp(p[k_e] * (s[h_e] - p[theta_e]))))  - s[T_ee]);
 
 	    ddt[i_ee_t] = -2 * p[gamma_ee] * s[i_ee_t] - p[_gamma_ee2] * s[i_ee] + s[T_ee] * p[_gamma_ee_e] * (p[N_beta_ee] * s_e(s[h_e], p) + s[phi_ee] + p[p_ee]);
 	    ddt[i_ei_t] = -2 * p[gamma_ei] * s[i_ei_t] - p[_gamma_ei2] * s[i_ei] + s[T_ei] * p[_gamma_ei_e] * (p[N_beta_ei] * s_e(s[h_e], p) + s[phi_ei] + p[p_ei]);

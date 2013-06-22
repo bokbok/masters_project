@@ -7,6 +7,8 @@
 
 #ifndef SIRU1MODEL_CUH_
 #define SIRU1MODEL_CUH_
+#include "../ParameterSpace.cuh"
+#include "../DeviceMeshPoint.cuh"
 
 class SIRU1Model
 {

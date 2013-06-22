@@ -7,6 +7,7 @@
 
 #ifndef SIMULATION_HPP_
 #define SIMULATION_HPP_
+#include "Mesh.cuh"
 
 template <class T>
 class Simulation

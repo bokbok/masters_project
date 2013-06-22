@@ -8,6 +8,9 @@
 #ifndef COMMON_CUH_
 #define COMMON_CUH_
 #include <stdio.h>
+#include <vector>
+#include <map>
+
 
 #define BOUNDS_CHECK
 
