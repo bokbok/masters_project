@@ -4,21 +4,13 @@
 
 using namespace std;
 
-#include "StateSpace.cuh"
-
 #include "Mesh.cuh"
 #include "liley/Model.cuh"
 #include "liley/SIRU1Model.cuh"
 #include "liley/SIRU2Model.cuh"
-#include "io/FileDataStream.cuh"
-#include "io/AsyncDataStream.cuh"
-#include "io/CompositeDataStream.cuh"
-#include "io/monitor/ConvergenceMonitor.cuh"
-#include "io/visual/FrameRenderingDataStream.cuh"
-#include "io/visual/TraceRenderingDataStream.cuh"
-#include "io/visual/UITraceDataStream.cuh"
 
-#include "Simulation.cuh"
+#include "SimulationBuilder.cuh"
+#include "StreamBuilder.cuh"
 #include <ctime>
 
 
@@ -145,8 +137,8 @@ ParameterSpace initialiseParamsSIRU2()
 
 	params[SIRU2Model::k_i] = 0.3;
 	params[SIRU2Model::k_e] = 0.3;
-	params[SIRU2Model::e_i] = 1e-6;
-	params[SIRU2Model::e_e] = 1e-6;
+	params[SIRU2Model::E_i] = 1e-6;
+	params[SIRU2Model::E_e] = 1e-6;
 
 	return params;
 }
@@ -186,9 +178,12 @@ ParameterSpace initialiseParamsSIRU1()
 	params[SIRU1Model::mu_e] = -47.1364;
 	params[SIRU1Model::mu_i] = -45.3751;
 
-	params[SIRU1Model::mus_ee] = 0;
-	params[SIRU1Model::mus_ei] = 0;
-	params[SIRU1Model::mus_ie] = 0;
+//	params[SIRU1Model::mus_ee] = 0;
+//	params[SIRU1Model::mus_ei] = 0;
+//	params[SIRU1Model::mus_ie] = 0;
+	params[SIRU1Model::mus_ee] = 0.001;
+	params[SIRU1Model::mus_ei] = 0.001;
+	params[SIRU1Model::mus_ie] = 0.001;
 	params[SIRU1Model::mus_ii] = 0.001;
 
 
@@ -284,11 +279,6 @@ std::map<string, int> dimensionsSIRU1()
 	return dims;
 }
 
-
-
-typedef FileDataStream FileStream;
-
-const int BUFFER_SIZE = 1000 / 25;
 const int REPORT_STEPS = 200;
 const int RENDER_STEPS = 200;
 const int MESH_SIZE = 100;
@@ -296,79 +286,37 @@ const double T_SIM = 120;
 const double DELTA_T = 0.000002;
 const double DELTA = 0.1; //make smaller for tighter mesh
 const double RANDOMISE_FRACTION = 0.20;
-//const double RANDOMISE_FRACTION = 0;
 
 const char * OUTPUT_PATH = "/terra/runs";
 
-string runPath()
-{
-	double sysTime = time(0);
-
-	char buf[600];
-	sprintf(buf, "%i", (int) sysTime);
-
-	mkdir(OUTPUT_PATH, 0777);
-	return string(OUTPUT_PATH) + "/" + buf;
-}
-
-
 int main(void)
 {
-	srand(time(NULL));
-	string path = runPath();
-	mkdir(path.c_str(), 0777);
+	StreamBuilder streamBuilder(MESH_SIZE, OUTPUT_PATH);
 
-	FileStream file(path + "/run.dat", dimensionsSIRU1());
-	AsyncDataStream fileOut(file);
-
-	FrameRenderingDataStream renderer(path, MESH_SIZE, MESH_SIZE, SIRU1Model::h_e, RENDER_STEPS, initialiseParamsSIRU1()[SIRU1Model::h_e_rest]);
-	AsyncDataStream renderOut(renderer);
+	streamBuilder.toFile(dimensionsSIRU1())
+			     .RMSFor(SIRU1Model::h_e, RENDER_STEPS, initialiseParamsSIRU1()[SIRU1Model::h_e_rest])
+			     .traceFor(SIRU1Model::h_e, RENDER_STEPS, 5, -80, -30)
+			     .traceFor(SIRU1Model::T_ii, RENDER_STEPS, 2, 0, 5)
+			     .monitorConvergence();
 
 
-	TraceRenderingDataStream heTrace(path, MESH_SIZE, MESH_SIZE, SIRU1Model::h_e, MESH_SIZE / 5, RENDER_STEPS, DELTA_T, -30, -80);
-	AsyncDataStream heTraceOut(heTrace);
+	SimulationBuilder<SIRU1Model> simBuilder;
 
-	TraceRenderingDataStream pspTrace(path, MESH_SIZE, MESH_SIZE, SIRU1Model::T_ii, MESH_SIZE / 2, RENDER_STEPS, DELTA_T, 0, 2);
-	AsyncDataStream pspTraceOut(pspTrace);
+	simBuilder.runFor(T_SIM)
+			  .withTimeStep(DELTA_T)
+			  .withMeshSize(MESH_SIZE)
+			  .withMeshSpacing(DELTA)
+			  .reportEvery(REPORT_STEPS)
+			  .randomising(SIRU1Model::h_e)
+			  .randomising(SIRU1Model::h_i)
+			  .withInitialConditions(initialConditionsSIRU1())
+			  .withParameters(initialiseParamsSIRU1())
+			  .withICDeviation(RANDOMISE_FRACTION);
 
-//	UITraceDataStream uiTrace(MESH_SIZE, MESH_SIZE, SIRU1Model::h_e, MESH_SIZE / 2, RENDER_STEPS / 10, DELTA_T, -30, -80);
-//	AsyncDataStream uiTraceOut(uiTrace);
 
-	ConvergenceMonitor monitor;
-	AsyncDataStream convergenceStream(monitor);
+	Simulation<SIRU1Model> * sim = simBuilder.build();
 
-
-	vector<DataStream *> streams;
-	streams.push_back(&fileOut);
-	streams.push_back(&renderOut);
-	streams.push_back(&heTraceOut);
-	streams.push_back(&pspTraceOut);
-//	streams.push_back(&uiTraceOut);
-	streams.push_back(&convergenceStream);
-
-	CompositeDataStream out(streams);
-
-	vector<int> randomiseParams;
-
-	randomiseParams.push_back(SIRU1Model::T_ii);
-	randomiseParams.push_back(SIRU1Model::h_e);
-	randomiseParams.push_back(SIRU1Model::h_i);
-
-	Simulation<SIRU1Model> sim(MESH_SIZE,
-							  MESH_SIZE,
-							  BUFFER_SIZE,
-							  REPORT_STEPS,
-							  T_SIM,
-							  DELTA_T,
-							  DELTA,
-							  initialConditionsSIRU1(),
-							  initialiseParamsSIRU1(),
-							  RANDOMISE_FRACTION,
-							  randomiseParams);
-
-	sim.run(out);
-
-	fileOut.waitToDrain();
+	sim->run(*streamBuilder.build());
     cudaDeviceSynchronize();
     printf("%s\n", cudaGetErrorString( cudaGetLastError() ) );
 	return 0;

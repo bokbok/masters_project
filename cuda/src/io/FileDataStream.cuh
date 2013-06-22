@@ -25,6 +25,10 @@ private:
 	void open()
 	{
 		_out.open(_path.c_str());
+		if (!_out.is_open())
+		{
+			cerr << "File failed to open: " << _path << endl;
+		}
 		_out.precision(15);
 	}
 

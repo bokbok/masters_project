@@ -21,7 +21,6 @@ private:
 	int _dimensionToPlot;
 	int _outputInterval;
 	int _bufferSize;
-	double _deltaT;
 
 	double _minY,_maxY;
 	map< string, list<double> > _traces;
@@ -67,12 +66,11 @@ private:
 
 
 public:
-	Trace(int width, int height, int dimension, int outputInterval, double deltaT, double minY, double maxY, int bufferSize = MAX_BUFFER) :
+	Trace(int width, int height, int dimension, int outputInterval, double minY, double maxY, int bufferSize = MAX_BUFFER) :
 		_width(width),
 		_height(height),
 		_dimensionToPlot(dimension),
 		_outputInterval(outputInterval),
-		_deltaT(deltaT),
 		_minY(minY),
 		_maxY(maxY),
 		_bufferSize(bufferSize)

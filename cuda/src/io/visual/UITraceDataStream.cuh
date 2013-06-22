@@ -32,10 +32,9 @@ public:
 			int dimensionToPlot,
 			int renderSteps,
 			int outputInterval,
-			double deltaT,
 			double minY,
 			double maxY) :
-		_trace(width, height, dimensionToPlot, outputInterval, deltaT, minY, maxY, 512),
+		_trace(width, height, dimensionToPlot, outputInterval, minY, maxY, 512),
 		_currentStep(0),
 		_renderSteps(renderSteps),
 		_graph()

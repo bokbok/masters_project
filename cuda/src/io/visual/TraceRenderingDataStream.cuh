@@ -52,7 +52,6 @@ public:
 	TraceRenderingDataStream(string outputPath, int width,
 							int height, int dimensionToPlot,
 							int outputInterval, int outputSteps,
-							double deltaT,
 							double minY,
 							double maxY):
 		_outputPath(outputPath),
@@ -60,7 +59,7 @@ public:
 		_fileCount(1),
 		_dimensionToPlot(dimensionToPlot),
 		_outputSteps(outputSteps),
-		_trace(width, height, dimensionToPlot, outputInterval, deltaT, minY, maxY)
+		_trace(width, height, dimensionToPlot, outputInterval, minY, maxY)
 	{
 		createDirs();
 	}
