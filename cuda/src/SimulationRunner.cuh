@@ -19,7 +19,7 @@ const int MESH_SIZE = 100;
 const double T_SIM = 120;
 const double DELTA_T = 0.000002;
 const double DELTA = 0.1; //make smaller for tighter mesh
-const double RANDOMISE_FRACTION = 0.20;
+const double RANDOMISE_FRACTION = 0.05;
 
 template <class T>
 class SimulationRunner

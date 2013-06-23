@@ -61,6 +61,7 @@ class SIRU2HardcodedParams : public Params
 		params[SIRU2Model::sigma_i] = 2.8294;
 
 		params[SIRU2Model::p_ee] = 3.6032;
+		//params[SIRU2Model::p_ee] = 3.2;
 		params[SIRU2Model::p_ei] = 0.3639;
 		params[SIRU2Model::p_ie] = 0;
 		params[SIRU2Model::p_ii] = 0;
@@ -77,8 +78,12 @@ class SIRU2HardcodedParams : public Params
 
 		params[SIRU2Model::k_i] = 0.1;
 		params[SIRU2Model::k_e] = 0.2;
-//		params[SIRU2Model::E_i] = 1e-6;
-//		params[SIRU2Model::E_e] = 1e-6;
+
+		params[SIRU2Model::e_ee] = 0;
+		params[SIRU2Model::e_ei] = 0;
+		params[SIRU2Model::e_ie] = 1.5;
+		//params[SIRU2Model::e_ii] = 1.8;
+		params[SIRU2Model::e_ii] = 2.2;
 
 		return params;
 	}
