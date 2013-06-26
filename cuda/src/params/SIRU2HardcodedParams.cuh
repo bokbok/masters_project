@@ -31,14 +31,13 @@ class SIRU2HardcodedParams : public Params
 		params[SIRU2Model::gamma_ie] = 0.0791;
 		params[SIRU2Model::gamma_ii] = 0.0782;
 
-		params[SIRU2Model::T_ee_p] = 0.3127;
-		params[SIRU2Model::T_ei_p] = 0.9426;
-		params[SIRU2Model::T_ie_p] = 0.4947;
-		params[SIRU2Model::T_ii_p] = 1.4122;
+		params[SIRU2Model::T_ee] = 0.3127;
+		params[SIRU2Model::T_ei] = 0.9426;
+		params[SIRU2Model::T_ie] = 0.4947;
+		params[SIRU2Model::T_ii] = 1.4122;
 
 		params[SIRU2Model::theta_e] = -46;
 		params[SIRU2Model::theta_i] = -46;
-
 
 		params[SIRU2Model::N_beta_ee] = 4582.0661;
 		params[SIRU2Model::N_beta_ei] = 4198.1829;
@@ -61,7 +60,7 @@ class SIRU2HardcodedParams : public Params
 		params[SIRU2Model::sigma_i] = 2.8294;
 
 		params[SIRU2Model::p_ee] = 3.6032;
-		//params[SIRU2Model::p_ee] = 3.2;
+		//params[SIRU2Model::p_ee] = 3.6;
 		params[SIRU2Model::p_ei] = 0.3639;
 		params[SIRU2Model::p_ie] = 0;
 		params[SIRU2Model::p_ii] = 0;
@@ -82,8 +81,8 @@ class SIRU2HardcodedParams : public Params
 		params[SIRU2Model::e_ee] = 0;
 		params[SIRU2Model::e_ei] = 0;
 		params[SIRU2Model::e_ie] = 1.5;
-		//params[SIRU2Model::e_ii] = 1.8;
-		params[SIRU2Model::e_ii] = 2.2;
+		params[SIRU2Model::e_ii] = 1.8;
+		//params[SIRU2Model::e_ii] = 2.0;
 
 		return params;
 	}
@@ -95,10 +94,8 @@ class SIRU2HardcodedParams : public Params
 		initialConditions[SIRU2Model::h_e] = -68.1355;
 		initialConditions[SIRU2Model::h_i] = -77.2602;
 
-//		initialConditions[SIRU2Model::T_ee] = 0.3127;
-//		initialConditions[SIRU2Model::T_ei] = 0.9426;
-//		initialConditions[SIRU2Model::T_ie] = 0.4947;
-//		initialConditions[SIRU2Model::T_ii] = 1.4122;
+		initialConditions[SIRU2Model::C_e] = 1;
+		initialConditions[SIRU2Model::C_i] = 1;
 
 		return initialConditions;
 	}

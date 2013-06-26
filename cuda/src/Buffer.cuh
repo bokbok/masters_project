@@ -55,11 +55,13 @@ public:
 	{
 		pthread_mutex_lock(&_dataMutex);
 		--_refCount;
-		pthread_mutex_unlock(&_dataMutex);
-
 		if(_refCount == 0)
 		{
 			delete this;
+		}
+		else
+		{
+			pthread_mutex_unlock(&_dataMutex);
 		}
 	}
 
@@ -91,6 +93,11 @@ public:
 	int length()
 	{
 		return _N;
+	}
+
+	~Buffer()
+	{
+		pthread_mutex_unlock(&_dataMutex);
 	}
 };
 

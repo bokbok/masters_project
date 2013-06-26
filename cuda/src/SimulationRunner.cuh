@@ -13,13 +13,13 @@
 #include "params/Params.cuh"
 
 
-const int REPORT_STEPS = 200;
-const int RENDER_STEPS = 200;
-const int MESH_SIZE = 100;
-const double T_SIM = 120;
-const double DELTA_T = 0.000002;
+const int REPORT_STEPS = 2000;
+const int RENDER_STEPS = 2000;
+const int MESH_SIZE = 10;
+const double T_SIM = 20;
+const double DELTA_T = 0.0000002;
 const double DELTA = 0.1; //make smaller for tighter mesh
-const double RANDOMISE_FRACTION = 0.05;
+const double RANDOMISE_FRACTION = 0.001;
 
 template <class T>
 class SimulationRunner
@@ -58,7 +58,12 @@ public:
 		streamBuilder.toFile(dimensions())
 				     .RMSFor(T::h_e, RENDER_STEPS, _params.params()[T::h_e_rest])
 				     .traceFor(T::h_e, RENDER_STEPS, 5, -80, -30)
-				     .traceFor(T::T_ii, RENDER_STEPS, 2, 0, 5)
+				     //				     .traceFor(T::T_ii, RENDER_STEPS, 2, 0, 5)
+				     //				     .traceFor(T::T_ie, RENDER_STEPS, 2, 0, 5)
+				     //				     .traceFor(T::T_ei, RENDER_STEPS, 2, 0, 5)
+				     //				     .traceFor(T::T_ee, RENDER_STEPS, 2, 0, 5)
+				     .traceFor(T::C_e, RENDER_STEPS, 2, 0, 5)
+				     .traceFor(T::C_i, RENDER_STEPS, 2, 0, 5)
 				     .monitorConvergence();
 
 

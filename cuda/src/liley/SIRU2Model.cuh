@@ -34,10 +34,8 @@ public:
 		phi_ei,
 		phi_ee_t,
 		phi_ei_t,
-		T_ee,
-		T_ei,
-		T_ie,
-		T_ii,
+		C_e,
+		C_i
 	};
 
 	enum Params
@@ -56,10 +54,10 @@ public:
 		gamma_ei,
 		gamma_ie,
 		gamma_ii,
-		T_ee_p,
-		T_ei_p,
-		T_ie_p,
-		T_ii_p,
+		T_ee,
+		T_ei,
+		T_ie,
+		T_ii,
 		mus_e,
 		mus_i,
 		k_i,
@@ -129,10 +127,10 @@ public:
 		_vel2_A_ee2,
 		_vel2_A_ei2,
 
-		_gamma_ee_e,
-		_gamma_ei_e,
-		_gamma_ie_e,
-		_gamma_ii_e,
+		_T_ee_gamma_ee_e,
+		_T_ei_gamma_ei_e,
+		_T_ie_gamma_ie_e,
+		_T_ii_gamma_ii_e,
 
 		_1_minus_r_abs_s_e_max,
 		_1_minus_r_abs_s_i_max,
@@ -207,10 +205,10 @@ public:
 		p[_vel2_A_ee2] = p[_vel2] * p[A_ee] * p[A_ee];
 		p[_vel2_A_ei2] = p[_vel2] * p[A_ei] * p[A_ei];
 
-		p[_gamma_ee_e] = p[_gamma_ee_tilde] * exp((p[_gamma_ee] / p[gamma_ee]));
-		p[_gamma_ei_e] = p[_gamma_ei_tilde] * exp((p[_gamma_ei] / p[gamma_ei]));
-		p[_gamma_ie_e] = p[_gamma_ie_tilde] * exp((p[_gamma_ie] / p[gamma_ie]));
-		p[_gamma_ii_e] = p[_gamma_ii_tilde] * exp((p[_gamma_ii] / p[gamma_ii]));
+		p[_T_ee_gamma_ee_e] = p[T_ee] * p[_gamma_ee_tilde] * exp((p[_gamma_ee] / p[gamma_ee]));
+		p[_T_ei_gamma_ei_e] = p[T_ei] * p[_gamma_ei_tilde] * exp((p[_gamma_ei] / p[gamma_ei]));
+		p[_T_ie_gamma_ie_e] = p[T_ie] * p[_gamma_ie_tilde] * exp((p[_gamma_ie] / p[gamma_ie]));
+		p[_T_ii_gamma_ii_e] = p[T_ii] * p[_gamma_ii_tilde] * exp((p[_gamma_ii] / p[gamma_ii]));
 
 		p[_1_minus_r_abs_s_e_max] = 1 - p[r_abs] * p[s_e_max];
 		p[_1_minus_r_abs_s_i_max] = 1 - p[r_abs] * p[s_i_max];
@@ -237,28 +235,25 @@ public:
 		ddt[h_e] = (-(s[h_e] - p[h_e_rest]) + (Y_e_h_e(s[h_e], p) * s[i_ee]) + (Y_i_h_e(s[h_e], p) * (s[i_ie]))) / p[tor_e];
 		ddt[h_i] = (-(s[h_i] - p[h_i_rest]) + (Y_e_h_i(s[h_i], p) * s[i_ei]) + (Y_i_h_i(s[h_i], p) * (s[i_ii]))) / p[tor_i];
 
-		ddt[i_ee] = s[i_ee_t];
-		ddt[i_ei] = s[i_ei_t];
-		ddt[i_ie] = s[i_ie_t];
-		ddt[i_ii] = s[i_ii_t];
+		ddt[C_i] = p[mus_i] * ((1 / (1 + exp(p[k_i] * (s[h_i] - p[theta_i]))))  - s[C_i]);
+		ddt[C_e] = p[mus_e] * ((1 / (1 + exp(p[k_e] * (s[h_e] - p[theta_e]))))  - s[C_e]);
 
-		ddt[T_ii] = p[mus_i] * ((p[T_ii_p] / (1 + exp(p[k_i] * (s[h_i] - p[theta_i]))))  - s[T_ii]);
-		ddt[T_ie] = p[mus_i] * ((p[T_ie_p] / (1 + exp(p[k_i] * (s[h_i] - p[theta_i]))))  - s[T_ie]);
+	    ddt[i_ee_t] = -(p[_gamma_ee] + p[_gamma_ee_tilde]) * s[i_ee_t] - p[_gamma_ee_tilde2] * s[i_ee] + s[C_e] * p[_T_ee_gamma_ee_e] * (p[N_beta_ee] * s_e(s[h_e], p) + s[phi_ee] + p[p_ee]);
+	    ddt[i_ei_t] = -(p[_gamma_ei] + p[_gamma_ei_tilde]) * s[i_ei_t] - p[_gamma_ei_tilde2] * s[i_ei] + s[C_e] * p[_T_ei_gamma_ei_e] * (p[N_beta_ei] * s_e(s[h_e], p) + s[phi_ei] + p[p_ei]);
 
-		ddt[T_ei] = p[mus_e] * ((p[T_ei_p] / (1 + exp(p[k_e] * (s[h_e] - p[theta_e]))))  - s[T_ei]);
-		ddt[T_ee] = p[mus_e] * ((p[T_ee_p] / (1 + exp(p[k_e] * (s[h_e] - p[theta_e]))))  - s[T_ee]);
+	    ddt[i_ie_t] = -(p[_gamma_ie] + p[_gamma_ie_tilde]) * s[i_ie_t] - p[_gamma_ie_tilde2] * s[i_ie] + s[C_i] * p[_T_ie_gamma_ie_e] * (p[N_beta_ie] * s_i(s[h_i], p) + p[phi_ie] + p[p_ie]);
+	    ddt[i_ii_t] = -(p[_gamma_ii] + p[_gamma_ii_tilde]) * s[i_ii_t] - p[_gamma_ii_tilde2] * s[i_ii] + s[C_i] * p[_T_ii_gamma_ii_e] * (p[N_beta_ii] * s_i(s[h_i], p) + p[phi_ii] + p[p_ii]);
 
-	    ddt[i_ee_t] = -(p[_gamma_ee] + p[_gamma_ee_tilde]) * s[i_ee_t] - p[_gamma_ee_tilde2] * s[i_ee] + s[T_ee] * p[_gamma_ee_e] * (p[N_beta_ee] * s_e(s[h_e], p) + s[phi_ee] + p[p_ee]);
-	    ddt[i_ei_t] = -(p[_gamma_ei] + p[_gamma_ei_tilde]) * s[i_ei_t] - p[_gamma_ei_tilde2] * s[i_ei] + s[T_ei] * p[_gamma_ei_e] * (p[N_beta_ei] * s_e(s[h_e], p) + s[phi_ei] + p[p_ei]);
-
-	    ddt[i_ie_t] = -(p[_gamma_ie] + p[_gamma_ie_tilde]) * s[i_ie_t] - p[_gamma_ie_tilde2] * s[i_ie] + s[T_ie] * p[_gamma_ie_e] * (p[N_beta_ie] * s_i(s[h_i], p) + p[phi_ie] + p[p_ie]);
-	    ddt[i_ii_t] = -(p[_gamma_ii] + p[_gamma_ii_tilde]) * s[i_ii_t] - p[_gamma_ii_tilde2] * s[i_ii] + s[T_ii] * p[_gamma_ii_e] * (p[N_beta_ii] * s_i(s[h_i], p) + p[phi_ii] + p[p_ii]);
+	    ddt[phi_ee_t] = p[_minus_2_vel_A_ee] * s[phi_ee_t] + p[_vel2_A_ee2] * (p[N_alpha_ee] * s_e(s[h_e], p) - s[phi_ee]) + _1_5_vel2_laplacian_phi_ee;
+	    ddt[phi_ei_t] = p[_minus_2_vel_A_ei] * s[phi_ei_t] + p[_vel2_A_ei2] * (p[N_alpha_ei] * s_e(s[h_e], p) - s[phi_ei]) + _1_5_vel2_laplacian_phi_ei;
 
 	    ddt[phi_ee] = s[phi_ee_t];
 	    ddt[phi_ei] = s[phi_ei_t];
 
-	    ddt[phi_ee_t] = p[_minus_2_vel_A_ee] * s[phi_ee_t] + p[_vel2_A_ee2] * (p[N_alpha_ee] * s_e(s[h_e], p) - s[phi_ee]) + _1_5_vel2_laplacian_phi_ee;
-	    ddt[phi_ei_t] = p[_minus_2_vel_A_ei] * s[phi_ei_t] + p[_vel2_A_ei2] * (p[N_alpha_ei] * s_e(s[h_e], p) - s[phi_ei]) + _1_5_vel2_laplacian_phi_ei;
+	    ddt[i_ee] = s[i_ee_t];
+		ddt[i_ei] = s[i_ei_t];
+		ddt[i_ie] = s[i_ie_t];
+		ddt[i_ii] = s[i_ii_t];
 	}
 
 	__device__
