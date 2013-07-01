@@ -13,11 +13,11 @@
 #include "params/Params.cuh"
 
 
-const int REPORT_STEPS = 2000;
-const int RENDER_STEPS = 2000;
+const int REPORT_STEPS = 200;
+const int RENDER_STEPS = 200;
 const int MESH_SIZE = 10;
 const double T_SIM = 20;
-const double DELTA_T = 0.0000002;
+const double DELTA_T = 0.000002;
 const double DELTA = 0.1; //make smaller for tighter mesh
 const double RANDOMISE_FRACTION = 0.001;
 
