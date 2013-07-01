@@ -244,160 +244,6 @@ class LileyWithDifferingV(LileyBase):
 
         LileyBase.__init__(self, params = params, ics = ics, name = name, equations = equations, points = points, odeSystem = odeSystem, timescale = timescale)
 
-class LileyWithBurst(LileyBase):
-    h_e_t='(1/tor_e) * (-(h_e - h_e_rest) + (Y_e_h_e(h_e) * i_ee) + (Y_i_h_e(h_e) * (i_ie)) + burst_e * slow_e)'
-    h_i_t='(1/tor_i) * (-(h_i - h_i_rest) + (Y_e_h_i(h_i) * i_ei) + (Y_i_h_i(h_i) * (i_ii)) + burst_i * slow_i)'
-
-    slow_e_t='(1/tor_slow) * (mu_slow_e * (h_e_rest - h_e) - nu_slow_e * slow_e)'
-    slow_i_t='(1/tor_slow) * (mu_slow_i * (h_i_rest - h_i) - nu_slow_i * slow_i)'
-
-
-    zeroIcs = { 'phi_ee' : 0, 'phi_ee_t' : 0, 'phi_ei' : 0, 'phi_ei_t' : 0, 'i_ee' : 0,
-                'i_ee_t' : 0, 'i_ei' : 0, 'i_ei_t' : 0, 'i_ie' : 0, 'i_ie_t' : 0,
-                'i_ii' : 0, 'i_ii_t' : 0, 'h_e' : 0, 'h_i' : 0, 'slow_e' : 0, 'slow_i' : 0 }
-
-    def __init__(self, params, ics = None, name="LileyWithBurst", equations = None, points = None, odeSystem = None):
-        if equations == None:
-            print "No eqns for " + name
-            equations = { 'phi_ee' : 'phi_ee_t', 'phi_ei' : 'phi_ei_t',
-                               'phi_ei_t' : LileyBase.phi_ei_tt, 'phi_ee_t' : LileyBase.phi_ee_tt,
-                               'i_ee' : 'i_ee_t', 'i_ei' : 'i_ei_t', 'i_ie' : 'i_ie_t', 'i_ii' : 'i_ii_t',
-                               'i_ee_t' : LileyBase.i_ee_tt, 'i_ei_t' : LileyBase.i_ei_tt, 'i_ie_t' : LileyBase.i_ie_tt, 'i_ii_t' : LileyBase.i_ii_tt,
-                               'h_e' : LileyWithBurst.h_e_t, 'h_i' : LileyWithBurst.h_i_t, 'slow_e' : LileyWithBurst.slow_e_t, 'slow_i' : LileyWithBurst.slow_i_t }
-        else:
-            equations = equations
-
-        if ics == None:
-            ics = LileyWithBurst.zeroIcs
-            ics['h_e'] = params['h_e_rest']
-            ics['h_i'] = params['h_i_rest']
-            print "ICS.."
-            print ics
-
-        LileyBase.__init__(self, params = params, ics = ics, name = name, equations = equations, points = points, odeSystem = odeSystem)
-
-class LileyConstPhi(LileyBase):
-
-    zeroIcs = { 'i_ee' : 0, 'i_ee_t' : 0, 'i_ei' : 0, 'i_ei_t' : 0, 'i_ie' : 0, 'i_ie_t' : 0,
-                'i_ii' : 0, 'i_ii_t' : 0, 'h_e' : 0, 'h_i' : 0 }
-
-    i_ee_tt='-2*gamma_ee * i_ee_t - (gamma_ee * gamma_ee) * i_ee + T_ee * gamma_ee * exp(1) * (N_beta_ee * s_e(h_e) + phi_c + p_ee)'
-    i_ei_tt='-2*gamma_ei * i_ei_t - (gamma_ei * gamma_ei) * i_ei + T_ei * gamma_ei * exp(1) * (N_beta_ei * s_e(h_e) + phi_r * phi_c + p_ei)'
-    i_ie_tt='-2*gamma_ie * i_ie_t - (gamma_ie * gamma_ie) * i_ie + T_ie * gamma_ie * exp(1) * (N_beta_ie * s_i(h_i) + phi_ie + p_ie)'
-    i_ii_tt='-2*gamma_ii * i_ii_t - (gamma_ii * gamma_ii) * i_ii + T_ii * gamma_ii * exp(1) * (N_beta_ii * s_i(h_i) + phi_ii + p_ii)'
-
-    def __init__(self, params, ics = None, name="LileyConstPhi", equations = None, points = None, odeSystem = None, timescale = "s"):
-        if equations == None:
-            print "No eqns for " + name
-            equations = { 'i_ee' : 'i_ee_t', 'i_ei' : 'i_ei_t', 'i_ie' : 'i_ie_t', 'i_ii' : 'i_ii_t',
-                          'i_ee_t' : LileyConstPhi.i_ee_tt, 'i_ei_t' : LileyConstPhi.i_ei_tt, 'i_ie_t' : LileyConstPhi.i_ie_tt, 'i_ii_t' : LileyConstPhi.i_ii_tt,
-                          'h_e' : LileyBase.h_e_t, 'h_i' : LileyBase.h_i_t }
-        else:
-            equations = equations
-
-        if ics == None:
-            ics = LileyConstPhi.zeroIcs
-            ics['h_e'] = params['h_e_rest']
-            ics['h_i'] = params['h_i_rest']
-
-        LileyBase.__init__(self, params = params, ics = ics, name = name, equations = equations, points = points, odeSystem = odeSystem, timescale = timescale)
-
-class LileySigmoidBurst(LileyBase):
-    slow_e_t='-(1/tor_slow) * (g_e * s_e(h_e) + slow_e)'
-    slow_i_t='-(1/tor_slow) * (g_i * s_i(h_i) + slow_i)'
-
-    i_ee_tt='-2*gamma_ee * i_ee_t - (gamma_ee * gamma_ee) * i_ee + T_ee * gamma_ee * exp(1) * (N_beta_ee * s_e(h_e) + phi_ee + p_ee)'
-    i_ei_tt='-2*gamma_ei * i_ei_t - (gamma_ei * gamma_ei) * i_ei + T_ei * gamma_ei * exp(1) * (N_beta_ei * s_e(h_e) + phi_ei + p_ei)'
-    i_ie_tt='-2*gamma_ie * i_ie_t - (gamma_ie * gamma_ie) * i_ie + T_ie * gamma_ie * exp(1) * (N_beta_ie * s_i(h_i) + phi_ie + p_ie)'
-    i_ii_tt='-2*gamma_ii * i_ii_t - (gamma_ii * gamma_ii) * i_ii + T_ii * gamma_ii * exp(1) * (N_beta_ii * s_i(h_i) + phi_ii + p_ii)'
-
-
-    zeroIcs = { 'phi_ee' : 0, 'phi_ee_t' : 0, 'phi_ei' : 0, 'phi_ei_t' : 0, 'i_ee' : 0,
-                'i_ee_t' : 0, 'i_ei' : 0, 'i_ei_t' : 0, 'i_ie' : 0, 'i_ie_t' : 0,
-                'i_ii' : 0, 'i_ii_t' : 0, 'h_e' : 0, 'h_i' : 0, 'slow_e' : 0, 'slow_i' : 0 }
-
-    def __init__(self, params, ics = None, name="LileySigmoidBurst", equations = None, points = None, odeSystem = None):
-        if equations == None:
-            print "No eqns for " + name
-            equations = { 'phi_ee' : 'phi_ee_t', 'phi_ei' : 'phi_ei_t',
-                               'phi_ei_t' : LileyBase.phi_ei_tt, 'phi_ee_t' : LileyBase.phi_ee_tt,
-                               'i_ee' : 'i_ee_t', 'i_ei' : 'i_ei_t', 'i_ie' : 'i_ie_t', 'i_ii' : 'i_ii_t',
-                               'i_ee_t' : LileyBase.i_ee_tt, 'i_ei_t' : LileyBase.i_ei_tt, 'i_ie_t' : LileyBase.i_ie_tt, 'i_ii_t' : LileyBase.i_ii_tt,
-                               'h_e' : LileyWithBurst.h_e_t, 'h_i' : LileyWithBurst.h_i_t, 'slow_e' : LileySigmoidBurst.slow_e_t, 'slow_i' : LileySigmoidBurst.slow_i_t }
-        else:
-            equations = equations
-
-        if ics == None:
-            ics = LileyWithBurst.zeroIcs
-            ics['h_e'] = params['h_e_rest']
-            ics['h_i'] = params['h_i_rest']
-            print "ICS.."
-            print ics
-
-        LileyBase.__init__(self, params = params, ics = ics, name = name, equations = equations, points = points, odeSystem = odeSystem)
-
-class LileySigmoidBurstThalamic(LileyBase):
-    slow_t='(1/tor_slow) * (g * s_e(h_e) - slow)'
-
-    i_ee_tt='-2*gamma_ee * i_ee_t - (gamma_ee * gamma_ee) * i_ee + T_ee * gamma_ee * exp(1) * (N_beta_ee * s_e(h_e) + phi_ee + p_ee + thal_e * slow)'
-    i_ei_tt='-2*gamma_ei * i_ei_t - (gamma_ei * gamma_ei) * i_ei + T_ei * gamma_ei * exp(1) * (N_beta_ei * s_e(h_e) + phi_ei + p_ei + thal_i * slow)'
-
-
-    zeroIcs = { 'phi_ee' : 0, 'phi_ee_t' : 0, 'phi_ei' : 0, 'phi_ei_t' : 0, 'i_ee' : 0,
-                'i_ee_t' : 0, 'i_ei' : 0, 'i_ei_t' : 0, 'i_ie' : 0, 'i_ie_t' : 0,
-                'i_ii' : 0, 'i_ii_t' : 0, 'h_e' : 0, 'h_i' : 0, 'slow' : 0 }
-
-    def __init__(self, params, ics = None, name="LileySigmoidBurstThalamic", equations = None, points = None, odeSystem = None, timescale = "s"):
-        if equations == None:
-            print "No eqns for " + name
-            equations = { 'phi_ee' : 'phi_ee_t', 'phi_ei' : 'phi_ei_t',
-                               'phi_ei_t' : LileyBase.phi_ei_tt, 'phi_ee_t' : LileyBase.phi_ee_tt,
-                               'i_ee' : 'i_ee_t', 'i_ei' : 'i_ei_t', 'i_ie' : 'i_ie_t', 'i_ii' : 'i_ii_t',
-                               'i_ee_t' : LileySigmoidBurstThalamic.i_ee_tt, 'i_ei_t' : LileySigmoidBurstThalamic.i_ei_tt, 'i_ie_t' : LileyBase.i_ie_tt, 'i_ii_t' : LileyBase.i_ii_tt,
-                               'h_e' : LileyBase.h_e_t, 'h_i' : LileyBase.h_i_t, 'slow' : LileySigmoidBurstThalamic.slow_t }
-        else:
-            equations = equations
-
-        if ics == None:
-            ics = LileySigmoidBurstThalamic.zeroIcs
-            ics['h_e'] = params['h_e_rest']
-            ics['h_i'] = params['h_i_rest']
-            print "ICS.."
-            print ics
-
-        LileyBase.__init__(self, params = params, ics = ics, name = name, equations = equations, points = points, odeSystem = odeSystem, timescale = timescale)
-
-class LileySigmoidBurstPSP(LileyBase):
-    slow_t='(1/tor_slow) * (g * s_e(h_e) - slow)'
-
-    i_ee_tt='-2*gamma_ee * i_ee_t - (gamma_ee * gamma_ee) * i_ee + (T_ee - gamma_slow_ee * slow) * gamma_ee * exp(1) * (N_beta_ee * s_e(h_e) + phi_ee + p_ee)'
-    i_ei_tt='-2*gamma_ei * i_ei_t - (gamma_ei * gamma_ei) * i_ei + (T_ei - gamma_slow_ei * slow) * gamma_ei * exp(1) * (N_beta_ei * s_e(h_e) + phi_ei + p_ei)'
-
-
-    zeroIcs = { 'phi_ee' : 0, 'phi_ee_t' : 0, 'phi_ei' : 0, 'phi_ei_t' : 0, 'i_ee' : 0,
-                'i_ee_t' : 0, 'i_ei' : 0, 'i_ei_t' : 0, 'i_ie' : 0, 'i_ie_t' : 0,
-                'i_ii' : 0, 'i_ii_t' : 0, 'h_e' : 0, 'h_i' : 0, 'slow' : 0 }
-
-    def __init__(self, params, ics = None, name="LileySigmoidBurstPSP", equations = None, points = None, odeSystem = None, timescale = "s"):
-        if equations == None:
-            print "No eqns for " + name
-            equations = { 'phi_ee' : 'phi_ee_t', 'phi_ei' : 'phi_ei_t',
-                               'phi_ei_t' : LileyBase.phi_ei_tt, 'phi_ee_t' : LileyBase.phi_ee_tt,
-                               'i_ee' : 'i_ee_t', 'i_ei' : 'i_ei_t', 'i_ie' : 'i_ie_t', 'i_ii' : 'i_ii_t',
-                               'i_ee_t' : LileySigmoidBurstPSP.i_ee_tt, 'i_ei_t' : LileySigmoidBurstPSP.i_ei_tt, 'i_ie_t' : LileyBase.i_ie_tt, 'i_ii_t' : LileyBase.i_ii_tt,
-                               'h_e' : LileyBase.h_e_t, 'h_i' : LileyBase.h_i_t, 'slow' : LileySigmoidBurstPSP.slow_t }
-        else:
-            equations = equations
-
-        if ics == None:
-            ics = LileySigmoidBurstPSP.zeroIcs
-            ics['h_e'] = params['h_e_rest']
-            ics['h_i'] = params['h_i_rest']
-            print "ICS.."
-            print ics
-
-        LileyBase.__init__(self, params = params, ics = ics, name = name, equations = equations, points = points, odeSystem = odeSystem, timescale = timescale)
-
 class LileySigmoidBurstPSPRes(LileyBase):
     T_ee_aug_t='(T_ee - T_ee_aug - T_ee_aug * g_ee * s_e(h_e))/tor_slow_ee'
     T_ei_aug_t='(T_ei - T_ei_aug - T_ei_aug * g_ei * s_e(h_e))/tor_slow_ei'
@@ -432,28 +278,42 @@ class LileySigmoidBurstPSPRes(LileyBase):
 
         LileyBase.__init__(self, params = params, ics = ics, name = name, equations = equations, points = points, odeSystem = odeSystem, timescale = timescale)
 
-class LileySigmoidBurstThalamicConst(LileyBase):
-    i_ee_tt='-2*gamma_ee * i_ee_t - (gamma_ee * gamma_ee) * i_ee + T_ee * gamma_ee * exp(1) * (N_beta_ee * s_e(h_e) + phi_ee + p_ee + thal_e * slow)'
-    i_ei_tt='-2*gamma_ei * i_ei_t - (gamma_ei * gamma_ei) * i_ei + T_ei * gamma_ei * exp(1) * (N_beta_ei * s_e(h_e) + phi_ei + p_ei + thal_i * slow)'
+class SIRU2(LileyBase):
+    C_i_t = "mus_i * ((1 / (1 + exp(k_i * (h_i - theta_i)) ))  - C_i)"
+    C_e_t = "mus_e * ((1 / (1 + exp(k_e * (h_e - theta_e)) ))  - C_e)"
 
+    i_ee_tt='-(gamma_ee + gamma_ee_tilde) * i_ee_t - (gamma_ee * gamma_ee_tilde) * i_ee + T_ee * C_e * gamma_ee * exp(1) * (N_beta_ee * s_e(h_e) + phi_ee + p_ee)'
+    i_ei_tt='-(gamma_ei + gamma_ee_tilde) * i_ei_t - (gamma_ei * gamma_ei_tilde) * i_ei + T_ei * C_e * gamma_ei * exp(1) * (N_beta_ei * s_e(h_e) + phi_ei + p_ei)'
+    i_ie_tt='-(gamma_ie + gamma_ie_tilde) * i_ie_t - (gamma_ie * gamma_ie_tilde) * i_ie + T_ie * C_i * gamma_ie * exp(1) * (N_beta_ie * s_i(h_i) + phi_ie + p_ie)'
+    i_ii_tt='-(gamma_ii + gamma_ii_tilde) * i_ii_t - (gamma_ii * gamma_ii_tilde) * i_ii + T_ii * C_i * gamma_ii * exp(1) * (N_beta_ii * s_i(h_i) + phi_ii + p_ii)'
 
     zeroIcs = { 'phi_ee' : 0, 'phi_ee_t' : 0, 'phi_ei' : 0, 'phi_ei_t' : 0, 'i_ee' : 0,
                 'i_ee_t' : 0, 'i_ei' : 0, 'i_ei_t' : 0, 'i_ie' : 0, 'i_ie_t' : 0,
-                'i_ii' : 0, 'i_ii_t' : 0, 'h_e' : 0, 'h_i' : 0}
+                'i_ii' : 0, 'i_ii_t' : 0, 'h_e' : 0, 'h_i' : 0, 'C_e' : 0, 'C_i' : 0}
 
-    def __init__(self, params, ics = None, name="LileySigmoidBurstThalamicConst", equations = None, points = None, odeSystem = None, timescale = "s"):
+    def __init__(self, params, ics = None, name="SIRU2", equations = None, points = None, odeSystem = None, timescale = "s"):
         if equations == None:
             print "No eqns for " + name
             equations = { 'phi_ee' : 'phi_ee_t', 'phi_ei' : 'phi_ei_t',
                           'phi_ei_t' : LileyBase.phi_ei_tt, 'phi_ee_t' : LileyBase.phi_ee_tt,
-                          'i_ee' : 'i_ee_t', 'i_ei' : 'i_ei_t', 'i_ie' : 'i_ie_t', 'i_ii' : 'i_ii_t',
-                          'i_ee_t' : LileySigmoidBurstThalamicConst.i_ee_tt, 'i_ei_t' : LileySigmoidBurstThalamicConst.i_ei_tt, 'i_ie_t' : LileyBase.i_ie_tt, 'i_ii_t' : LileyBase.i_ii_tt,
-                          'h_e' : LileyBase.h_e_t, 'h_i' : LileyBase.h_i_t}
+                          'i_ee' : 'i_ee_t',
+                          'i_ei' : 'i_ei_t',
+                          'i_ie' : 'i_ie_t',
+                          'i_ii' : 'i_ii_t',
+                          'i_ee_t' : SIRU2.i_ee_tt,
+                          'i_ei_t' : SIRU2.i_ei_tt,
+                          'i_ie_t' : SIRU2.i_ie_tt,
+                          'i_ii_t' : SIRU2.i_ii_tt,
+                          'h_e' : LileyBase.h_e_t,
+                          'h_i' : LileyBase.h_i_t,
+                          'C_i' : SIRU2.C_i_t,
+                          'C_e' : SIRU2.C_e_t}
         else:
             equations = equations
 
+        params = self.prepareParams(params)
         if ics == None:
-            ics = LileySigmoidBurstThalamicConst.zeroIcs
+            ics = SIRU2.zeroIcs
             ics['h_e'] = params['h_e_rest']
             ics['h_i'] = params['h_i_rest']
             print "ICS.."
@@ -461,167 +321,22 @@ class LileySigmoidBurstThalamicConst(LileyBase):
 
         LileyBase.__init__(self, params = params, ics = ics, name = name, equations = equations, points = points, odeSystem = odeSystem, timescale = timescale)
 
+    def prepareParams(self, params):
+        prepared = params.copy()
 
-class LileyWithBurstSimplifiedParamSpace(LileyBase):
-    i_ee_tt='-2*gamma_e * i_ee_t - (gamma_e * gamma_e) * i_ee + T_e * gamma_e * exp(1) * (N_beta_ee * s_e(h_e) + phi_ee + p_ee)'
-    i_ei_tt='-2*gamma_e * i_ei_t - (gamma_e * gamma_e) * i_ei + T_e * gamma_e * exp(1) * (N_beta_ei * s_e(h_e) + phi_ei + p_ei)'
-    i_ie_tt='-2*gamma_i * i_ie_t - (gamma_i * gamma_i) * i_ie + T_i * gamma_i * exp(1) * (N_beta_ie * s_i(h_i) + phi_ie + p_ie)'
-    i_ii_tt='-2*gamma_i * i_ii_t - (gamma_i * gamma_i) * i_ii + T_i * gamma_i * exp(1) * (N_beta_ii * s_i(h_i) + phi_ii + p_ii)'
+        for dim in ['ee', 'ei', 'ie', 'ii']:
+            param = 'gamma_' + dim
+            paramTilde = param + '_tilde'
+            rate = 'e_' + dim
 
+            orig = params[param]
+            if params['e_' + dim] > 0:
+                prepared[paramTilde] = orig * params[rate] / (exp(params[rate]) - 1)
+                prepared[param] = prepared[paramTilde] * exp(params[rate]);
+            else:
+                prepared[paramTilde] = orig
 
-    zeroIcs = { 'phi_ee' : 0, 'phi_ee_t' : 0, 'phi_ei' : 0, 'phi_ei_t' : 0, 'i_ee' : 0,
-                'i_ee_t' : 0, 'i_ei' : 0, 'i_ei_t' : 0, 'i_ie' : 0, 'i_ie_t' : 0,
-                'i_ii' : 0, 'i_ii_t' : 0, 'h_e' : 0, 'h_i' : 0, 'slow_e' : 0, 'slow_i' : 0 }
-
-    def __init__(self, params, ics = None, name="LileyWithBurstSimplifiedParamSpace", equations = None, points = None, odeSystem = None):
-        if equations == None:
-            print "No eqns for " + name
-            equations = { 'phi_ee' : 'phi_ee_t', 'phi_ei' : 'phi_ei_t',
-                          'phi_ei_t' : LileyBase.phi_ei_tt, 'phi_ee_t' : LileyBase.phi_ee_tt,
-                          'i_ee' : 'i_ee_t', 'i_ei' : 'i_ei_t', 'i_ie' : 'i_ie_t', 'i_ii' : 'i_ii_t',
-                          'i_ee_t' : LileyWithBurstSimplifiedParamSpace.i_ee_tt, 'i_ei_t' : LileyWithBurstSimplifiedParamSpace.i_ei_tt,
-                          'i_ie_t' : LileyWithBurstSimplifiedParamSpace.i_ie_tt, 'i_ii_t' : LileyWithBurstSimplifiedParamSpace.i_ii_tt,
-                          'h_e' : LileyWithBurst.h_e_t, 'h_i' : LileyWithBurst.h_i_t,
-                          'slow_e' : LileyWithBurst.slow_e_t, 'slow_i' : LileyWithBurst.slow_i_t }
-        else:
-            equations = equations
-
-        if ics == None:
-            ics = LileyWithBurst.zeroIcs
-        LileyBase.__init__(self, params = params, ics = ics, name = name, equations = equations, points = points, odeSystem = odeSystem)
-
-class LileyWithSingle1stOrderSlow(LileyBase):
-    h_e_t='(1/tor_e) * (-(h_e - h_e_rest) + (Y_e_h_e(h_e) * i_ee) + (Y_i_h_e(h_e) * (i_ie)) + weight_slow_e * slow)'
-    h_i_t='(1/tor_i) * (-(h_i - h_i_rest) + (Y_e_h_i(h_i) * i_ei) + (Y_i_h_i(h_i) * (i_ii)) + weight_slow_i * slow)'
-
-    slow_t='-(1/tor_slow) * (g * s_e(h_e) + slow_e)'
-
-    zeroIcs = { 'phi_ee' : 0, 'phi_ee_t' : 0, 'phi_ei' : 0, 'phi_ei_t' : 0, 'i_ee' : 0,
-                'i_ee_t' : 0, 'i_ei' : 0, 'i_ei_t' : 0, 'i_ie' : 0, 'i_ie_t' : 0,
-                'i_ii' : 0, 'i_ii_t' : 0, 'h_e' : 0, 'h_i' : 0, 'slow' : 0 }
-
-    def __init__(self, params, ics = None, name="LileyWithSingle1stOrderSlow", equations = None, points = None, odeSystem = None):
-        if equations == None:
-            print "No eqns for " + name
-            equations = { 'phi_ee' : 'phi_ee_t', 'phi_ei' : 'phi_ei_t',
-                               'phi_ei_t' : LileyBase.phi_ei_tt, 'phi_ee_t' : LileyBase.phi_ee_tt,
-                               'i_ee' : 'i_ee_t', 'i_ei' : 'i_ei_t', 'i_ie' : 'i_ie_t', 'i_ii' : 'i_ii_t',
-                               'i_ee_t' : LileyBase.i_ee_tt, 'i_ei_t' : LileyBase.i_ei_tt, 'i_ie_t' : LileyBase.i_ie_tt, 'i_ii_t' : LileyBase.i_ii_tt,
-                               'h_e' : LileyWithSingle1stOrderSlow.h_e_t, 'h_i' : LileyWithSingle1stOrderSlow.h_i_t,
-                               'slow' : LileyWithSingle1stOrderSlow.slow_t }
-        else:
-            equations = equations
-
-        if ics == None:
-            ics = LileyWithSingle1stOrderSlow.zeroIcs
-
-        LileyBase.__init__(self, params = params, ics = ics, name = name, equations = equations, points = points, odeSystem = odeSystem)
-
-class LileyWithSigmoidWithAugHeRest(LileyBase):
-    h_e_t='(1/tor_e) * (-(h_e - h_e_r(slow)) + (Y_e_h_e(h_e, slow) * i_ee) + (Y_i_h_e(h_e, slow) * (i_ie)))'
-    h_i_t='(1/tor_i) * (-(h_i - h_i_r(slow)) + (Y_e_h_i(h_i, slow) * i_ei) + (Y_i_h_i(h_i, slow) * (i_ii)))'
-
-    slow_t='-(1/tor_slow) * (g * s_e(h_e) + slow)'
-
-    zeroIcs = { 'phi_ee' : 0, 'phi_ee_t' : 0, 'phi_ei' : 0, 'phi_ei_t' : 0, 'i_ee' : 0,
-                'i_ee_t' : 0, 'i_ei' : 0, 'i_ei_t' : 0, 'i_ie' : 0, 'i_ie_t' : 0,
-                'i_ii' : 0, 'i_ii_t' : 0, 'h_e' : 0, 'h_i' : 0, 'slow' : 0 }
-
-    h_e_r = 'h_e_rest + weight_slow_e * slow'
-    h_i_r = 'h_i_rest + weight_slow_i * slow'
-
-    Y_e_h_e = '(h_ee_eq - h_e) / abs(h_ee_eq - h_e_r(slow))'
-    Y_e_h_i = '(h_ei_eq - h_i) / abs(h_ei_eq - h_i_r(slow))'
-    Y_i_h_e = '(h_ie_eq - h_e) / abs(h_ie_eq - h_e_r(slow))'
-    Y_i_h_i = '(h_ii_eq - h_i) / abs(h_ii_eq - h_i_r(slow))'
-
-
-    def __init__(self, params, ics = None, name="LileyWithSigmoidWithAugHeRest", equations = None, points = None, odeSystem = None, timescale = "s"):
-        if equations == None:
-            equations = { 'phi_ee' : 'phi_ee_t', 'phi_ei' : 'phi_ei_t',
-                          'phi_ei_t' : LileyBase.phi_ei_tt, 'phi_ee_t' : LileyBase.phi_ee_tt,
-                          'i_ee' : 'i_ee_t', 'i_ei' : 'i_ei_t', 'i_ie' : 'i_ie_t', 'i_ii' : 'i_ii_t',
-                          'i_ee_t' : LileyBase.i_ee_tt, 'i_ei_t' : LileyBase.i_ei_tt, 'i_ie_t' : LileyBase.i_ie_tt, 'i_ii_t' : LileyBase.i_ii_tt,
-                          'h_e' : LileyWithSigmoidWithAugHeRest.h_e_t, 'h_i' : LileyWithSigmoidWithAugHeRest.h_i_t,
-                          'slow' : LileyWithSigmoidWithAugHeRest.slow_t }
-        else:
-            equations = equations
-
-        auxFunctions = { 'Y_e_h_e' : (['h_e', 'slow'], LileyWithSigmoidWithAugHeRest.Y_e_h_e),
-                         'Y_e_h_i' : (['h_i', 'slow'], LileyWithSigmoidWithAugHeRest.Y_e_h_i),
-                         'Y_i_h_e' : (['h_e', 'slow'], LileyWithSigmoidWithAugHeRest.Y_i_h_e),
-                         'Y_i_h_i' : (['h_i', 'slow'], LileyWithSigmoidWithAugHeRest.Y_i_h_i),
-                         's_e' : (['h'], LileyBase.s_e),
-                         's_i' : (['h'], LileyBase.s_i),
-                         'h_e_r' : (['slow'], LileyWithSigmoidWithAugHeRest.h_e_r),
-                         'h_i_r' : (['slow'], LileyWithSigmoidWithAugHeRest.h_i_r)}
-
-        if ics == None:
-            ics = LileyWithSigmoidWithAugHeRest.zeroIcs
-        LileyBase.__init__(self, params = params, ics = ics, name = name, equations = equations, points = points, odeSystem = odeSystem, timescale = timescale, auxFunctions = auxFunctions)
-
-class LileyWithSigmoidSingleSlow(LileyBase):
-    h_e_t='(1/tor_e) * (-(h_e - h_e_rest) + (Y_e_h_e(h_e) * i_ee) + (Y_i_h_e(h_e) * (i_ie)) + weight_slow_e * slow)'
-    h_i_t='(1/tor_i) * (-(h_i - h_i_rest) + (Y_e_h_i(h_i) * i_ei) + (Y_i_h_i(h_i) * (i_ii)) + weight_slow_i * slow)'
-
-    slow_t='-(1/tor_slow) * (g * s_e(h_e) + slow)'
-
-    zeroIcs = { 'phi_ee' : 0, 'phi_ee_t' : 0, 'phi_ei' : 0, 'phi_ei_t' : 0, 'i_ee' : 0,
-                'i_ee_t' : 0, 'i_ei' : 0, 'i_ei_t' : 0, 'i_ie' : 0, 'i_ie_t' : 0,
-                'i_ii' : 0, 'i_ii_t' : 0, 'h_e' : 0, 'h_i' : 0, 'slow' : 0 }
-
-    def __init__(self, params, ics = None, name="LileyWithSigmoidSingleSlow", equations = None, points = None, odeSystem = None, timescale = "s"):
-        if equations == None:
-            print "No eqns for " + name
-            equations = { 'phi_ee' : 'phi_ee_t', 'phi_ei' : 'phi_ei_t',
-                               'phi_ei_t' : LileyBase.phi_ei_tt, 'phi_ee_t' : LileyBase.phi_ee_tt,
-                               'i_ee' : 'i_ee_t', 'i_ei' : 'i_ei_t', 'i_ie' : 'i_ie_t', 'i_ii' : 'i_ii_t',
-                               'i_ee_t' : LileyBase.i_ee_tt, 'i_ei_t' : LileyBase.i_ei_tt, 'i_ie_t' : LileyBase.i_ie_tt, 'i_ii_t' : LileyBase.i_ii_tt,
-                               'h_e' : LileyWithSigmoidSingleSlow.h_e_t, 'h_i' : LileyWithSigmoidSingleSlow.h_i_t,
-                               'slow' : LileyWithSigmoidSingleSlow.slow_t }
-        else:
-            equations = equations
-
-        if ics == None:
-            ics = LileyWithSigmoidSingleSlow.zeroIcs
-            #ics['h_e'] = params['h_e_rest']
-            #ics['h_i'] = params['h_i_rest']
-        LileyBase.__init__(self, params = params, ics = ics, name = name, equations = equations, points = points, odeSystem = odeSystem, timescale = timescale)
-
-class LileyWithSingle1stOrderSlowSimplifiedParamSpace(LileyBase):
-    h_e_t='(1/tor_e) * (-(h_e - h_e_rest) + (Y_e_h_e(h_e) * i_ee) + (Y_i_h_e(h_e) * (i_ie)) + weight_slow_e * slow)'
-    h_i_t='(1/tor_i) * (-(h_i - h_i_rest) + (Y_e_h_i(h_i) * i_ei) + (Y_i_h_i(h_i) * (i_ii)) + weight_slow_i * slow)'
-
-    i_ee_tt='-2*gamma_e * i_ee_t - (gamma_e * gamma_e) * i_ee + T_e * gamma_e * exp(1) * (N_beta_ee * s_e(h_e) + phi_ee + p_ee)'
-    i_ei_tt='-2*gamma_e * i_ei_t - (gamma_e * gamma_e) * i_ei + T_e * gamma_e * exp(1) * (N_beta_ei * s_e(h_e) + phi_ei + p_ei)'
-    i_ie_tt='-2*gamma_i * i_ie_t - (gamma_i * gamma_i) * i_ie + T_i * gamma_i * exp(1) * (N_beta_ie * s_i(h_i) + phi_ie + p_ie)'
-    i_ii_tt='-2*gamma_i * i_ii_t - (gamma_i * gamma_i) * i_ii + T_i * gamma_i * exp(1) * (N_beta_ii * s_i(h_i) + phi_ii + p_ii)'
-
-
-    slow_t='(1/tor_slow) * (mu_slow * (h_e_rest - h_e) - nu_slow * slow)'
-
-    zeroIcs = { 'phi_ee' : 0, 'phi_ee_t' : 0, 'phi_ei' : 0, 'phi_ei_t' : 0, 'i_ee' : 0,
-                'i_ee_t' : 0, 'i_ei' : 0, 'i_ei_t' : 0, 'i_ie' : 0, 'i_ie_t' : 0,
-                'i_ii' : 0, 'i_ii_t' : 0, 'h_e' : 0, 'h_i' : 0, 'slow' : 0 }
-
-    def __init__(self, params, ics = None, name="LileyWithSingle1stOrderSlowSimplifiedParamSpace", equations = None, points = None, odeSystem = None):
-        if equations == None:
-            print "No eqns for " + name
-            equations = { 'phi_ee' : 'phi_ee_t', 'phi_ei' : 'phi_ei_t',
-                               'phi_ei_t' : LileyBase.phi_ei_tt, 'phi_ee_t' : LileyBase.phi_ee_tt,
-                               'i_ee' : 'i_ee_t', 'i_ei' : 'i_ei_t', 'i_ie' : 'i_ie_t', 'i_ii' : 'i_ii_t',
-                               'i_ee_t' : LileyWithSingle1stOrderSlowSimplifiedParamSpace.i_ee_tt, 'i_ei_t' : LileyWithSingle1stOrderSlowSimplifiedParamSpace.i_ei_tt, 'i_ie_t' : LileyWithSingle1stOrderSlowSimplifiedParamSpace.i_ie_tt, 'i_ii_t' : LileyWithSingle1stOrderSlowSimplifiedParamSpace.i_ii_tt,
-                               'h_e' : LileyWithSingle1stOrderSlowSimplifiedParamSpace.h_e_t, 'h_i' : LileyWithSingle1stOrderSlowSimplifiedParamSpace.h_i_t,
-                               'slow' : LileyWithSingle1stOrderSlowSimplifiedParamSpace.slow_t }
-        else:
-            equations = equations
-
-        if ics == None:
-            ics = LileyWithSingle1stOrderSlowSimplifiedParamSpace.zeroIcs
-            ics['h_e'] = params['h_e_rest']
-            ics['h_i'] = params['h_i_rest']
-        LileyBase.__init__(self, params = params, ics = ics, name = name, equations = equations, points = points, odeSystem = odeSystem)
-
+        return prepared
 
 class Continuation:
     def __init__(self, odeSystem, cont, sol, name, displayVar, freeVar, point = None):
@@ -632,7 +347,6 @@ class Continuation:
         self.name = name
         self.freeVar = freeVar
         self.point = point
-        #self.odeSystem.cleanupMemory()
 
     def display(self, displayVar = None, additionalVar = None, fig = "1"):
         if displayVar == None:
@@ -642,7 +356,6 @@ class Continuation:
         else:
             coords = (self.freeVar, displayVar, additionalVar)
 
-        #figure(fig)
         self.cont[self.name].display(coords, stability = True, figure = fig)
         return self
 
@@ -730,7 +443,7 @@ class Continuation:
 
         PCargs.StepSize = 1e-3 * dirMod
         PCargs.MaxStepSize = 1e-2
-        PCargs.MinStepSize = 1e-8
+        PCargs.MinStepSize = 1e-12
         PCargs.LocBifPoints = 'all'
         PCargs.FuncTol = 1e-6
         PCargs.VarTol = 1e-6
