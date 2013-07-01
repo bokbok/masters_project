@@ -17,7 +17,7 @@ private:
 		   _1_5_vel2_laplacian_phi_ei;
 
 public:
-	static const int NUM_DIMENSIONS = 18;
+	static const int NUM_DIMENSIONS = 16;
 	enum Dimensions
 	{
 		h_e,
