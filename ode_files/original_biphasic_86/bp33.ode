@@ -1,0 +1,119 @@
+# Mathew's XPP Implementation of the set of ODEs the equations David has derived as part of his model of electrocortical dynamics.
+# This is now the implementation of the corrected set of equations.
+#
+# Mathew P Dafilis 1997
+#
+# Initial Implementation commenced Tuesday 10 June 1997.
+#
+# Equations modified to now include modifications for voltage dependent NMDA receptor function
+# using a form of excitatory channel kinetics as outlined in Bojak and Liley (2005) and 
+# parametrized according to Hestrin et al (1990) (as cited in Kandel, Schwartz and Jessel (2000) )
+#
+#
+# User defined functions - enlin and inlin
+#
+t1e(x)=1+exp(-ve*(x-te))
+enlin(x)=(emax*(1/(t1e(x))))
+t1i(x)=1+exp(-vi*(x-ti))
+inlin(x)=(imax*(1/(t1i(x))))
+#
+# The (corrected) ODEs
+#
+he'=(1/taue)*( (her-he) + (((heqee-he)*iee)/abs(heqee-her)) + (((heqie-he)*iie)/abs(heqie-her)))
+hi'=(1/taui)*( (hir-hi) + (((heqei-hi)*iei)/abs(heqei-hir)) + (((heqii-hi)*iii)/abs(heqii-hir)))
+iee'=ieeaux
+ieeaux'=(1-cce)*gee*aee*exp(1)*(nbee*enlin(he) + pe*pee + phiee) - (gee^2)*iee - 2*gee*ieeaux
+iie'=iieaux
+iieaux'=(1-cci)*gie*aie*exp(1)*(nbie*inlin(hi) + pie) - (gie^2)*iie -2*gie*iieaux
+iei'=ieiaux
+ieiaux'=(1-cce)*gei*aei*exp(1)*(nbei*enlin(he) + pe*pei + phiei) - (gei^2)*iei - 2*gei*ieiaux
+iii'=iiiaux
+iiiaux'=(1-cci)*gii*aii*exp(1)*(nbii*inlin(hi) + pii) - (gii^2)*iii -2*gii*iiiaux
+#
+# Augment with time dependent equations for long range cortico-cortical fibres
+#
+phiee'=phieeaux
+phieeaux'=naee*(lambdaee^2)*(vbar^2)*enlin(he)-(2*vbar*lambdaee*phieeaux)-(vbar^2)*(lambdaee^2)*phiee
+phiei'=phieiaux
+phieiaux'=naei*(lambdaei^2)*(vbar^2)*enlin(he)-(2*vbar*lambdaei*phieiaux)-(vbar^2)*(lambdaei^2)*phiei
+#
+# Auxilliary variables
+aux efr=1000*enlin(he)
+aux ifr=1000*inlin(hi)
+#
+# Parameters (all in millivolts, milliseconds, centimetres)
+# (from column 3 table V Bojak and Liley (2005)
+#
+param cci=0
+param cce=0
+param pe=1.0
+param her=-74.6153
+param hir=-69.5461
+param heqee=5.2203
+param heqei=1.1959
+param heqie=-76.8827
+param heqii=-77.6205
+param naee=2394.6285
+param naei=2262.3905
+param nbee=3725.1995
+param nbei=4193.8079
+param nbie=682.0965
+param nbii=166.9257
+param lambdaee=0.5617
+param lambdaei=0.5617
+param vbar=0.6954
+param aee=0.1087
+param aei=0.7242
+param aie=1.6183
+param aii=1.8595
+param gee=0.1488
+param gei=0.7548
+param gie=0.4134
+param gii=0.0834
+param taue=58.6110
+param taui=117.6970
+param te=-52.0875
+param ti=-43.7149
+param rabs=0.0000
+param emax=0.4865
+param imax=0.1521
+param pee=1.4561
+param pei=0.3535
+param pie=0.0000
+param pii=0.0000
+param se=4.7366
+param si=4.8045
+# some additional definitions
+ve=sqrt(2)/se
+vi=sqrt(2)/si
+#
+# Initial conditions
+#
+he(0)=-70.3
+hi(0)=-60.5
+iee(0)=0,ieeaux(0)=0
+iie(0)=0,iieaux(0)=0
+iei(0)=0,ieiaux(0)=0
+iii(0)=0,iiiaux(0)=0
+#
+phiee(0)=0,phieeaux(0)=0
+phiei(0)=0,phieiaux(0)=0
+#
+#
+@ MAXSTOR=1000000
+@ BACK=White
+#
+# Additional options - added Tuesday 19 August 1997
+#
+# Integrgee for 10 seconds (i.e 10000 milliseconds)
+#
+@ TOTAL=10000, DT=0.1, BOUND=1000000
+@ XP=T, YP=HE
+@ XLO=0, YLO=-100, XHI=10000, YHI=0
+#
+# AUTO parameters
+@ NMAX=20000, PARMIN=0, PARMAX=1.0, NORMMIN=-1e8, NORMMAX=1e8
+@ AUTOXMIN=0, AUTOXMAX=1.0, AUTOYMIN=-100, AUTOYMAX=-20
+#
+# Done.
+done

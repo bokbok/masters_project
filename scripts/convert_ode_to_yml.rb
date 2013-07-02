@@ -1,6 +1,7 @@
 require "yaml"
 
 class Convert
+  IGNORE = %w{cci cce}
   TRANSLATIONS = {
       'her' => 'h_e_rest',
       'hir' => 'h_i_rest',
@@ -60,22 +61,18 @@ class Convert
 
   def extract_params(file)
     params = {'r_abs' => 0,
-              'tor_slow' => 1,
-              'g' => 0,
-              'burst_i' => 0,
-              'burst_e' => 0,
               'phi_ii' => 0,
               'phi_ie' => 0}
 
     File.open(file) do |f|
       f.readlines.each do |line|
         if line =~ /^\s*param\s*(.*)=(-{0,1}\d+\.{0,1}\d*).*$/
-          params[TRANSLATIONS[$1] || $1] = $2.to_f
+          params[TRANSLATIONS[$1] || $1] = $2.to_f unless IGNORE.include?($1)
         end
       end
     end
 
-    adjust_params(params, file)
+    adjust_params(params, file) if @field
     params
   end
 
