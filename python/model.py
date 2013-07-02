@@ -2,6 +2,8 @@ from PyDSTool import *
 from pylab import plot, show, figure, draw, legend, xlabel, ylabel, ylim
 from mpl_toolkits.mplot3d import Axes3D
 
+from numpy import exp;
+
 from analysis import FFT
 
 class LileyBase(object):
@@ -24,6 +26,9 @@ class LileyBase(object):
     Y_e_h_i = '(h_ei_eq - h_i) / abs(h_ei_eq - h_i_rest)'
     Y_i_h_e = '(h_ie_eq - h_e) / abs(h_ie_eq - h_e_rest)'
     Y_i_h_i = '(h_ii_eq - h_i) / abs(h_ii_eq - h_i_rest)'
+
+    gamma = 'gamma_o * e_lk / (exp(e_lk) - 1)'
+    gamma_tilde = '_gamma(gamma_o, e_lk) * exp(e_lk)'
 
     zeroIcs = { 'phi_ee' : 0, 'phi_ee_t' : 0, 'phi_ei' : 0, 'phi_ei_t' : 0, 'i_ee' : 0,
                 'i_ee_t' : 0, 'i_ei' : 0, 'i_ei_t' : 0, 'i_ie' : 0, 'i_ie_t' : 0,
@@ -55,7 +60,9 @@ class LileyBase(object):
                                   'Y_i_h_e' : (['h_e'], LileyBase.Y_i_h_e),
                                   'Y_i_h_i' : (['h_i'], LileyBase.Y_i_h_i),
                                   's_e' : (['h'], LileyBase.s_e),
-                                  's_i' : (['h'], LileyBase.s_i)}
+                                  's_i' : (['h'], LileyBase.s_i),
+                                  '_gamma' : (['gamma_o', 'e_lk'], LileyBase.gamma),
+                                  '_gamma_tilde' : (['gamma_o', 'e_lk'], LileyBase.gamma_tilde)}
 
         else:
             print auxFunctions
@@ -86,7 +93,6 @@ class LileyBase(object):
 
     def run(self, timeRange):
         print "Running....", self.params
-        #self.odes.cleanupMemory()
         self.odes.set(tdomain = timeRange)
         self.odes.set(tdata = timeRange)
         self.odes.set(ics = self.ics)
@@ -108,7 +114,7 @@ class LileyBase(object):
         if not LileyBase.odeSystems.has_key(self.name):
             DSargs = args(varspecs = self.equations, fnspecs = self.auxFunctions, name=self.name)
             DSargs.tdomain = [0, 3000]
-            DSargs.algparams = {'init_step':1e-6,
+            DSargs.algparams = {'init_step':2e-6,
                                 'atol': 1e-12 / self.timescale,
                                 'rtol': 1e-13 / self.timescale,
                                 'max_pts' : 4000000}
@@ -278,24 +284,120 @@ class LileySigmoidBurstPSPRes(LileyBase):
 
         LileyBase.__init__(self, params = params, ics = ics, name = name, equations = equations, points = points, odeSystem = odeSystem, timescale = timescale)
 
+
+class SIRU1(LileyBase):
+    Ts_ek_t = "mus_e * (theta_e - k_e * s_e(h_e))"
+    Ts_ik_t = "mus_i * (theta_i - k_i * s_i(h_i))"
+
+    i_ee_tt='-(_gamma_ee + gamma_ee_tilde) * i_ee_t - (_gamma_ee * gamma_ee_tilde) * i_ee + Ts_ee * gamma_ee_tilde * exp(_gamma_ee / gamma_ee) * (N_beta_ee * s_e(h_e) + phi_ee + p_ee)'
+    i_ei_tt='-(_gamma_ei + gamma_ee_tilde) * i_ei_t - (_gamma_ei * gamma_ei_tilde) * i_ei + Ts_ei * gamma_ei_tilde * exp(_gamma_ei / gamma_ei) * (N_beta_ei * s_e(h_e) + phi_ei + p_ei)'
+    i_ie_tt='-(_gamma_ie + gamma_ie_tilde) * i_ie_t - (_gamma_ie * gamma_ie_tilde) * i_ie + Ts_ie * gamma_ie_tilde * exp(_gamma_ie / gamma_ie) * (N_beta_ie * s_i(h_i) + phi_ie + p_ie)'
+    i_ii_tt='-(_gamma_ii + gamma_ii_tilde) * i_ii_t - (_gamma_ii * gamma_ii_tilde) * i_ii + Ts_ii * gamma_ii_tilde * exp(_gamma_ii / gamma_ii) * (N_beta_ii * s_i(h_i) + phi_ii + p_ii)'
+
+    phi_ee_tt = '-2 * v * A_ee * phi_ee_t + (v * v) * (A_ee * A_ee) * (N_alpha_ee * s_e(h_e) - phi_ee) + 1.5 * v * v * fake_laplacian'
+    phi_ei_tt = '-2 * v * A_ei * phi_ei_t + (v * v) * (A_ei * A_ei) * (N_alpha_ei * s_e(h_e) - phi_ei) + 1.5 * v * v * fake_laplacian'
+
+    zeroIcs = { 'phi_ee' : 0, 'phi_ee_t' : 0,
+                'phi_ei' : 0, 'phi_ei_t' : 0,
+                'i_ee' : 0, 'i_ee_t' : 0, 'i_ei' : 0,
+                'i_ei_t' : 0, 'i_ie' : 0, 'i_ie_t' : 0,
+                'i_ii' : 0, 'i_ii_t' : 0, 'h_e' : 0, 'h_i' : 0,
+                'Ts_ee' : 0, 'Ts_ei' : 0, 'Ts_ie' : 0, 'Ts_ii' : 0}
+
+    def __init__(self, params, ics = None, name="SIRU1", equations = None, points = None, odeSystem = None, timescale = "s"):
+        if equations == None:
+            print "No eqns for " + name
+            equations = { 'phi_ee' : 'phi_ee_t',
+                          'phi_ei' : 'phi_ei_t',
+                          'phi_ei_t' : SIRU1.phi_ei_tt,
+                          'phi_ee_t' : SIRU1.phi_ee_tt,
+                          'i_ee' : 'i_ee_t',
+                          'i_ei' : 'i_ei_t',
+                          'i_ie' : 'i_ie_t',
+                          'i_ii' : 'i_ii_t',
+                          'i_ee_t' : SIRU1.i_ee_tt,
+                          'i_ei_t' : SIRU1.i_ei_tt,
+                          'i_ie_t' : SIRU1.i_ie_tt,
+                          'i_ii_t' : SIRU1.i_ii_tt,
+                          'h_e' : LileyBase.h_e_t,
+                          'h_i' : LileyBase.h_i_t,
+                          'Ts_ee' : SIRU1.Ts_ek_t,
+                          'Ts_ei' : SIRU1.Ts_ek_t,
+                          'Ts_ie' : SIRU1.Ts_ik_t,
+                          'Ts_ii' : SIRU1.Ts_ik_t}
+        else:
+            equations = equations
+
+        prepared = self.prepareParams(params)
+        if ics == None:
+            ics = SIRU1.zeroIcs
+            ics['h_e'] = params['h_e_rest']
+            ics['h_i'] = params['h_i_rest']
+            ics['Ts_ee'] = params['T_ee']
+            ics['Ts_ei'] = params['T_ei']
+            ics['Ts_ie'] = params['T_ie']
+            ics['Ts_ii'] = params['T_ii']
+            print "ICS.."
+            print ics
+
+        LileyBase.__init__(self, params = prepared, ics = ics, name = name, equations = equations, points = points, odeSystem = odeSystem, timescale = timescale)
+
+    def prepareParams(self, params):
+        prepared = params.copy()
+
+        if not 'fake_laplacian' in prepared:
+            prepared['fake_laplacian'] = 0
+
+        for dim in ['ee', 'ei', 'ie', 'ii']:
+            param = 'gamma_' + dim
+            paramMod = '_gamma_' + dim
+            paramTilde = param + '_tilde'
+            rate = 'e_' + dim
+
+            orig = params[param]
+            if params[rate] > 0:
+                print rate + ": " + str(params[rate])
+                prepared[paramMod] = (orig * params[rate]) / (exp(params[rate]) - 1)
+                prepared[paramTilde] = prepared[paramMod] * exp(params[rate]);
+            else:
+                prepared[paramTilde] = orig
+                prepared[paramMod] = orig
+
+            print param + ": " + str(prepared[param])
+            print paramMod + ": " + str(prepared[paramMod])
+            print paramTilde + ": " + str(prepared[paramTilde])
+
+        return prepared
+
+
 class SIRU2(LileyBase):
-    C_i_t = "mus_i * ((1 / (1 + exp(k_i * (h_i - theta_i)) ))  - C_i)"
-    C_e_t = "mus_e * ((1 / (1 + exp(k_e * (h_e - theta_e)) ))  - C_e)"
+    # ci'=epsi*(1/(1+exp(ki*(hi-thetae)))-ci)
+    # ce'=epse*(1/(1+exp(ke*(he-thetai)))-ce)
 
-    i_ee_tt='-(gamma_ee + gamma_ee_tilde) * i_ee_t - (gamma_ee * gamma_ee_tilde) * i_ee + T_ee * C_e * gamma_ee * exp(1) * (N_beta_ee * s_e(h_e) + phi_ee + p_ee)'
-    i_ei_tt='-(gamma_ei + gamma_ee_tilde) * i_ei_t - (gamma_ei * gamma_ei_tilde) * i_ei + T_ei * C_e * gamma_ei * exp(1) * (N_beta_ei * s_e(h_e) + phi_ei + p_ei)'
-    i_ie_tt='-(gamma_ie + gamma_ie_tilde) * i_ie_t - (gamma_ie * gamma_ie_tilde) * i_ie + T_ie * C_i * gamma_ie * exp(1) * (N_beta_ie * s_i(h_i) + phi_ie + p_ie)'
-    i_ii_tt='-(gamma_ii + gamma_ii_tilde) * i_ii_t - (gamma_ii * gamma_ii_tilde) * i_ii + T_ii * C_i * gamma_ii * exp(1) * (N_beta_ii * s_i(h_i) + phi_ii + p_ii)'
+    C_i_t = "mus_i * (1 / (1 + exp(k_i * (h_i - theta_i)))  - C_i)"
+    C_e_t = "mus_e * (1 / (1 + exp(k_e * (h_e - theta_e)))  - C_e)"
 
+
+    i_ee_tt='-(gamma_ee + gamma_ee) * i_ee_t - (gamma_ee * gamma_ee) * i_ee + (C_e * T_ee) * gamma_ee * exp(1) * (N_beta_ee * s_e(h_e) + phi_ee + p_ee)'
+    i_ei_tt='-(gamma_ei + gamma_ei) * i_ei_t - (gamma_ei * gamma_ei) * i_ei + (C_e * T_ei) * gamma_ei * exp(1) * (N_beta_ei * s_e(h_e) + phi_ei + p_ei)'
+    i_ie_tt='-(_gamma(gamma_ie, e_ie) + _gamma_tilde(gamma_ie, e_ie)) * i_ie_t - (_gamma(gamma_ie, e_ie) * _gamma_tilde(gamma_ie, e_ie)) * i_ie + (C_i * T_ie) * _gamma_tilde(gamma_ie, e_ie) * exp(_gamma(gamma_ie, e_ie) / gamma_ie) * (N_beta_ie * s_i(h_i) + phi_ie + p_ie)'
+    i_ii_tt='-(_gamma(gamma_ii, e_ii) + _gamma_tilde(gamma_ii, e_ii)) * i_ii_t - (_gamma(gamma_ii, e_ii) * _gamma_tilde(gamma_ii, e_ii)) * i_ii + (C_i * T_ii) * _gamma_tilde(gamma_ii, e_ii) * exp(_gamma(gamma_ii, e_ii) / gamma_ii) * (N_beta_ii * s_i(h_i) + phi_ii + p_ii)'
+
+    # phi_ee_tt = '-2 * v * A_ee * phi_ee_t + (v * v) * (A_ee * A_ee) * (N_alpha_ee * s_e(h_e) - phi_ee) + 1.5 * v * v * fake_laplacian'
+    # phi_ei_tt = '-2 * v * A_ei * phi_ei_t + (v * v) * (A_ei * A_ei) * (N_alpha_ei * s_e(h_e) - phi_ei) + 1.5 * v * v * fake_laplacian'
+    #
     zeroIcs = { 'phi_ee' : 0, 'phi_ee_t' : 0, 'phi_ei' : 0, 'phi_ei_t' : 0, 'i_ee' : 0,
                 'i_ee_t' : 0, 'i_ei' : 0, 'i_ei_t' : 0, 'i_ie' : 0, 'i_ie_t' : 0,
-                'i_ii' : 0, 'i_ii_t' : 0, 'h_e' : 0, 'h_i' : 0, 'C_e' : 0, 'C_i' : 0}
+                'i_ii' : 0, 'i_ii_t' : 0, 'h_e' : 0, 'h_i' : 0,
+                'C_i' : 1, 'C_e' : 1}
 
     def __init__(self, params, ics = None, name="SIRU2", equations = None, points = None, odeSystem = None, timescale = "s"):
         if equations == None:
             print "No eqns for " + name
-            equations = { 'phi_ee' : 'phi_ee_t', 'phi_ei' : 'phi_ei_t',
-                          'phi_ei_t' : LileyBase.phi_ei_tt, 'phi_ee_t' : LileyBase.phi_ee_tt,
+            equations = { 'phi_ee' : 'phi_ee_t',
+                          'phi_ei' : 'phi_ei_t',
+                          'phi_ei_t' : LileyBase.phi_ei_tt,
+                          'phi_ee_t' : LileyBase.phi_ee_tt,
                           'i_ee' : 'i_ee_t',
                           'i_ei' : 'i_ei_t',
                           'i_ie' : 'i_ie_t',
@@ -306,12 +408,11 @@ class SIRU2(LileyBase):
                           'i_ii_t' : SIRU2.i_ii_tt,
                           'h_e' : LileyBase.h_e_t,
                           'h_i' : LileyBase.h_i_t,
-                          'C_i' : SIRU2.C_i_t,
-                          'C_e' : SIRU2.C_e_t}
+                          'C_e' : SIRU2.C_e_t,
+                          'C_i' : SIRU2.C_i_t}
         else:
             equations = equations
 
-        params = self.prepareParams(params)
         if ics == None:
             ics = SIRU2.zeroIcs
             ics['h_e'] = params['h_e_rest']
@@ -321,22 +422,6 @@ class SIRU2(LileyBase):
 
         LileyBase.__init__(self, params = params, ics = ics, name = name, equations = equations, points = points, odeSystem = odeSystem, timescale = timescale)
 
-    def prepareParams(self, params):
-        prepared = params.copy()
-
-        for dim in ['ee', 'ei', 'ie', 'ii']:
-            param = 'gamma_' + dim
-            paramTilde = param + '_tilde'
-            rate = 'e_' + dim
-
-            orig = params[param]
-            if params['e_' + dim] > 0:
-                prepared[paramTilde] = orig * params[rate] / (exp(params[rate]) - 1)
-                prepared[param] = prepared[paramTilde] * exp(params[rate]);
-            else:
-                prepared[paramTilde] = orig
-
-        return prepared
 
 class Continuation:
     def __init__(self, odeSystem, cont, sol, name, displayVar, freeVar, point = None):
@@ -383,7 +468,7 @@ class Continuation:
         return self
 
 
-    def followHopf(self, point, steps = 500, maxStepSize = 1e-3, dir = '+'):
+    def followLimitCycles(self, point, steps = 500, maxStepSize = 1e-3, dir = '+'):
         if dir == '-':
             dirMod = -1
         else:
@@ -428,7 +513,7 @@ class Continuation:
                             freeVar = self.freeVar,
                             point = fullPointName)
 
-    def followHopfCD2(self, point, additionalFreeVar, steps = 500, dir = '+'):
+    def followLP(self, point, additionalFreeVar, steps = 500, dir = '+'):
         if dir == '-':
             dirMod = -1
         else:
@@ -447,6 +532,43 @@ class Continuation:
         PCargs.LocBifPoints = 'all'
         PCargs.FuncTol = 1e-6
         PCargs.VarTol = 1e-6
+        PCargs.SolutionMeasures = 'all'
+        PCargs.MaxNumPoints = steps
+        PCargs.SaveJacobian = True
+        PCargs.NumSPOut = steps
+        PCargs.freepars = [self.freeVar, additionalFreeVar]
+
+        self.cont.newCurve(PCargs)
+
+        self.cont[newName].forward()
+
+        return Continuation(odeSystem = self.odeSystem,
+                            cont = self.cont,
+                            sol = self.cont[newName].sol,
+                            name = newName,
+                            displayVar = self.displayVar,
+                            freeVar = self.freeVar,
+                            point = fullPointName)
+
+    def followHopf(self, point, additionalFreeVar, steps = 500, dir = '+'):
+        if dir == '-':
+            dirMod = -1
+        else:
+            dirMod = 1
+
+        newName = self.name + "_cont_" + point
+        fullPointName = self.name + ':' + point
+        print "Following " + fullPointName
+        PCargs = args(name=newName, type='H-C1')
+
+        PCargs.initpoint = fullPointName
+
+        PCargs.StepSize = 1e-3 * dirMod
+        PCargs.MaxStepSize = 1e-2
+        PCargs.MinStepSize = 1e-20
+        PCargs.LocBifPoints = 'all'
+        PCargs.FuncTol = 1e-3
+        PCargs.VarTol = 1e-3
         PCargs.SolutionMeasures = 'all'
         PCargs.MaxNumPoints = steps
         PCargs.SaveJacobian = True

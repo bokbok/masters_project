@@ -155,44 +155,44 @@ public:
 
 		if (p[e_ee] > 0)
 		{
-			p[_gamma_ee_tilde] = p[gamma_ee] * p[e_ee] / (exp(p[e_ee]) - 1);
+			p[_gamma_ee] = p[gamma_ee] * p[e_ee] / (exp(p[e_ee]) - 1);
 		}
 		else
 		{
-			p[_gamma_ee_tilde] = p[gamma_ee];
+			p[_gamma_ee] = p[gamma_ee];
 		}
 
 		if (p[e_ei] > 0)
 		{
-			p[_gamma_ei_tilde] = p[gamma_ei] * p[e_ei] / (exp(p[e_ei]) - 1);
+			p[_gamma_ei] = p[gamma_ei] * p[e_ei] / (exp(p[e_ei]) - 1);
 		}
 		else
 		{
-			p[_gamma_ei_tilde] = p[gamma_ei];
+			p[_gamma_ei] = p[gamma_ei];
 		}
 
 		if (p[e_ie] > 0)
 		{
-			p[_gamma_ie_tilde] = p[gamma_ie] * p[e_ie] / (exp(p[e_ie]) - 1);
+			p[_gamma_ie] = p[gamma_ie] * p[e_ie] / (exp(p[e_ie]) - 1);
 		}
 		else
 		{
-			p[_gamma_ie_tilde] = p[gamma_ie];
+			p[_gamma_ie] = p[gamma_ie];
 		}
 
 		if (p[e_ii] > 0)
 		{
-			p[_gamma_ii_tilde] = p[gamma_ii] * p[e_ii] / (exp(p[e_ii]) - 1);
+			p[_gamma_ii] = p[gamma_ii] * p[e_ii] / (exp(p[e_ii]) - 1);
 		}
 		else
 		{
-			p[_gamma_ii_tilde] = p[gamma_ii];
+			p[_gamma_ii] = p[gamma_ii];
 		}
 
-		p[_gamma_ee] = p[_gamma_ee_tilde] * exp(p[e_ee]);
-		p[_gamma_ei] = p[_gamma_ei_tilde] * exp(p[e_ei]);
-		p[_gamma_ie] = p[_gamma_ie_tilde] * exp(p[e_ie]);
-		p[_gamma_ii] = p[_gamma_ii_tilde] * exp(p[e_ii]);
+		p[_gamma_ee_tilde] = p[_gamma_ee] * exp(p[e_ee]);
+		p[_gamma_ei_tilde] = p[_gamma_ei] * exp(p[e_ei]);
+		p[_gamma_ie_tilde] = p[_gamma_ie] * exp(p[e_ie]);
+		p[_gamma_ii_tilde] = p[_gamma_ii] * exp(p[e_ii]);
 
 		p[_gamma_ee_tilde2] = p[_gamma_ee] * p[_gamma_ee_tilde];
 		p[_gamma_ei_tilde2] = p[_gamma_ei] * p[_gamma_ei_tilde];
@@ -205,10 +205,10 @@ public:
 		p[_vel2_A_ee2] = p[_vel2] * p[A_ee] * p[A_ee];
 		p[_vel2_A_ei2] = p[_vel2] * p[A_ei] * p[A_ei];
 
-		p[_T_ee_gamma_ee_e] = p[T_ee] * p[_gamma_ee_tilde] * exp((p[_gamma_ee] / p[gamma_ee]));
-		p[_T_ei_gamma_ei_e] = p[T_ei] * p[_gamma_ei_tilde] * exp((p[_gamma_ei] / p[gamma_ei]));
-		p[_T_ie_gamma_ie_e] = p[T_ie] * p[_gamma_ie_tilde] * exp((p[_gamma_ie] / p[gamma_ie]));
-		p[_T_ii_gamma_ii_e] = p[T_ii] * p[_gamma_ii_tilde] * exp((p[_gamma_ii] / p[gamma_ii]));
+		p[_T_ee_gamma_ee_e] = p[T_ee] * p[_gamma_ee_tilde] * exp(p[_gamma_ee] / p[gamma_ee]);
+		p[_T_ei_gamma_ei_e] = p[T_ei] * p[_gamma_ei_tilde] * exp(p[_gamma_ei] / p[gamma_ei]);
+		p[_T_ie_gamma_ie_e] = p[T_ie] * p[_gamma_ie_tilde] * exp(p[_gamma_ie] / p[gamma_ie]);
+		p[_T_ii_gamma_ii_e] = p[T_ii] * p[_gamma_ii_tilde] * exp(p[_gamma_ii] / p[gamma_ii]);
 
 		p[_1_minus_r_abs_s_e_max] = 1 - p[r_abs] * p[s_e_max];
 		p[_1_minus_r_abs_s_i_max] = 1 - p[r_abs] * p[s_i_max];
