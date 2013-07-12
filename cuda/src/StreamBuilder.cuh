@@ -95,6 +95,11 @@ public:
 		return *this;
 	}
 
+	string runPath()
+	{
+		return _runPath;
+	}
+
 	DataStream * build()
 	{
 		_built = new CompositeDataStream(_streams);

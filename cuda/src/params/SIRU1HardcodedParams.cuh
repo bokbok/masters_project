@@ -92,6 +92,17 @@ class SIRU1HardcodedParams : public Params
 
 		return initialConditions;
 	}
+
+	map<string, int> stateMap()
+	{
+		return SIRU1Model::stateMap();
+	}
+
+	map<string, int> paramMap()
+	{
+		return SIRU1Model::paramMap();
+	}
+
 };
 
 

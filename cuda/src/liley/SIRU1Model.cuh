@@ -9,6 +9,9 @@
 #define SIRU1MODEL_CUH_
 #include "../ParameterSpace.cuh"
 #include "../DeviceMeshPoint.cuh"
+#include <string>
+
+using namespace std;
 
 class SIRU1Model
 {
@@ -125,6 +128,87 @@ public:
 		_minus_sqrt2_div_sigma_e,
 		_minus_sqrt2_div_sigma_i
 	};
+
+	__host__
+	static map<string, int> paramMap()
+	{
+		map<string, int> result;
+		result["tor_e"] = tor_e;
+		result["tor_i"] = tor_i;
+		result["h_e_rest"] = h_e_rest;
+		result["h_i_rest"] = h_i_rest;
+		result["h_ee_eq"] = h_ee_eq;
+		result["h_ei_eq"] = h_ei_eq;
+		result["h_ie_eq"] = h_ie_eq;
+		result["h_ii_eq"] = h_ii_eq;
+		result["gamma_ee"] = gamma_ee;
+		result["gamma_ei"] = gamma_ei;
+		result["gamma_ie"] = gamma_ie;
+		result["gamma_ii"] = gamma_ii;
+		result["T_ee_p"] = T_ee_p;
+		result["T_ei_p"] = T_ei_p;
+		result["T_ie_p"] = T_ie_p;
+		result["T_ii_p"] = T_ii_p;
+		result["mus_ii"] = mus_ii;
+		result["mus_ei"] = mus_ei;
+		result["mus_ie"] = mus_ie;
+		result["mus_ee"] = mus_ee;
+		result["theta_i"] = theta_i;
+		result["theta_e"] = theta_e;
+		result["k_i"] = k_i;
+		result["k_e"] = k_e;
+		result["N_beta_ee"] = N_beta_ee;
+		result["N_beta_ei"] = N_beta_ei;
+		result["N_beta_ie"] = N_beta_ie;
+		result["N_beta_ii"] = N_beta_ii;
+		result["N_alpha_ee"] = N_alpha_ee;
+		result["N_alpha_ei"] = N_alpha_ei;
+		result["s_e_max"] = s_e_max;
+		result["s_i_max"] = s_i_max;
+		result["mu_e"] = mu_e;
+		result["mu_i"] = mu_i;
+		result["sigma_e"] = sigma_e;
+		result["sigma_i"] = sigma_i;
+		result["p_ee"] = p_ee;
+		result["p_ei"] = p_ei;
+		result["p_ie"] = p_ie;
+		result["p_ii"] = p_ii;
+		result["phi_ie"] = phi_ie;
+		result["phi_ii"] = phi_ii;
+		result["v"] = v;
+		result["A_ee"] = A_ee;
+		result["A_ei"] = A_ei;
+		result["r_abs"] = r_abs;
+
+		return result;
+	}
+
+	__host__
+	static map<string, int> stateMap()
+	{
+		map<string, int> result;
+
+		result["h_e"] = h_e;
+		result["h_i"] = h_i;
+		result["i_ee"] = i_ee;
+		result["i_ei"] = i_ei;
+		result["i_ie"] = i_ie;
+		result["i_ii"] = i_ii;
+		result["i_ee_t"] = i_ee_t;
+		result["i_ei_t"] = i_ei_t;
+		result["i_ie_t"] = i_ie_t;
+		result["i_ii_t"] = i_ii_t;
+		result["phi_ee"] = phi_ee;
+		result["phi_ei"] = phi_ei;
+		result["phi_ee_t"] = phi_ee_t;
+		result["phi_ei_t"] = phi_ei_t;
+		result["T_ee"] = T_ee;
+		result["T_ei"] = T_ei;
+		result["T_ie"] = T_ie;
+		result["T_ii"] = T_ii;
+
+		return result;
+	}
 
 	__host__
 	static void precalculate(ParameterSpace &p)

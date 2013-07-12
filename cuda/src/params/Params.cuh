@@ -10,14 +10,20 @@
 
 #include "../ParameterSpace.cuh"
 #include "../StateSpace.cuh"
+#include <fstream>
+#include <string>
+
+using namespace std;
 
 class Params
 {
 public:
 	virtual ParameterSpace params() = 0;
 	virtual StateSpace initialConditions() = 0;
+	virtual map<string, int> paramMap() = 0;
+	virtual map<string, int> stateMap() = 0;
 
-	virtual ~Params() {};
+	virtual ~Params() {}
 };
 
 

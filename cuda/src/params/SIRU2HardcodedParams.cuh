@@ -70,8 +70,9 @@ class SIRU2HardcodedParams : public Params
 		params[SIRU2Model::A_ee] = 0.2433;
 		params[SIRU2Model::A_ei] = 0.2433;
 
-		params[SIRU2Model::v] = 0.1714;
-//		params[SIRU2Model::v] = 0.181;
+		//params[SIRU2Model::v] = 0.1714;
+		params[SIRU2Model::v] = 0.175;
+		//params[SIRU2Model::v] = 0.181;
 
 		params[SIRU2Model::r_abs] = 0;
 
@@ -99,6 +100,17 @@ class SIRU2HardcodedParams : public Params
 
 		return initialConditions;
 	}
+
+	map<string, int> stateMap()
+	{
+		return SIRU2Model::stateMap();
+	}
+
+	map<string, int> paramMap()
+	{
+		return SIRU2Model::paramMap();
+	}
+
 };
 
 

@@ -11,15 +11,16 @@
 #include "SimulationBuilder.cuh"
 #include "StreamBuilder.cuh"
 #include "params/Params.cuh"
+#include "params/ParameterWriter.cuh"
 
 
 const int REPORT_STEPS = 200;
 const int RENDER_STEPS = 200;
-const int MESH_SIZE = 10;
+const int MESH_SIZE = 50;
 const double T_SIM = 20;
 const double DELTA_T = 0.000002;
 const double DELTA = 0.1; //make smaller for tighter mesh
-const double RANDOMISE_FRACTION = 0.001;
+const double RANDOMISE_FRACTION = 0.00001;
 
 template <class T>
 class SimulationRunner
@@ -80,6 +81,9 @@ public:
 				  .withParameters(_params.params())
 				  .withICDeviation(RANDOMISE_FRACTION);
 
+
+		ParameterWriter paramWriter(_params, streamBuilder.runPath());
+		paramWriter.write();
 
 		Simulation<T> * sim = simBuilder.build();
 
