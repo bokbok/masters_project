@@ -23,11 +23,11 @@ ics['h_e'] = run_params['h_e_rest']
 ics['h_i'] = run_params['h_i_rest']
 
 
-run_params['fake_laplacian'] = 0.01
+run_params['fake_laplacian'] = float(sys.argv[3])
 
 model = SIRU2(params = run_params, timescale = "ms", ics = ics)
 
-cont = model.run([0, 1]).freeze(['C_e', 'C_i']).run([0, 10000]).searchForBifurcations('fake_laplacian', 'h_e', steps = 5000, maxStepSize = 1, bidirectional = False).display(fig = "4")
+cont = model.run([0, 1]).freeze(['C_e', 'C_i']).run([0, 10000]).searchForBifurcations('fake_laplacian', 'h_e', steps = 1000, maxStepSize = 1, bidirectional = False).display(fig = "4")
 #cont.followLimitCycle('H1', steps = 2000).displayMinMax(fig = '4')
 #cont.followHopf('H1', 'C_i', steps = 10, dir = '+').display(fig = "3", displayVar = 'C_i')
 #cont.followLP('LP1', 'C_i', steps = 50, dir = '-').display(fig = "3", displayVar = 'C_i')

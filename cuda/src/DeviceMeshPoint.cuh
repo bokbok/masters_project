@@ -40,7 +40,7 @@ private:
 public:
 	__device__
 	inline DeviceMeshPoint(StateSpace * mesh, ParameterSpace * parameters, int width, int height, int x, int y, double delta) :
-		_mesh(mesh), _width(width), _height(height), _x(x), _y(y), _delta(delta), _parameters(parameters), _delta2(delta * delta)
+		_mesh(mesh), _width(width), _height(height), _x(x), _y(y), _delta(delta), _parameters(parameters), _delta2(delta * delta), _denominator(delta * delta * 180)
 	{
 	}
 
@@ -65,21 +65,40 @@ public:
 	__device__
 	inline double d2dx2(int dim)
 	{
+//		double xMinus = stateAt(-1, 0)[dim];
+//		double x = state()[dim];
+//		double xPlus = stateAt(1, 0)[dim];
+//
+//		return (xMinus - 2 * x + xPlus) / _delta2;
+
 		double xMinus = stateAt(-1, 0)[dim];
+		double xMinus2 = stateAt(-2, 0)[dim];
+		double xMinus3 = stateAt(-3, 0)[dim];
 		double x = state()[dim];
 		double xPlus = stateAt(1, 0)[dim];
+		double xPlus2 = stateAt(2, 0)[dim];
+		double xPlus3 = stateAt(3, 0)[dim];
 
-		return (xMinus - 2 * x + xPlus) / _delta2;
+		return (2 * (xMinus3 + xPlus3) - 27 * (xPlus2 + xMinus2) + 270 * (xMinus + xPlus) - 490 * x) / _denominator;
 	}
 
 	__device__
 	inline double d2dy2(int dim)
 	{
+//		double yMinus = stateAt(0, -1)[dim];
+//		double y = state()[dim];
+//		double yPlus = stateAt(0, 1)[dim];
+//
+//		return (yMinus - 2 * y + yPlus) / _delta2;
 		double yMinus = stateAt(0, -1)[dim];
+		double yMinus2 = stateAt(0, -2)[dim];
+		double yMinus3 = stateAt(0, -3)[dim];
 		double y = state()[dim];
 		double yPlus = stateAt(0, 1)[dim];
+		double yPlus2 = stateAt(0, 2)[dim];
+		double yPlus3 = stateAt(0, 3)[dim];
 
-		return (yMinus - 2 * y + yPlus) / _delta2;
+		return (2 * (yMinus3 + yPlus3) - 27 * (yPlus2 + yMinus2) + 270 * (yMinus + yPlus) - 490 * y) / _denominator;
 	}
 
 	__device__
@@ -112,7 +131,7 @@ private:
 	int _width, _height;
 	int _x, _y;
 
-	double _delta, _delta2;
+	double _delta, _delta2, _denominator;
 };
 
 

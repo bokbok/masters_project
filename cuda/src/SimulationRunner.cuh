@@ -16,11 +16,11 @@
 
 const int REPORT_STEPS = 200;
 const int RENDER_STEPS = 200;
-const int MESH_SIZE = 50;
-const double T_SIM = 20;
+const int MESH_SIZE = 70;
+const double T_SIM = 180;
 const double DELTA_T = 0.000002;
 const double DELTA = 0.1; //make smaller for tighter mesh
-const double RANDOMISE_FRACTION = 0.00001;
+const double RANDOMISE_FRACTION = 0.01;
 
 template <class T>
 class SimulationRunner
@@ -65,6 +65,8 @@ public:
 				     //				     .traceFor(T::T_ee, RENDER_STEPS, 2, 0, 5)
 				     .traceFor(T::C_e, RENDER_STEPS, 2, 0, 5)
 				     .traceFor(T::C_i, RENDER_STEPS, 2, 0, 5)
+				     .traceFor(T::phi_ee, RENDER_STEPS, 2, 0, 5)
+				     .traceFor(T::phi_ei, RENDER_STEPS, 2, 0, 5)
 				     .monitorConvergence();
 
 
@@ -82,7 +84,7 @@ public:
 				  .withICDeviation(RANDOMISE_FRACTION);
 
 
-		ParameterWriter paramWriter(_params, streamBuilder.runPath());
+		ParameterWriter paramWriter(DELTA_T, DELTA, RANDOMISE_FRACTION, _params, streamBuilder.runPath());
 		paramWriter.write();
 
 		Simulation<T> * sim = simBuilder.build();

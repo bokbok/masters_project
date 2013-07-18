@@ -18,25 +18,35 @@ class ParameterWriter
 private:
 	Params & _params;
 	string _outputPath;
+	double _deltaX, _deltaT, _randomiseFraction;
 
 public:
-	ParameterWriter(Params & params, string outputPath) :
+	ParameterWriter(double deltaT, double deltaX, double randomiseFraction, Params & params, string outputPath) :
 		_params(params),
-		_outputPath(outputPath)
+		_outputPath(outputPath),
+		_deltaX(deltaX),
+		_deltaT(deltaT),
+		_randomiseFraction(randomiseFraction)
 	{
-
 	}
 
 	void write()
 	{
 		ofstream out;
-		out.open((_outputPath + "/params.dat").c_str());
+		out.open((_outputPath + "/run.info").c_str());
 
 		ParameterSpace params = _params.params();
 		StateSpace ics = _params.initialConditions();
 
 		map<string, int> paramMap = _params.paramMap();
 		map<string, int> stateMap = _params.stateMap();
+
+		out << "**** Integration Params ****" << endl;
+		out << "Runge-Kutta fourth order" << endl;
+		out << "delta_t = " << _deltaT << endl;
+		out << "spatial spacing = " << _deltaX << endl;
+		out << "randomisation = " << _randomiseFraction << endl;
+		out << endl << endl << endl;
 
 		map<string, int>::iterator iter;
 

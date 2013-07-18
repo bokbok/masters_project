@@ -371,9 +371,6 @@ class SIRU1(LileyBase):
 
 
 class SIRU2(LileyBase):
-    # ci'=epsi*(1/(1+exp(ki*(hi-thetae)))-ci)
-    # ce'=epse*(1/(1+exp(ke*(he-thetai)))-ce)
-
     C_i_t = "mus_i * (1 / (1 + exp(k_i * (h_i - theta_i)))  - C_i)"
     C_e_t = "mus_e * (1 / (1 + exp(k_e * (h_e - theta_e)))  - C_e)"
 
@@ -383,9 +380,9 @@ class SIRU2(LileyBase):
     i_ie_tt='-(_gamma(gamma_ie, e_ie) + _gamma_tilde(gamma_ie, e_ie)) * i_ie_t - (_gamma(gamma_ie, e_ie) * _gamma_tilde(gamma_ie, e_ie)) * i_ie + (C_i * T_ie) * _gamma_tilde(gamma_ie, e_ie) * exp(_gamma(gamma_ie, e_ie) / gamma_ie) * (N_beta_ie * s_i(h_i) + phi_ie + p_ie)'
     i_ii_tt='-(_gamma(gamma_ii, e_ii) + _gamma_tilde(gamma_ii, e_ii)) * i_ii_t - (_gamma(gamma_ii, e_ii) * _gamma_tilde(gamma_ii, e_ii)) * i_ii + (C_i * T_ii) * _gamma_tilde(gamma_ii, e_ii) * exp(_gamma(gamma_ii, e_ii) / gamma_ii) * (N_beta_ii * s_i(h_i) + phi_ii + p_ii)'
 
-    # phi_ee_tt = '-2 * v * A_ee * phi_ee_t + (v * v) * (A_ee * A_ee) * (N_alpha_ee * s_e(h_e) - phi_ee) + 1.5 * v * v * fake_laplacian'
-    # phi_ei_tt = '-2 * v * A_ei * phi_ei_t + (v * v) * (A_ei * A_ei) * (N_alpha_ei * s_e(h_e) - phi_ei) + 1.5 * v * v * fake_laplacian'
-    #
+    phi_ee_tt = '-2 * v * A_ee * phi_ee_t + (v * v) * (A_ee * A_ee) * (N_alpha_ee * s_e(h_e) - phi_ee) + 1.5 * v * v * fake_laplacian'
+    phi_ei_tt = '-2 * v * A_ei * phi_ei_t + (v * v) * (A_ei * A_ei) * (N_alpha_ei * s_e(h_e) - phi_ei) + 1.5 * v * v * fake_laplacian'
+
     zeroIcs = { 'phi_ee' : 0, 'phi_ee_t' : 0, 'phi_ei' : 0, 'phi_ei_t' : 0, 'i_ee' : 0,
                 'i_ee_t' : 0, 'i_ei' : 0, 'i_ei_t' : 0, 'i_ie' : 0, 'i_ie_t' : 0,
                 'i_ii' : 0, 'i_ii_t' : 0, 'h_e' : 0, 'h_i' : 0,
@@ -396,8 +393,8 @@ class SIRU2(LileyBase):
             print "No eqns for " + name
             equations = { 'phi_ee' : 'phi_ee_t',
                           'phi_ei' : 'phi_ei_t',
-                          'phi_ei_t' : LileyBase.phi_ei_tt,
-                          'phi_ee_t' : LileyBase.phi_ee_tt,
+                          'phi_ei_t' : SIRU2.phi_ei_tt,
+                          'phi_ee_t' : SIRU2.phi_ee_tt,
                           'i_ee' : 'i_ee_t',
                           'i_ei' : 'i_ei_t',
                           'i_ie' : 'i_ie_t',
@@ -481,7 +478,6 @@ class Continuation:
         newName = self.name + "_cont_" + point
         fullPointName = self.name + ':' + point
         PCargs = args(name=newName, type='LC-C')
-        #PCargs = args(name=newName, type='H-C2')
 
         PCargs.initpoint = fullPointName
 
