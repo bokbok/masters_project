@@ -420,6 +420,55 @@ class SIRU2(LileyBase):
         LileyBase.__init__(self, params = params, ics = ics, name = name, equations = equations, points = points, odeSystem = odeSystem, timescale = timescale)
 
 
+class SIRU3(LileyBase):
+    C_e_t = 'mus_e * (1 - C_e * (1 + g_e * s_e(h_e)))'
+    C_i_t = 'mus_i * (1 - C_i * (1 + g_i * s_e(h_i)))'
+
+    i_ee_tt='-(gamma_ee + gamma_ee) * i_ee_t - (gamma_ee * gamma_ee) * i_ee + (C_e * T_ee) * gamma_ee * exp(1) * (N_beta_ee * s_e(h_e) + phi_ee + p_ee)'
+    i_ei_tt='-(gamma_ei + gamma_ei) * i_ei_t - (gamma_ei * gamma_ei) * i_ei + (C_e * T_ei) * gamma_ei * exp(1) * (N_beta_ei * s_e(h_e) + phi_ei + p_ei)'
+    i_ie_tt='-(_gamma(gamma_ie, e_ie) + _gamma_tilde(gamma_ie, e_ie)) * i_ie_t - (_gamma(gamma_ie, e_ie) * _gamma_tilde(gamma_ie, e_ie)) * i_ie + (C_i * T_ie) * _gamma_tilde(gamma_ie, e_ie) * exp(_gamma(gamma_ie, e_ie) / gamma_ie) * (N_beta_ie * s_i(h_i) + phi_ie + p_ie)'
+    i_ii_tt='-(_gamma(gamma_ii, e_ii) + _gamma_tilde(gamma_ii, e_ii)) * i_ii_t - (_gamma(gamma_ii, e_ii) * _gamma_tilde(gamma_ii, e_ii)) * i_ii + (C_i * T_ii) * _gamma_tilde(gamma_ii, e_ii) * exp(_gamma(gamma_ii, e_ii) / gamma_ii) * (N_beta_ii * s_i(h_i) + phi_ii + p_ii)'
+
+    phi_ee_tt = '-2 * v * A_ee * phi_ee_t + (v * v) * (A_ee * A_ee) * (N_alpha_ee * s_e(h_e) - phi_ee) + 1.5 * v * v * fake_laplacian'
+    phi_ei_tt = '-2 * v * A_ei * phi_ei_t + (v * v) * (A_ei * A_ei) * (N_alpha_ei * s_e(h_e) - phi_ei) + 1.5 * v * v * fake_laplacian'
+
+    zeroIcs = { 'phi_ee' : 0, 'phi_ee_t' : 0, 'phi_ei' : 0, 'phi_ei_t' : 0, 'i_ee' : 0,
+                'i_ee_t' : 0, 'i_ei' : 0, 'i_ei_t' : 0, 'i_ie' : 0, 'i_ie_t' : 0,
+                'i_ii' : 0, 'i_ii_t' : 0, 'h_e' : 0, 'h_i' : 0,
+                'C_i' : 1, 'C_e' : 1}
+
+    def __init__(self, params, ics = None, name="SIRU3", equations = None, points = None, odeSystem = None, timescale = "s"):
+        if equations == None:
+            print "No eqns for " + name
+            equations = { 'phi_ee' : 'phi_ee_t',
+                          'phi_ei' : 'phi_ei_t',
+                          'phi_ei_t' : SIRU3.phi_ei_tt,
+                          'phi_ee_t' : SIRU3.phi_ee_tt,
+                          'i_ee' : 'i_ee_t',
+                          'i_ei' : 'i_ei_t',
+                          'i_ie' : 'i_ie_t',
+                          'i_ii' : 'i_ii_t',
+                          'i_ee_t' : SIRU3.i_ee_tt,
+                          'i_ei_t' : SIRU3.i_ei_tt,
+                          'i_ie_t' : SIRU3.i_ie_tt,
+                          'i_ii_t' : SIRU3.i_ii_tt,
+                          'h_e' : LileyBase.h_e_t,
+                          'h_i' : LileyBase.h_i_t,
+                          'C_e' : SIRU3.C_e_t,
+                          'C_i' : SIRU3.C_i_t}
+        else:
+            equations = equations
+
+        if ics == None:
+            ics = SIRU3.zeroIcs
+            ics['h_e'] = params['h_e_rest']
+            ics['h_i'] = params['h_i_rest']
+            print "ICS.."
+            print ics
+
+        LileyBase.__init__(self, params = params, ics = ics, name = name, equations = equations, points = points, odeSystem = odeSystem, timescale = timescale)
+
+
 class Continuation:
     def __init__(self, odeSystem, cont, sol, name, displayVar, freeVar, point = None):
         self.odeSystem = odeSystem
