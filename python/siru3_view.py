@@ -28,7 +28,7 @@ while len(sys.argv) > i:
 
 model = SIRU3(params = run_params, timescale = "ms")
 
-cont = model.run([0, 50000]).display(['h_e'], fig = "4").display(['C_e', 'C_i'], fig = "5").display(['phi_ee', 'phi_ei'], fig = "6")
+cont = model.run([0, 80000]).display(['h_e'], fig = "4").display(['C_e', 'C_i'], fig = "5").display(['phi_ee', 'phi_ei'], fig = "6")
 
 show()
 

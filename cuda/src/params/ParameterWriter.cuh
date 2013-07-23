@@ -18,10 +18,11 @@ class ParameterWriter
 private:
 	Params & _params;
 	string _outputPath;
-	double _deltaX, _deltaT, _randomiseFraction;
+	double _t, _deltaX, _deltaT, _randomiseFraction;
 
 public:
-	ParameterWriter(double deltaT, double deltaX, double randomiseFraction, Params & params, string outputPath) :
+	ParameterWriter(double t, double deltaT, double deltaX, double randomiseFraction, Params & params, string outputPath) :
+		_t(t),
 		_params(params),
 		_outputPath(outputPath),
 		_deltaX(deltaX),
@@ -43,6 +44,7 @@ public:
 
 		out << "**** Integration Params ****" << endl;
 		out << "Runge-Kutta fourth order" << endl;
+		out << "simulation length = " << _t << endl;
 		out << "delta_t = " << _deltaT << endl;
 		out << "spatial spacing = " << _deltaX << endl;
 		out << "randomisation = " << _randomiseFraction << endl;

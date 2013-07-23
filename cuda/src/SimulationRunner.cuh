@@ -16,8 +16,8 @@
 
 const int REPORT_STEPS = 200;
 const int RENDER_STEPS = 200;
-const int MESH_SIZE = 70;
-const double T_SIM = 180;
+const int MESH_SIZE = 30;
+const double T_SIM = 90;
 const double DELTA_T = 0.000002;
 const double DELTA = 0.1; //make smaller for tighter mesh
 const double RANDOMISE_FRACTION = 0.01;
@@ -35,10 +35,12 @@ private:
 		std::map<string, int> dims;
 		dims["h_e"] = T::h_e;
 		dims["h_i"] = T::h_i;
-		dims["T_ii"] = T::T_ii;
-		dims["T_ie"] = T::T_ie;
-		dims["T_ei"] = T::T_ei;
-		dims["T_ee"] = T::T_ee;
+		//		dims["T_ii"] = T::T_ii;
+		//		dims["T_ie"] = T::T_ie;
+		//		dims["T_ei"] = T::T_ei;
+		//		dims["T_ee"] = T::T_ee;
+		dims["C_e"] = T::C_e;
+		dims["C_i"] = T::C_i;
 		dims["phi_ee"] = T::phi_ee;
 		dims["phi_ei"] = T::phi_ei;
 
@@ -84,7 +86,7 @@ public:
 				  .withICDeviation(RANDOMISE_FRACTION);
 
 
-		ParameterWriter paramWriter(DELTA_T, DELTA, RANDOMISE_FRACTION, _params, streamBuilder.runPath());
+		ParameterWriter paramWriter(T_SIM, DELTA_T, DELTA, RANDOMISE_FRACTION, _params, streamBuilder.runPath());
 		paramWriter.write();
 
 		Simulation<T> * sim = simBuilder.build();
