@@ -1,20 +1,23 @@
 /*
- * SIRU3HardcodedParams.cuh
+ * SIRU3NonHomogeneousParams.cuh
  *
- *  Created on: 21/07/2013
+ *  Created on: 25/07/2013
  *      Author: matt
  */
 
-#ifndef SIRU3HARDCODEDPARAMS_CUH_
-#define SIRU3HARDCODEDPARAMS_CUH_
+#ifndef SIRU3NONHOMOGENEOUSPARAMS_CUH_
+#define SIRU3NONHOMOGENEOUSPARAMS_CUH_
 
 #include "Params.cuh"
-#include "HomogeneousParameterMesh.cuh"
+#include "../ParameterSpace.cuh"
+#include "NonHomogeneousParameterMesh.cuh"
 #include "../liley/SIRU3Model.cuh"
 
-class SIRU3HardcodedParams : public Params<SIRU3Model>
+
+class SIRU3NonHomogeneousParams : public Params<SIRU3Model>
 {
-	ParameterMesh<SIRU3Model> * params(int meshSize)
+private:
+	ParameterSpace base()
 	{
 		ParameterSpace params;
 		params[SIRU3Model::tor_e] = 138.3660;
@@ -86,7 +89,54 @@ class SIRU3HardcodedParams : public Params<SIRU3Model>
 //		params[SIRU3Model::e_ii] = 1.8;
 		params[SIRU3Model::e_ii] = 1.72;
 
-		return new HomogeneousParameterMesh<SIRU3Model>(params);
+		return params;
+	}
+
+	const static int SAMPLE_POINTS = 3;
+public:
+	ParameterMesh<SIRU3Model> * params(int meshSize)
+	{
+		NonHomogeneousParameterMesh<SIRU3Model> * mesh = new NonHomogeneousParameterMesh<SIRU3Model>(SAMPLE_POINTS, meshSize);
+
+		ParameterSpace point1 = base();
+		//point1[SIRU3Model::v] = 0.095;
+		point1[SIRU3Model::g_e] *= 0.97;
+
+		ParameterSpace point2 = base();
+		//point2[SIRU3Model::v] = 0.085;
+		point2[SIRU3Model::g_e] *= 1.03;
+
+		ParameterSpace point3 = base();
+
+		ParameterSpace point4 = base();
+		//point4[SIRU3Model::v] = 0.075;
+		point4[SIRU3Model::g_e] *= 0.95;
+
+		ParameterSpace point5 = base();
+		//point5[SIRU3Model::v] = 0.095;
+		point5[SIRU3Model::g_e] *= 1.01;
+
+		ParameterSpace point6 = base();
+		//point6[SIRU3Model::v] = 0.075;
+		point6[SIRU3Model::g_e] *= 1.05;
+
+		ParameterSpace point7 = base();
+		//point7[SIRU3Model::v] = 0.095;
+		point7[SIRU3Model::g_e] *= 0.95;
+
+		mesh->addRefPoint(0, 0, point1);
+		mesh->addRefPoint(0, 1, point2);
+		mesh->addRefPoint(0, 2, point6);
+
+		mesh->addRefPoint(1, 0, point3);
+		mesh->addRefPoint(1, 1, point4);
+		mesh->addRefPoint(1, 2, point4);
+
+		mesh->addRefPoint(2, 0, point5);
+		mesh->addRefPoint(2, 1, point7);
+		mesh->addRefPoint(2, 2, point7);
+
+		return mesh;
 	}
 
 	StateSpace initialConditions()
@@ -115,5 +165,4 @@ class SIRU3HardcodedParams : public Params<SIRU3Model>
 };
 
 
-
-#endif /* SIRU3HARDCODEDPARAMS_CUH_ */
+#endif /* SIRU3NONHOMOGENEOUSPARAMS_CUH_ */

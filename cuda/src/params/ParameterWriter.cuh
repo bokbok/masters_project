@@ -13,16 +13,19 @@
 
 using namespace std;
 
+template <class T>
 class ParameterWriter
 {
 private:
-	Params & _params;
+	Params<T> & _params;
 	string _outputPath;
 	double _t, _deltaX, _deltaT, _randomiseFraction;
+	int _meshSize;
 
 public:
-	ParameterWriter(double t, double deltaT, double deltaX, double randomiseFraction, Params & params, string outputPath) :
+	ParameterWriter(double t, int meshSize, double deltaT, double deltaX, double randomiseFraction, Params<T> & params, string outputPath) :
 		_t(t),
+		_meshSize(meshSize),
 		_params(params),
 		_outputPath(outputPath),
 		_deltaX(deltaX),
@@ -36,7 +39,7 @@ public:
 		ofstream out;
 		out.open((_outputPath + "/run.info").c_str());
 
-		ParameterSpace params = _params.params();
+		ParameterSpace params = _params.params(_meshSize)->paramsAt(0, 0);
 		StateSpace ics = _params.initialConditions();
 
 		map<string, int> paramMap = _params.paramMap();

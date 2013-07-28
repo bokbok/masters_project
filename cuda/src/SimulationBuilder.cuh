@@ -26,7 +26,7 @@ private:
 	int _meshSize;
 	int _reportSteps;
 
-	ParameterSpace _params;
+	ParameterMesh<T> * _params;
 	StateSpace _ics;
 
 	vector<int> _randomiseParams;
@@ -67,7 +67,7 @@ public:
 		return *this;
 	}
 
-	SimulationBuilder & withParameters(ParameterSpace params)
+	SimulationBuilder & withParameters(ParameterMesh<T> * params)
 	{
 		_params = params;
 		return *this;
@@ -94,8 +94,8 @@ public:
 	Simulation<T> * build()
 	{
 		Simulation<T> * sim = new Simulation<T>(_meshSize, _meshSize, 200, _reportSteps, _runtime,
-								  	      	 _timeStep, _meshSpacing, _ics,
-								  	      	 _params, _icFluctuation, _randomiseParams);
+								  	      	 	 _timeStep, _meshSpacing, _ics,
+								  	      	 	 *_params, _icFluctuation, _randomiseParams);
 
 		return sim;
 	}

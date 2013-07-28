@@ -11,7 +11,8 @@
 
 const int MAX_PARAMS = 100;
 
-class __align__(128) ParameterSpace
+class __align__(128)
+		ParameterSpace
 {
 private:
 	double _vals[MAX_PARAMS];

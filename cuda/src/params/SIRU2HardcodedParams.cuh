@@ -9,11 +9,12 @@
 #define SIRU2HARDCODEDPARAMS_CUH_
 
 #include "Params.cuh"
+#include "HomogeneousParameterMesh.cuh"
 #include "../liley/SIRU2Model.cuh"
 
-class SIRU2HardcodedParams : public Params
+class SIRU2HardcodedParams : public Params<SIRU2Model>
 {
-	ParameterSpace params()
+	ParameterMesh<SIRU2Model> * params(int meshSize)
 	{
 		ParameterSpace params;
 		params[SIRU2Model::tor_e] = 138.3660;
@@ -87,7 +88,7 @@ class SIRU2HardcodedParams : public Params
 		params[SIRU2Model::e_ii] = 1.81;
 //		params[SIRU2Model::e_ii] = 1.8;
 
-		return params;
+		return new HomogeneousParameterMesh<SIRU2Model>(params);
 	}
 
 	StateSpace initialConditions()

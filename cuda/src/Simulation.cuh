@@ -8,6 +8,7 @@
 #ifndef SIMULATION_HPP_
 #define SIMULATION_HPP_
 #include "Mesh.cuh"
+#include "params/ParameterMesh.cuh"
 
 template <class T>
 class Simulation
@@ -16,7 +17,6 @@ private:
 	int _width, _height;
 	double _length, _deltaT, _delta, _icFluctuation;
 	StateSpace _initialConditions;
-	ParameterSpace _params;
 
 	Mesh<T> * _mesh;
 
@@ -38,14 +38,13 @@ private:
 public:
 	Simulation(int width, int height, int bufferSize, int reportSteps, double length,
 			   double deltaT, double delta, StateSpace initialConditions,
-			   ParameterSpace params, double icFluctuation, vector<int> & randomiseParams):
+			   ParameterMesh<T> & params, double icFluctuation, vector<int> & randomiseParams):
 		_width(width),
 		_height(height),
 		_length(length),
 		_deltaT(deltaT),
 		_delta(delta),
 		_initialConditions(initialConditions),
-		_params(params),
 		_icFluctuation(icFluctuation)
 	{
 		printf("Allocating mesh......");

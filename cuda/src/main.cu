@@ -9,13 +9,16 @@ using namespace std;
 #include "params/SIRU1HardcodedParams.cuh"
 #include "params/SIRU2HardcodedParams.cuh"
 #include "params/SIRU3HardcodedParams.cuh"
+#include "params/SIRU3NonHomogeneousParams.cuh"
 #include "SimulationRunner.cuh"
 
 const char * OUTPUT_PATH = "/terra/runs";
 
 int main(void)
 {
-	SIRU3HardcodedParams params;
+	setbuf(stdout, NULL);
+	//SIRU3HardcodedParams params;
+	SIRU3NonHomogeneousParams params;
 	SimulationRunner<SIRU3Model> runner(params, OUTPUT_PATH);
 	runner.runSimulation();
 

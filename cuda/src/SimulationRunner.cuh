@@ -27,7 +27,7 @@ class SimulationRunner
 {
 private:
 
-	Params & _params;
+	Params<T> & _params;
 	string _outputPath;
 
 	std::map<string, int> dimensions()
@@ -48,7 +48,7 @@ private:
 	}
 
 public:
-	SimulationRunner(Params & params, string outputPath) :
+	SimulationRunner(Params<T> & params, string outputPath) :
 		_params(params),
 		_outputPath(outputPath)
 	{
@@ -58,8 +58,10 @@ public:
 	{
 		StreamBuilder streamBuilder(MESH_SIZE, _outputPath);
 
+		double rmsMid = _params.params(MESH_SIZE)->paramsAt(0, 0)[T::h_e_rest];
+
 		streamBuilder.toFile(dimensions())
-				     .RMSFor(T::h_e, RENDER_STEPS, _params.params()[T::h_e_rest])
+				     .RMSFor(T::h_e, RENDER_STEPS, rmsMid)
 				     .traceFor(T::h_e, RENDER_STEPS, 5, -80, -30)
 				     //				     .traceFor(T::T_ii, RENDER_STEPS, 2, 0, 5)
 				     //				     .traceFor(T::T_ie, RENDER_STEPS, 2, 0, 5)
@@ -82,11 +84,17 @@ public:
 				  .randomising(T::h_e)
 				  .randomising(T::h_i)
 				  .withInitialConditions(_params.initialConditions())
-				  .withParameters(_params.params())
+				  .withParameters(_params.params(MESH_SIZE))
 				  .withICDeviation(RANDOMISE_FRACTION);
 
 
-		ParameterWriter paramWriter(T_SIM, DELTA_T, DELTA, RANDOMISE_FRACTION, _params, streamBuilder.runPath());
+		ParameterWriter<T> paramWriter(T_SIM,
+									   MESH_SIZE,
+									   DELTA_T,
+									   DELTA,
+									   RANDOMISE_FRACTION,
+									   _params,
+									   streamBuilder.runPath());
 		paramWriter.write();
 
 		Simulation<T> * sim = simBuilder.build();

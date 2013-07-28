@@ -20,6 +20,7 @@
 #include "RungeKuttaIntegrator.cuh"
 #include "liley/Model.cuh"
 #include "io/DataStream.cuh"
+#include "params/ParameterMesh.cuh"
 #include "common.cuh"
 #include "Buffer.cuh"
 #include <time.h>
@@ -29,7 +30,14 @@ using namespace std;
 
 template <class M>
 __global__
-void __callStep(StateSpace * prev, StateSpace * curr, ParameterSpace * parameters, int width, int height, double delta, double t, double deltaT, M model)
+void __callStep(StateSpace * prev,
+					   StateSpace * curr,
+					   ParameterSpace * parameters,
+					   int width,
+					   int height,
+					   double delta,
+					   double t,
+					   double deltaT)
 {
 	int x = blockDim.x * blockIdx.x + threadIdx.x;
 	int y = blockDim.y * blockIdx.y + threadIdx.y;
@@ -41,11 +49,12 @@ void __callStep(StateSpace * prev, StateSpace * curr, ParameterSpace * parameter
 	integrator.integrateStep();
 }
 
+
 template <class M>
 class Mesh
 {
 public:
-	Mesh(int width, int height, double delta, int bufferSize, int reportSteps, StateSpace * initialConditions, ParameterSpace params):
+	Mesh(int width, int height, double delta, int bufferSize, int reportSteps, StateSpace * initialConditions, ParameterMesh<M> & params):
 		_width(width),
 		_height(height),
 		_delta(delta),
@@ -57,7 +66,6 @@ public:
 		_N(width * height),
 		_flushCount(0)
 	{
-		M::precalculate(params);
 		allocate();
 		cudaFuncSetCacheConfig(__callStep<M>, cudaFuncCachePreferL1);
 	}
@@ -83,7 +91,7 @@ private:
 	int _width, _height, _N;
 	int _bufferSize, _reportSteps, _stepNum;
 	StateSpace * _initialConditions;
-	ParameterSpace & _params;
+	ParameterMesh<M> & _params;
 	double _delta;
 
 	int _flushCount;
@@ -124,10 +132,10 @@ private:
 
 		dim3 grid(_width / BLOCK_SIZE, _height / BLOCK_SIZE), block(BLOCK_SIZE, BLOCK_SIZE);
 
-		__callStep<<< grid, block >>>((StateSpace *)thrust::raw_pointer_cast( prevPtr ),
+		__callStep<M><<< grid, block >>>((StateSpace *)thrust::raw_pointer_cast( prevPtr ),
 									  (StateSpace *)thrust::raw_pointer_cast( currentPtr ),
 									  (ParameterSpace *)thrust::raw_pointer_cast( _parameters ),
-									  _width, _height, _delta, t, deltaT, M());
+									  _width, _height, _delta, t, deltaT);
 	}
 
 
@@ -140,7 +148,17 @@ private:
 			thrust::copy(ics.begin(), ics.end(), mem);
 			_pointers.push_back(mem);
 		}
-		_parameters = thrust::device_new<ParameterSpace>(thrust::device_new<ParameterSpace>(_N), _params, _N);
+
+		_parameters = thrust::device_new<ParameterSpace>(_N);
+		vector<ParameterSpace> params;
+		for (int x = 0; x < _width; x++)
+		{
+			for (int y = 0; y < _height; y++)
+			{
+				params.push_back(_params.paramsAt(x, y));
+			}
+		}
+		thrust::copy(params.begin(), params.end(), _parameters);
 	}
 
 	void deallocate()
