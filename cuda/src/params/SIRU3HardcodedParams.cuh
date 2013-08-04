@@ -54,14 +54,17 @@ class SIRU3HardcodedParams : public Params<SIRU3Model>
 		params[SIRU3Model::mu_e] = -47.1364;
 		params[SIRU3Model::mu_i] = -45.3751;
 
-		params[SIRU3Model::mus_e] = 0.001;
-		params[SIRU3Model::mus_i] = 0.001;
+//		params[SIRU3Model::mus_e] = 0.001;
+//		params[SIRU3Model::mus_i] = 0.001;
+		params[SIRU3Model::mus_e] = 0;
+		params[SIRU3Model::mus_i] = 0;
 
 		params[SIRU3Model::sigma_e] = 2.6120;
 		params[SIRU3Model::sigma_i] = 2.8294;
 
+		params[SIRU3Model::p_ee] = 3;
 //		params[SIRU3Model::p_ee] = 3.6032;
-		params[SIRU3Model::p_ee] = 3.485;
+//		params[SIRU3Model::p_ee] = 3.485;
 		params[SIRU3Model::p_ei] = 0.3639;
 		params[SIRU3Model::p_ie] = 0;
 		params[SIRU3Model::p_ii] = 0;
@@ -73,7 +76,9 @@ class SIRU3HardcodedParams : public Params<SIRU3Model>
 		params[SIRU3Model::A_ei] = 0.2433;
 
 //		params[SIRU3Model::v] = 0.1714;
-		params[SIRU3Model::v] = 0.07;
+//		params[SIRU3Model::v] = 0.07;
+//		params[SIRU3Model::v] = 0.181;
+		params[SIRU3Model::v] = 0.185;
 
 		params[SIRU3Model::r_abs] = 0;
 
@@ -84,7 +89,8 @@ class SIRU3HardcodedParams : public Params<SIRU3Model>
 		params[SIRU3Model::e_ei] = 0;
 		params[SIRU3Model::e_ie] = 1.5;
 //		params[SIRU3Model::e_ii] = 1.8;
-		params[SIRU3Model::e_ii] = 1.72;
+//		params[SIRU3Model::e_ii] = 1.72;
+		params[SIRU3Model::e_ii] = 2.5;
 
 		return new HomogeneousParameterMesh<SIRU3Model>(params);
 	}

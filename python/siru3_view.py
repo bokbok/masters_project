@@ -28,7 +28,9 @@ while len(sys.argv) > i:
 
 model = SIRU3(params = run_params, timescale = "ms")
 
-cont = model.run([0, 80000]).display(['h_e'], fig = "4").display(['C_e', 'C_i'], fig = "5").display(['phi_ee', 'phi_ei'], fig = "6")
+run = model.run([0, 80000]).display(['h_e'], fig = "4").display(['C_e', 'C_i'], fig = "5").display(['phi_ee', 'phi_ei'], fig = "6").display(['i_ee', 'i_ei', 'i_ie', 'i_ii'], fig = "9")
+
+run.displayPhasePlane3D('h_e', 'phi_ee', 'phi_ei')
 
 show()
 

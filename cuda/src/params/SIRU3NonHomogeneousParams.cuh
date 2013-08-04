@@ -92,49 +92,100 @@ private:
 		return params;
 	}
 
-	const static int SAMPLE_POINTS = 3;
+	const static int SAMPLE_POINTS = 5;
 public:
 	ParameterMesh<SIRU3Model> * params(int meshSize)
 	{
 		NonHomogeneousParameterMesh<SIRU3Model> * mesh = new NonHomogeneousParameterMesh<SIRU3Model>(SAMPLE_POINTS, meshSize);
 
 		ParameterSpace point1 = base();
-		//point1[SIRU3Model::v] = 0.095;
-		point1[SIRU3Model::g_e] *= 0.97;
+		point1[SIRU3Model::v] = 0.185;
+		point1[SIRU3Model::p_ee] = 3;
+		point1[SIRU3Model::e_ii] = 2.5;
+		point1[SIRU3Model::mus_e] = 0;
+		point1[SIRU3Model::mus_i] = 0;
+
 
 		ParameterSpace point2 = base();
-		//point2[SIRU3Model::v] = 0.085;
-		point2[SIRU3Model::g_e] *= 1.03;
+		point2[SIRU3Model::v] = 0.185;
+		point2[SIRU3Model::p_ee] = 3;
+		point2[SIRU3Model::e_ii] = 2.5;
+		point2[SIRU3Model::mus_e] = 0;
+		point2[SIRU3Model::mus_i] = 0;
 
 		ParameterSpace point3 = base();
+		point3[SIRU3Model::v] = 0.185;
+		point3[SIRU3Model::p_ee] = 3;
+		point3[SIRU3Model::e_ii] = 2.5;
+		point3[SIRU3Model::mus_e] = 0;
+		point3[SIRU3Model::mus_i] = 0;
 
 		ParameterSpace point4 = base();
-		//point4[SIRU3Model::v] = 0.075;
-		point4[SIRU3Model::g_e] *= 0.95;
+		point4[SIRU3Model::v] = 0.185;
+		point4[SIRU3Model::p_ee] = 3;
+		point4[SIRU3Model::e_ii] = 2.5;
+		point4[SIRU3Model::mus_e] = 0;
+		point4[SIRU3Model::mus_i] = 0;
 
 		ParameterSpace point5 = base();
-		//point5[SIRU3Model::v] = 0.095;
-		point5[SIRU3Model::g_e] *= 1.01;
+		point5[SIRU3Model::v] = 0.185;
+		point5[SIRU3Model::p_ee] = 3;
+		point5[SIRU3Model::e_ii] = 2.5;
+		point5[SIRU3Model::mus_e] = 0;
+		point5[SIRU3Model::mus_i] = 0;
 
 		ParameterSpace point6 = base();
-		//point6[SIRU3Model::v] = 0.075;
-		point6[SIRU3Model::g_e] *= 1.05;
+		point6[SIRU3Model::v] = 0.185;
+		point6[SIRU3Model::p_ee] = 3;
+		point6[SIRU3Model::e_ii] = 2.5;
+		point6[SIRU3Model::mus_e] = 0;
+		point6[SIRU3Model::mus_i] = 0;
 
 		ParameterSpace point7 = base();
-		//point7[SIRU3Model::v] = 0.095;
-		point7[SIRU3Model::g_e] *= 0.95;
+		point7[SIRU3Model::v] = 0.185;
+		point7[SIRU3Model::p_ee] = 3;
+		point7[SIRU3Model::e_ii] = 2.5;
+		point7[SIRU3Model::mus_e] = 0;
+		point7[SIRU3Model::mus_i] = 0;
+
+		ParameterSpace point8 = base();
+		point5[SIRU3Model::v] = 0.185;
+		point5[SIRU3Model::p_ee] = 3;
+		point5[SIRU3Model::e_ii] = 2.5;
+		point5[SIRU3Model::mus_e] = 0;
+		point5[SIRU3Model::mus_i] = 0;
+
 
 		mesh->addRefPoint(0, 0, point1);
 		mesh->addRefPoint(0, 1, point2);
 		mesh->addRefPoint(0, 2, point6);
+		mesh->addRefPoint(0, 3, point2);
+		mesh->addRefPoint(0, 4, point1);
 
 		mesh->addRefPoint(1, 0, point3);
 		mesh->addRefPoint(1, 1, point4);
 		mesh->addRefPoint(1, 2, point4);
+		mesh->addRefPoint(1, 3, point4);
+		mesh->addRefPoint(1, 4, point3);
 
 		mesh->addRefPoint(2, 0, point5);
 		mesh->addRefPoint(2, 1, point7);
-		mesh->addRefPoint(2, 2, point7);
+		mesh->addRefPoint(2, 2, point8); // centre
+		mesh->addRefPoint(2, 3, point7);
+		mesh->addRefPoint(2, 4, point5);
+
+		mesh->addRefPoint(3, 0, point5);
+		mesh->addRefPoint(3, 1, point7);
+		mesh->addRefPoint(3, 2, point7);
+		mesh->addRefPoint(3, 3, point7);
+		mesh->addRefPoint(3, 4, point5);
+
+		mesh->addRefPoint(4, 0, point1);
+		mesh->addRefPoint(4, 1, point2);
+		mesh->addRefPoint(4, 2, point6);
+		mesh->addRefPoint(4, 3, point2);
+		mesh->addRefPoint(4, 4, point1);
+
 
 		return mesh;
 	}
