@@ -123,6 +123,7 @@
 							<tool id="nvcc.linker.base.1154674110" name="NVCC Linker" superClass="nvcc.linker.base">
 								<option id="nvcc.linker.option.libs.303535524" name="Libraries (-l)" superClass="nvcc.linker.option.libs" valueType="libs">
 									<listOptionValue builtIn="false" value="mgl"/>
+									<listOptionValue builtIn="false" value="yaml-cpp"/>
 								</option>
 								<option id="nvcc.linker.option.paths.1511066329" name="Library search path (-L)" superClass="nvcc.linker.option.paths" valueType="libPaths">
 									<listOptionValue builtIn="false" value="/usr/local/lib"/>
