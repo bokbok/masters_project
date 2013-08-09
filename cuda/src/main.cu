@@ -13,9 +13,35 @@ using namespace std;
 #include "params/YAMLModelParams.cuh"
 #include "params/NonHomogeneousYAMLModelParams.cuh"
 #include "SimulationRunner.cuh"
+#include <dirent.h>
 
 const char * OUTPUT_PATH = "/terra/runs";
 const char * PARAM_FILE = "/home/matt/work/masters_project/parameterisations/derived/parameterisations/original_biphasic_86.yml/bp41.ode/1375611399.98.yml";
+const char * PARAM_DIR = "/home/matt/work/masters_project/parameterisations/derived/parameterisations/original_biphasic_86.yml/bp41.ode";
+
+vector<string> parameterFiles(const char * dir)
+{
+	vector<string> result;
+	DIR *dpdf;
+	struct dirent *epdf;
+
+	dpdf = opendir(dir);
+	if (dpdf != NULL){
+	   while (epdf = readdir(dpdf)){
+		  string file = epdf->d_name;
+		  if (file.length() > 4)
+		  {
+			  if (file.compare(file.length() - 4, file.length(), ".yml") == 0)
+			  {
+				  cout << string(dir) + string(epdf->d_name) << endl;
+				  result.push_back(string(dir) + "/" + string(epdf->d_name));
+			  }
+		  }
+	   }
+	}
+
+	return result;
+}
 
 int main(void)
 {
@@ -25,13 +51,7 @@ int main(void)
 
 //	YAMLModelParams<SIRU3Model> params("/home/matt/work/masters_project/parameterisations/derived/parameterisations/original_biphasic_86.yml/bp41.ode/1375611399.98.yml");
 
-	vector<string> randomise;
-	randomise.push_back("mus_i");
-	randomise.push_back("mus_e");
-	randomise.push_back("e_ii");
-	randomise.push_back("e_ie");
-
-	NonHomogeneousYAMLModelParams<SIRU3Model> params(PARAM_FILE, randomise);
+	NonHomogeneousYAMLModelParams<SIRU3Model> params(parameterFiles(PARAM_DIR), 5);
 
 	SimulationRunner<SIRU3Model> runner(params, OUTPUT_PATH);
 	runner.runSimulation();

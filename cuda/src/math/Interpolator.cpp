@@ -5,8 +5,9 @@
 double * Interpolator::interpolateMesh()
 {
 	double * result = new double[_meshSize * _meshSize];
-	double delta = (_meshSize / _samplePoints);
+	double delta = ((double)_meshSize / (double)_samplePoints);
 
+	printf(" %lf \n",delta);
 	for (int x=0;x < _samplePoints; x++)
 	{
 		for (int y=0;y < _samplePoints; y++)
@@ -32,12 +33,11 @@ double * Interpolator::interpolateMesh()
 			for (int seg = 0; seg < delta; seg++)
 			{
 				result[x + seg + ySamp * _meshSize] = segStart + deltaZ * (seg / delta);
-				printf("(%i, %i): %f  ", x + seg, (int)(ySamp * delta), result[x + seg + ySamp * _meshSize]) ;
 			}
 		}
 	}
 
-	// now fill in the y direction from what was computed in x
+	// now fill in the x direction from what was computed in y
 	for (int x = 0; x < _meshSize; x++)
 	{
 		for (int ySamp = 0; ySamp < _samplePoints; ySamp++)
@@ -50,20 +50,23 @@ double * Interpolator::interpolateMesh()
 
 			for (int seg = 0; seg < delta; seg++)
 			{
-				result[x + (ySamp + seg) * _meshSize] = segStart + deltaZ * (seg / delta);
+				result[x + (int)(ySamp * delta + seg) * _meshSize] = segStart + deltaZ * (seg / delta);
 			}
 		}
 	}
 
-	for (int x=0;x < _meshSize; x++)
+
+	printf("*** Interpolated Values: \n");
+	for (int x = 0; x < _meshSize; x++)
 	{
-		for (int y=0;y < _meshSize; y++)
+		for (int y = 0; y < _meshSize; y++)
 		{
 			printf(" (%i, %i):%lf",x, y, result[x + y * _meshSize]);
 		}
 		printf("\n");
 	}
 
+	printf("\n");
 	return result;
 }
 
