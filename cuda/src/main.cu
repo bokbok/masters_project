@@ -16,8 +16,8 @@ using namespace std;
 #include <dirent.h>
 
 const char * OUTPUT_PATH = "/terra/runs";
-const char * PARAM_FILE = "/home/matt/work/masters_project/parameterisations/derived/parameterisations/original_biphasic_86.yml/bp41.ode/1375611399.98.yml";
-const char * PARAM_DIR = "/home/matt/work/masters_project/parameterisations/derived/parameterisations/original_biphasic_86.yml/bp41.ode";
+//const char * PARAM_DIR = "/home/matt/work/masters_project/parameterisations/derived/parameterisations/original_biphasic_86.yml/bp41.ode";
+const char * PARAM_DIR = "/home/matt/work/masters_project/parameterisations/derived/parameterisations/original_biphasic_86.yml/bp52.ode";
 
 vector<string> parameterFiles(const char * dir)
 {

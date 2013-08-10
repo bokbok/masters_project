@@ -57,14 +57,14 @@ double * Interpolator::interpolateMesh()
 
 
 	printf("*** Interpolated Values: \n");
-	for (int x = 0; x < _meshSize; x++)
-	{
-		for (int y = 0; y < _meshSize; y++)
-		{
-			printf(" (%i, %i):%lf",x, y, result[x + y * _meshSize]);
-		}
-		printf("\n");
-	}
+//	for (int x = 0; x < _meshSize; x++)
+//	{
+//		for (int y = 0; y < _meshSize; y++)
+//		{
+//			printf(" (%i, %i):%lf",x, y, result[x + y * _meshSize]);
+//		}
+//		printf("\n");
+//	}
 
 	printf("\n");
 	return result;

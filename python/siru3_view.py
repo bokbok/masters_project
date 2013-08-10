@@ -37,7 +37,7 @@ ics = SIRU3.zeroIcs
 
 model = SIRU3(params = run_params, ics = ics, timescale = "ms")
 
-run = model.run([0, 10000]).run([0, 30000]).display(['C_e', 'C_i'], fig = "2").display(['h_e'], fig = "4")
+run = model.run([0, 30000]).display(['C_e', 'C_i'], fig = "2").display(['h_e'], fig = "4")
 
 run.displayPhasePlane3D('h_e', 'C_e', 'C_i')
 
