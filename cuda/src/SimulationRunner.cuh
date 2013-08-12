@@ -60,7 +60,7 @@ public:
 
 		double rmsMid = _params.params(MESH_SIZE)->paramsAt(0, 0)[T::h_e_rest];
 
-		streamBuilder.toFile(dimensions())
+		streamBuilder.toBinaryFile(dimensions())
 				     .RMSFor(T::h_e, RENDER_STEPS, rmsMid)
 				     .traceFor(T::h_e, RENDER_STEPS, 5, -80, -30)
 				     //				     .traceFor(T::T_ii, RENDER_STEPS, 2, 0, 5)

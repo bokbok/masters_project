@@ -9,6 +9,7 @@
 #define STREAMBUILDER_CUH_
 
 #include "io/FileDataStream.cuh"
+#include "io/BinaryDataStream.cuh"
 #include "io/AsyncDataStream.cuh"
 #include "io/CompositeDataStream.cuh"
 #include "io/visual/FrameRenderingDataStream.cuh"
@@ -69,6 +70,14 @@ public:
 	StreamBuilder & toFile(map<string, int> dimensions)
 	{
 		addAsync(new FileDataStream(_runPath + "/run.dat", dimensions));
+
+		return *this;
+
+	}
+
+	StreamBuilder & toBinaryFile(map<string, int> dimensions)
+	{
+		addAsync(new BinaryDataStream(_runPath + "/run.dat.bin", dimensions));
 
 		return *this;
 
