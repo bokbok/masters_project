@@ -102,6 +102,11 @@ public:
 		return _interpolated[x][y];
 	}
 
+	virtual string describe()
+	{
+		return "Non-Homogeneous parameters";
+	}
+
 	virtual ~NonHomogeneousParameterMesh()
 	{
 	}

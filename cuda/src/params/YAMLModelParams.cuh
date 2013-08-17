@@ -42,7 +42,7 @@ public:
 		readPrototype();
 	}
 
-	ParameterMesh<M> * params(int meshSize)
+	ParameterMesh<M> * mesh(int meshSize)
 	{
 		HomogeneousParameterMesh<M> * mesh = new HomogeneousParameterMesh<M>(_prototype);
 		return mesh;

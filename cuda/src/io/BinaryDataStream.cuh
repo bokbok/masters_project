@@ -19,6 +19,7 @@ class BinaryDataStream : public DataStream
 private:
 	string _path;
 	map<string, int> _dimensions;
+	int _meshSize;
 
 	ofstream _out;
 
@@ -29,7 +30,6 @@ private:
 		{
 			cerr << "File failed to open: " << _path << endl;
 		}
-		//_out.precision(15);
 	}
 
 	void close()
@@ -46,12 +46,14 @@ private:
 			_out << iter->first << " ";
 		}
 
+		_out << _meshSize;
+
 		_out << endl;
 	}
 
 public:
-	BinaryDataStream(string path, map<string, int> dimensions):
-		_path(path), _dimensions(dimensions)
+	BinaryDataStream(string path, map<string, int> dimensions, int meshSize):
+		_path(path), _dimensions(dimensions), _meshSize(meshSize)
 	{
 		open();
 		writeHeaders();

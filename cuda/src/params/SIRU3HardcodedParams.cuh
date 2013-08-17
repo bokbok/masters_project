@@ -14,7 +14,7 @@
 
 class SIRU3HardcodedParams : public Params<SIRU3Model>
 {
-	ParameterMesh<SIRU3Model> * params(int meshSize)
+	ParameterMesh<SIRU3Model> * mesh(int meshSize)
 	{
 		ParameterSpace params;
 		params[SIRU3Model::tor_e] = 138.3660;

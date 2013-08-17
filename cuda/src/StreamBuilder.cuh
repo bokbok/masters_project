@@ -77,7 +77,7 @@ public:
 
 	StreamBuilder & toBinaryFile(map<string, int> dimensions)
 	{
-		addAsync(new BinaryDataStream(_runPath + "/run.dat.bin", dimensions));
+		addAsync(new BinaryDataStream(_runPath + "/run.dat.bin", dimensions, _meshSize));
 
 		return *this;
 

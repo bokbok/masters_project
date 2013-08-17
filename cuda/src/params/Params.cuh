@@ -20,7 +20,7 @@ template <class T>
 class Params
 {
 public:
-	virtual ParameterMesh<T> * params(int meshSize) = 0;
+	virtual ParameterMesh<T> * mesh(int meshSize) = 0;
 	virtual StateSpace initialConditions() = 0;
 	virtual map<string, int> paramMap() = 0;
 	virtual map<string, int> stateMap() = 0;

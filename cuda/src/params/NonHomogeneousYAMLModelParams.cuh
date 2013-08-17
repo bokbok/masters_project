@@ -53,7 +53,7 @@ public:
 		readPoints();
 	}
 
-	ParameterMesh<M> * params(int meshSize)
+	ParameterMesh<M> * mesh(int meshSize)
 	{
 		NonHomogeneousParameterMesh<M> * mesh = new NonHomogeneousParameterMesh<M>(_samplePoints, meshSize);
 
@@ -93,6 +93,17 @@ public:
 	{
 		return M::paramMap();
 	}
+
+	virtual string describe()
+	{
+		string files = "";
+		for (vector<string>::iterator iter = _filenames.begin(); iter != _filenames.end(); ++iter)
+		{
+			files += "\n" + *iter;
+		}
+		return "Non-Homogeneous parameters from files:" + files;
+	}
+
 
 };
 

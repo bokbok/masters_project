@@ -94,7 +94,7 @@ private:
 
 	const static int SAMPLE_POINTS = 5;
 public:
-	ParameterMesh<SIRU3Model> * params(int meshSize)
+	ParameterMesh<SIRU3Model> * mesh(int meshSize)
 	{
 		NonHomogeneousParameterMesh<SIRU3Model> * mesh = new NonHomogeneousParameterMesh<SIRU3Model>(SAMPLE_POINTS, meshSize);
 

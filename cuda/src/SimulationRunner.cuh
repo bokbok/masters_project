@@ -16,7 +16,7 @@
 
 const int REPORT_STEPS = 200;
 const int RENDER_STEPS = 200;
-const int MESH_SIZE = 70;
+const int MESH_SIZE = 50;
 const double T_SIM = 60;
 const double DELTA_T = 0.000001;
 const double DELTA = 0.1; //make smaller for tighter mesh
@@ -58,24 +58,24 @@ public:
 	{
 		StreamBuilder streamBuilder(MESH_SIZE, _outputPath);
 
-		double rmsMid = _params.params(MESH_SIZE)->paramsAt(0, 0)[T::h_e_rest];
+		//double rmsMid = _params.params(MESH_SIZE)->paramsAt(0, 0)[T::h_e_rest];
 
 		streamBuilder.toBinaryFile(dimensions())
-				     .RMSFor(T::h_e, RENDER_STEPS, rmsMid)
-				     .traceFor(T::h_e, RENDER_STEPS, 5, -80, -30)
+					 //				     .RMSFor(T::h_e, RENDER_STEPS, rmsMid)
+					 //				     .traceFor(T::h_e, RENDER_STEPS, 5, -80, -30)
 				     //				     .traceFor(T::T_ii, RENDER_STEPS, 2, 0, 5)
 				     //				     .traceFor(T::T_ie, RENDER_STEPS, 2, 0, 5)
 				     //				     .traceFor(T::T_ei, RENDER_STEPS, 2, 0, 5)
 				     //				     .traceFor(T::T_ee, RENDER_STEPS, 2, 0, 5)
-				     .traceFor(T::C_e, RENDER_STEPS, 2, 0, 5)
-				     .traceFor(T::C_i, RENDER_STEPS, 2, 0, 5)
-				     .traceFor(T::phi_ee, RENDER_STEPS, 2, 0, 5)
-				     .traceFor(T::phi_ei, RENDER_STEPS, 2, 0, 5)
+				     //				     .traceFor(T::C_e, RENDER_STEPS, 2, 0, 5)
+				     //				     .traceFor(T::C_i, RENDER_STEPS, 2, 0, 5)
+				     //				     .traceFor(T::phi_ee, RENDER_STEPS, 2, 0, 5)
+				     //				     .traceFor(T::phi_ei, RENDER_STEPS, 2, 0, 5)
 				     .monitorConvergence();
 
 
 		SimulationBuilder<T> simBuilder;
-
+		ParameterMesh<T> * mesh = _params.mesh(MESH_SIZE);
 		simBuilder.runFor(T_SIM)
 				  .withTimeStep(DELTA_T)
 				  .withMeshSize(MESH_SIZE)
@@ -84,7 +84,7 @@ public:
 				  .randomising(T::h_e)
 				  .randomising(T::h_i)
 				  .withInitialConditions(_params.initialConditions())
-				  .withParameters(_params.params(MESH_SIZE))
+				  .withParameters(mesh)
 				  .withICDeviation(RANDOMISE_FRACTION);
 
 
@@ -93,7 +93,8 @@ public:
 									   DELTA_T,
 									   DELTA,
 									   RANDOMISE_FRACTION,
-									   _params,
+									   &_params,
+									   mesh,
 									   streamBuilder.runPath());
 		paramWriter.write();
 

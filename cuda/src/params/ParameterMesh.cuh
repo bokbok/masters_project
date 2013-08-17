@@ -20,6 +20,7 @@ public:
 	}
 
 	virtual ParameterSpace paramsAt(int x, int y) = 0;
+	virtual string describe() = 0;
 
 	virtual ~ParameterMesh()
 	{

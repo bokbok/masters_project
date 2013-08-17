@@ -17,7 +17,7 @@ using namespace std;
 
 const char * OUTPUT_PATH = "/terra/runs";
 //const char * PARAM_DIR = "/home/matt/work/masters_project/parameterisations/derived/parameterisations/original_biphasic_86.yml/bp41.ode";
-const char * PARAM_DIR = "/home/matt/work/masters_project/parameterisations/derived/parameterisations/original_biphasic_86.yml/bp52.ode";
+const char * PARAM_DIR = "/home/matt/work/masters_project/parameterisations/derived/parameterisations/original_biphasic_86.yml/bp29.ode";
 
 vector<string> parameterFiles(const char * dir)
 {
@@ -51,7 +51,7 @@ int main(void)
 
 //	YAMLModelParams<SIRU3Model> params("/home/matt/work/masters_project/parameterisations/derived/parameterisations/original_biphasic_86.yml/bp41.ode/1375611399.98.yml");
 
-	NonHomogeneousYAMLModelParams<SIRU3Model> params(parameterFiles(PARAM_DIR), 5);
+	NonHomogeneousYAMLModelParams<SIRU3Model> params(parameterFiles(PARAM_DIR), 3);
 
 	SimulationRunner<SIRU3Model> runner(params, OUTPUT_PATH);
 	runner.runSimulation();
