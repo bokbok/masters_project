@@ -33,11 +33,6 @@ public:
 	virtual ~HomogeneousParameterMesh()
 	{
 	}
-
-	virtual string describe()
-	{
-		return "Homogeneous parameters";
-	}
 };
 
 

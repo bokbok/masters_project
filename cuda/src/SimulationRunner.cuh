@@ -16,7 +16,7 @@
 
 const int REPORT_STEPS = 200;
 const int RENDER_STEPS = 200;
-const int MESH_SIZE = 50;
+const int MESH_SIZE = 70;
 const double T_SIM = 60;
 const double DELTA_T = 0.000001;
 const double DELTA = 0.1; //make smaller for tighter mesh

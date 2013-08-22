@@ -23,7 +23,7 @@ for x in range(0, gridSize, step):
     for y in range(0, gridSize, step):
         points.append((x, y))
 
-reader = Reader(sys.argv[1], dim, points, tMax, skip = 500)
+reader = Reader(sys.argv[1], dim, points, tMax, skip = 100)
 
 fig = plt.figure(figsize = (10, 10))
 ax = Axes3D(fig)
@@ -44,9 +44,12 @@ def draw(frame):
             Z[xIndex][yIndex] = data[point]
 
         ax.cla()
-        ax.plot_surface(X, Y, Z, rstride=1, cstride=1, color='green',
-                               linewidth=0, antialiased=False, shade = True)
+        ax.plot_surface(X, Y, Z, rstride=1, cstride=1,
+                                 linewidth=0,
+                                 antialiased=False,
+                                 shade = True)
         ax.set_zlim3d(-80, 0)
+        ax.text(2, 6, 1, 't=' + str(t), fontsize=15)
 
         print "Plot - " + str(t)
     return ax
@@ -58,7 +61,7 @@ def init():
 anim = animation.FuncAnimation(fig, draw, init_func=init,
                                frames=int(tMax * 10), interval=1, blit=False)
 
-anim.save('tmp/' + ntpath.basename(sys.argv[1]) + '.mp4', fps=10)
+anim.save('tmp/' + ntpath.basename(sys.argv[1]) + '.mp4', fps=50)
 #plt.show()
 
 

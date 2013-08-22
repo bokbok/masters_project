@@ -51,7 +51,7 @@ int main(void)
 
 //	YAMLModelParams<SIRU3Model> params("/home/matt/work/masters_project/parameterisations/derived/parameterisations/original_biphasic_86.yml/bp41.ode/1375611399.98.yml");
 
-	NonHomogeneousYAMLModelParams<SIRU3Model> params(parameterFiles(PARAM_DIR), 3);
+	NonHomogeneousYAMLModelParams<SIRU3Model> params(parameterFiles(PARAM_DIR), 17);
 
 	SimulationRunner<SIRU3Model> runner(params, OUTPUT_PATH);
 	runner.runSimulation();

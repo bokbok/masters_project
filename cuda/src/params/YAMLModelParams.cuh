@@ -71,6 +71,12 @@ public:
 		return M::paramMap();
 	}
 
+	virtual string describe()
+	{
+		return "Params from file: " + _params.filename();
+	}
+
+
 };
 
 

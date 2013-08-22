@@ -114,6 +114,10 @@ class SIRU2HardcodedParams : public Params<SIRU2Model>
 		return SIRU2Model::paramMap();
 	}
 
+	virtual string describe()
+	{
+		return "Hardcoded params";
+	}
 };
 
 

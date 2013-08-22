@@ -26,6 +26,11 @@ public:
 	}
 
 	map<string, double> read();
+
+	string filename()
+	{
+		return _filename;
+	}
 };
 
 

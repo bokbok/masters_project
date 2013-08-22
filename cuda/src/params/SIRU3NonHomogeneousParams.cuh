@@ -213,6 +213,10 @@ public:
 		return SIRU3Model::paramMap();
 	}
 
+	virtual string describe()
+	{
+		return "Hardcoded params";
+	}
 };
 
 

@@ -65,7 +65,7 @@ public:
 		map<string, int>::iterator iter;
 
 		out << "**** Parameters ****" << endl;
-		out << "Details: " << _parameterMesh->describe() << endl;
+		out << "Details: " << _params->describe() << endl;
 		for (iter = paramMap.begin(); iter != paramMap.end(); ++iter)
 		{
 			out << iter->first << " = " << params[iter->second] << endl;

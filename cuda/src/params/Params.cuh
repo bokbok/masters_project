@@ -24,6 +24,7 @@ public:
 	virtual StateSpace initialConditions() = 0;
 	virtual map<string, int> paramMap() = 0;
 	virtual map<string, int> stateMap() = 0;
+	virtual string describe() = 0;
 
 	virtual ~Params() {}
 };
