@@ -96,12 +96,15 @@ public:
 
 	virtual string describe()
 	{
-		string files = "";
+		char buf[16];
+		sprintf(buf, "%i", _samplePoints);
+		string desc = "Non-Homogeneous parameters from files with ";
+		desc += string(buf) + " by " + string(buf) + " sample points:";
 		for (vector<string>::iterator iter = _filenames.begin(); iter != _filenames.end(); ++iter)
 		{
-			files += "\n" + *iter;
+			desc += "\n" + *iter;
 		}
-		return "Non-Homogeneous parameters from files:" + files;
+		return desc;
 	}
 
 
