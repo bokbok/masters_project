@@ -36,8 +36,6 @@ for param_set in params.keys():
     run_params['mus_e'] = 0
 
 
-    run_params['e_ee'] = 0
-    run_params['e_ei'] = 0
     run_params['e_ie'] = 1
     run_params['e_ii'] = 1
 
@@ -54,7 +52,7 @@ for param_set in params.keys():
         saddlenode = cont.specialPointNames('LP')
         print hopf
         print saddlenode
-        if len(hopf) >= 1 and len(saddlenode) >= 1:
+        if len(hopf) >= 1:
             print "Burst candidate!! "
             file.write(sys.argv[1] + "|||" + param_set + "||hopf_count=" + str(len(hopf)) + "||saddle_node_count=" + str(len(saddlenode)) + "\n")
             for point in hopf:
