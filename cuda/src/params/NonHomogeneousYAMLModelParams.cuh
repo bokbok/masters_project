@@ -10,7 +10,7 @@
 
 #include "Params.cuh"
 #include "NonHomogeneousParameterMesh.cuh"
-#include "yaml/YAMLParams.hpp"
+#include "yaml/YAMLParamReader.cuh"
 #include <iostream>
 #include <vector>
 
@@ -24,24 +24,10 @@ private:
 
 	void readPoints()
 	{
-		map<string, int> paramLookup = paramMap();
-
 		for (vector<string>::iterator iter = _filenames.begin(); iter != _filenames.end(); ++iter)
 		{
-			YAMLParams yaml(*iter);
-			map<string, double> readParams = yaml.read();
-			ParameterSpace point;
-
-			cout << *iter << ":" << endl;
-			for (map<string, double>::iterator yamlIter = readParams.begin(); yamlIter != readParams.end(); ++yamlIter)
-			{
-				if (paramLookup.find(yamlIter->first) != paramLookup.end())
-				{
-					cout << yamlIter->first << "=" << yamlIter->second << endl;
-					point[paramLookup[yamlIter->first]] = yamlIter->second;
-				}
-			}
-			_points.push_back(point);
+			YAMLParamReader<M> reader(*iter);
+			_points.push_back(reader.read());
 		}
 	}
 

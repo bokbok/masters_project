@@ -12,6 +12,7 @@ using namespace std;
 #include "params/SIRU3NonHomogeneousParams.cuh"
 #include "params/YAMLModelParams.cuh"
 #include "params/NonHomogeneousYAMLModelParams.cuh"
+#include "params/PartitionedYAMLParams.cuh"
 #include "SimulationRunner.cuh"
 #include <dirent.h>
 
@@ -51,7 +52,8 @@ int main(void)
 
 //	YAMLModelParams<SIRU3Model> params("/home/matt/work/masters_project/parameterisations/derived/parameterisations/original_biphasic_86.yml/bp41.ode/1375611399.98.yml");
 
-	NonHomogeneousYAMLModelParams<SIRU3Model> params(parameterFiles(PARAM_DIR), 17);
+	//NonHomogeneousYAMLModelParams<SIRU3Model> params(parameterFiles(PARAM_DIR), 17);
+	PartitionedYAMLParams<SIRU3Model> params(parameterFiles(PARAM_DIR));
 
 	SimulationRunner<SIRU3Model> runner(params, OUTPUT_PATH);
 	runner.runSimulation();
