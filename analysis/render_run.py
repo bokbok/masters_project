@@ -18,7 +18,7 @@ for x in range(0, gridSize, step):
     for y in range(0, gridSize, step):
         points.append((x, y))
 
-reader = Reader(filename, dim, points, tMax, skip = 100)
+reader = Reader(filename, dim, points, tMax, skip = 10)
 
 renderer = Renderer(reader, ntpath.dirname(filename) + '/render.mp4', gridSize, step, tMax)
 

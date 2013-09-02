@@ -18,7 +18,9 @@ using namespace std;
 
 const char * OUTPUT_PATH = "/terra/runs";
 //const char * PARAM_DIR = "/home/matt/work/masters_project/parameterisations/derived/parameterisations/original_biphasic_86.yml/bp41.ode";
-const char * PARAM_DIR = "/home/matt/work/masters_project/parameterisations/derived/parameterisations/original_biphasic_86.yml/bp79.ode";
+//const char * PARAM_DIR = "/home/matt/work/masters_project/parameterisations/derived/parameterisations/original_biphasic_86.yml/bp79.ode";
+
+const char * PARAM_DIR = "/home/matt/work/masters_project/parameterisations/partitioned/set2";
 
 vector<string> parameterFiles(const char * dir)
 {
@@ -28,7 +30,8 @@ vector<string> parameterFiles(const char * dir)
 
 	dpdf = opendir(dir);
 	if (dpdf != NULL){
-	   while (epdf = readdir(dpdf)){
+	   while (epdf = readdir(dpdf))
+	   {
 		  string file = epdf->d_name;
 		  if (file.length() > 4)
 		  {
@@ -47,12 +50,6 @@ vector<string> parameterFiles(const char * dir)
 int main(void)
 {
 	setbuf(stdout, NULL);
-	//SIRU3HardcodedParams params;
-	//SIRU3NonHomogeneousParams params;
-
-//	YAMLModelParams<SIRU3Model> params("/home/matt/work/masters_project/parameterisations/derived/parameterisations/original_biphasic_86.yml/bp41.ode/1375611399.98.yml");
-
-	//NonHomogeneousYAMLModelParams<SIRU3Model> params(parameterFiles(PARAM_DIR), 17);
 	PartitionedYAMLParams<SIRU3Model> params(parameterFiles(PARAM_DIR));
 
 	SimulationRunner<SIRU3Model> runner(params, OUTPUT_PATH);

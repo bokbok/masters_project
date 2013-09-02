@@ -14,8 +14,8 @@
 #include "params/ParameterWriter.cuh"
 
 
-const int REPORT_STEPS = 200;
-const int RENDER_STEPS = 200;
+const int REPORT_STEPS = 2000;
+const int RENDER_STEPS = 2000;
 const int MESH_SIZE = 70;
 const double T_SIM = 60;
 const double DELTA_T = 0.000001;
@@ -58,19 +58,7 @@ public:
 	{
 		StreamBuilder streamBuilder(MESH_SIZE, _outputPath);
 
-		//double rmsMid = _params.params(MESH_SIZE)->paramsAt(0, 0)[T::h_e_rest];
-
 		streamBuilder.toBinaryFile(dimensions())
-					 //				     .RMSFor(T::h_e, RENDER_STEPS, rmsMid)
-					 //				     .traceFor(T::h_e, RENDER_STEPS, 5, -80, -30)
-				     //				     .traceFor(T::T_ii, RENDER_STEPS, 2, 0, 5)
-				     //				     .traceFor(T::T_ie, RENDER_STEPS, 2, 0, 5)
-				     //				     .traceFor(T::T_ei, RENDER_STEPS, 2, 0, 5)
-				     //				     .traceFor(T::T_ee, RENDER_STEPS, 2, 0, 5)
-				     //				     .traceFor(T::C_e, RENDER_STEPS, 2, 0, 5)
-				     //				     .traceFor(T::C_i, RENDER_STEPS, 2, 0, 5)
-				     //				     .traceFor(T::phi_ee, RENDER_STEPS, 2, 0, 5)
-				     //				     .traceFor(T::phi_ei, RENDER_STEPS, 2, 0, 5)
 				     .monitorConvergence();
 
 
