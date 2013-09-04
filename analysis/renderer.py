@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 from matplotlib import animation
 from numpy  import *
 from mpl_toolkits.mplot3d import Axes3D
+from matplotlib import cm
 
 
 class Renderer:
@@ -40,9 +41,9 @@ class Renderer:
 
             self.axes.cla()
             self.axes.plot_surface(X, Y, Z, rstride=1, cstride=1,
-                                linewidth=0,
-                                antialiased=False,
-                                shade = True)
+                                   cmap=cm.coolwarm,
+                                   linewidth=0,
+                                   antialiased=False)
             self.axes.set_zlim3d(-80, 0)
             self.axes.text(2, 6, 1, 't=' + str(t), fontsize=15)
 

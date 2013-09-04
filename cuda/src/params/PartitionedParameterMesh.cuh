@@ -21,7 +21,7 @@ private:
 
 	int region(int x, int y)
 	{
-		return (x * _regionSize) + (y * _regionSize) * (_N - 1);
+		return floor(x * _regionSize) + floor(y * _regionSize) * _N;
 	}
 
 	void precalculateAll()
