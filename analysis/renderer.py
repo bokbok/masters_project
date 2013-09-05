@@ -6,18 +6,21 @@ from matplotlib import cm
 
 
 class Renderer:
-    def __init__(self, reader, fileOut, gridSize, step, tMax):
+    def __init__(self, reader, fileOut, step, tMax):
         self.reader = reader
         self.fileOut = fileOut
         self.fig = plt.figure(figsize = (10, 10))
         self.axes = Axes3D(self.fig)
-        self.arraySize = int(gridSize / step)
-        self.gridSize = gridSize
+        self.gridSize = reader.meshsize
+        self.arraySize = int(self.gridSize / step)
         self.step = step
         self.axes.set_zlim3d(-80, -50)
         self.tMax = tMax
-        self.fps = 30
-        self.totalFrames = int(self.fps * tMax)
+        self.fps = 1 / reader.deltaT
+        self.totalFrames = int(self.fps * self.tMax)
+        print "FPS: " + str(self.fps)
+        print "Meshsize: " + str(self.gridSize)
+        print "Frames: " + str(self.totalFrames)
 
     def render(self):
         drawCallback = (lambda frame: self.draw())

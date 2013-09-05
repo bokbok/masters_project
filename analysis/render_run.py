@@ -1,25 +1,25 @@
-from binary_reader import Reader
+from binary_reader import Reader, HeaderInfo
 from renderer import Renderer
 import sys
 import ntpath
 
 
-tMax = float(sys.argv[4])
-dim = sys.argv[3]
-gridSize = int(sys.argv[2])
 filename = sys.argv[1]
-step = int(sys.argv[5])
-
-arraySize = int(gridSize / step)
+dim = sys.argv[2]
+tMax = float(sys.argv[3])
+step = int(sys.argv[4])
+skip = int(sys.argv[5])
 
 points = []
 
-for x in range(0, gridSize, step):
-    for y in range(0, gridSize, step):
+header = HeaderInfo(filename)
+
+for x in range(0, header.meshsize, step):
+    for y in range(0, header.meshsize, step):
         points.append((x, y))
 
-reader = Reader(filename, dim, points, tMax, skip = 10)
+reader = Reader(filename, dim, points, tMax, skip = skip)
 
-renderer = Renderer(reader, ntpath.dirname(filename) + '/render.mp4', gridSize, step, tMax)
+renderer = Renderer(reader, ntpath.dirname(filename) + '/render.mp4', step, tMax)
 
 renderer.render()

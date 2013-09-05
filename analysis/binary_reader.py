@@ -1,18 +1,32 @@
 import struct
 
 DOUBLE_BYTES = 8
-class Reader:
+class HeaderInfo:
+    def __init__(self, filename):
+        self.read(filename)
 
+    def read(self, filename):
+        file = open(filename, 'rb')
+        header = file.readline()
+        dims = header.strip().split(" ")
+        self.meshsize = int(dims[-1])
+        self.dims = dims[0:-1]
+        file.close()
+
+
+class Reader:
     def __init__(self, filename, dim, points, tMax, skip = 0, meshsize = None):
         self.file = open(filename, 'rb')
         self.meshsize = meshsize
-        self.work_out_frame_size()
+        self.workOutFrameSize()
         self.dim = dim
         self.points = points
         self.tMax = tMax
         self.index = self.dims.index(dim)
-        self.offsets = self.determine_offsets()
         self.skip = skip
+        self.determineOffsets()
+        self.determineDeltaT()
+
 
 
     def readAll(self):
@@ -56,7 +70,6 @@ class Reader:
                 self.file.seek(-DOUBLE_BYTES, 1)
         if t != None and data != None:
             self.file.seek((self.frame_size - total_offset) + self.skip * (self.frame_size + DOUBLE_BYTES), 1)
-
         return t, data
 
 
@@ -66,7 +79,7 @@ class Reader:
             data[point].append(frameData[point])
 
 
-    def work_out_frame_size(self):
+    def workOutFrameSize(self):
         header = self.file.readline()
         self.dims = header.strip().split(" ")
         if self.meshsize == None:
@@ -83,9 +96,18 @@ class Reader:
             offsets[offset] = point
         return offsets
 
+    def determineDeltaT(self):
+        # assuming we are at the start of a frame
+        bytes = self.file.read(DOUBLE_BYTES)
+        t1 = struct.unpack('d', bytes)
+        self.file.seek(self.frame_size, 1)
+        bytes = self.file.read(DOUBLE_BYTES)
+        t2 = struct.unpack('d', bytes)
+        self.deltaT = (t2[0] - t1[0]) * self.skip
+        self.file.seek(-self.frame_size - 2 *DOUBLE_BYTES, 1)
 
 
-    def determine_offsets(self):
+    def determineOffsets(self):
         relative = []
         offsets = self.offsets()
         sorted_offsets = sorted(offsets.keys())
@@ -95,6 +117,5 @@ class Reader:
             relative.append((offset - last, offsets[offset]))
             last = offset
 
-
-        return relative
+        self.offsets = relative
 
