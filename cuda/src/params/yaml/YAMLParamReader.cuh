@@ -40,7 +40,7 @@ public:
 				point[paramLookup[yamlIter->first]] = yamlIter->second;
 			}
 		}
-
+		M::precalculate(point);
 		return point;
 	}
 };

@@ -24,14 +24,6 @@ private:
 		return floor(x * _regionSize) + floor(y * _regionSize) * _N;
 	}
 
-	void precalculateAll()
-	{
-		for (vector<ParameterSpace>::iterator iter = _params.begin(); iter != _params.end(); ++iter)
-		{
-			M::precalculate(*iter);
-		}
-	}
-
 public:
 	PartitionedParameterMesh(vector<ParameterSpace> params, int meshSize):
 		_params(params),
@@ -39,7 +31,6 @@ public:
 	{
 		_N = sqrt(_params.size());
 		_regionSize = _N / meshSize;
-		precalculateAll();
 	}
 
 	virtual ~PartitionedParameterMesh()

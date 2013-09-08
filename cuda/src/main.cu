@@ -13,6 +13,9 @@ using namespace std;
 #include "params/YAMLModelParams.cuh"
 #include "params/NonHomogeneousYAMLModelParams.cuh"
 #include "params/PartitionedYAMLParams.cuh"
+#include "params/ShapePartitionedParams.cuh"
+#include "params/shapes/CircularPartition.cuh"
+
 #include "SimulationRunner.cuh"
 #include <dirent.h>
 
@@ -50,7 +53,14 @@ vector<string> parameterFiles(const char * dir)
 int main(void)
 {
 	setbuf(stdout, NULL);
-	PartitionedYAMLParams<SIRU3Model> params(parameterFiles(PARAM_DIR));
+	//PartitionedYAMLParams<SIRU3Model> params(parameterFiles(PARAM_DIR));
+
+	string paramDir = PARAM_DIR;
+
+	ShapePartitionedParams<SIRU3Model> params(paramDir + "/partition1.yml");
+	params.addPartition(new CircularPartition<SIRU3Model>(paramDir + "/partition2.yml", 0.25, 0.25, 0.1));
+	params.addPartition(new CircularPartition<SIRU3Model>(paramDir + "/partition2.yml", 0.75, 0.75, 0.1));
+
 
 	SimulationRunner<SIRU3Model> runner(params, OUTPUT_PATH);
 	runner.runSimulation();
