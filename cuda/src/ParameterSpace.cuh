@@ -40,6 +40,57 @@ public:
 		return _vals;
 	}
 
+	__host__
+	ParameterSpace operator -(const ParameterSpace & other)
+	{
+		ParameterSpace result;
+
+		for (int i = 0; i < MAX_PARAMS; i++)
+		{
+			result[i] = _vals[i] - other._vals[i];
+		}
+
+		return result;
+	}
+
+	__host__
+	ParameterSpace operator +(const ParameterSpace & other)
+	{
+		ParameterSpace result;
+
+		for (int i = 0; i < MAX_PARAMS; i++)
+		{
+			result[i] = _vals[i] + other._vals[i];
+		}
+
+		return result;
+	}
+
+	__host__
+	ParameterSpace operator *(const double val)
+	{
+		ParameterSpace result;
+
+		for (int i = 0; i < MAX_PARAMS; i++)
+		{
+			result[i] = _vals[i] * val;
+		}
+
+		return result;
+	}
+
+	__host__
+	ParameterSpace operator /(const double val)
+	{
+		ParameterSpace result;
+
+		for (int i = 0; i < MAX_PARAMS; i++)
+		{
+			result[i] = _vals[i] * val;
+		}
+
+		return result;
+	}
 
 };
 

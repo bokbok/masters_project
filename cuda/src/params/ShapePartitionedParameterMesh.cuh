@@ -34,17 +34,22 @@ public:
 	{
 	}
 
+	virtual ~ShapePartitionedParameterMesh()
+	{
+	}
+
 	virtual ParameterSpace paramsAt(int x, int y)
 	{
+		double xNorm = normalise(x);
+		double yNorm = normalise(y);
+
 		for (int i = 0; i < _partitions.size(); i++)
 		{
-			if (_partitions[i]->covers(normalise(x), normalise(y)))
+			if (_partitions[i]->covers(xNorm, yNorm))
 			{
-				return _partitions[i]->vals();
+				return _partitions[i]->vals(xNorm, yNorm, _base);
 			}
 		}
-		printf("\n");
-
 		return _base;
 	}
 };

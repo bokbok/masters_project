@@ -23,7 +23,7 @@ const char * OUTPUT_PATH = "/terra/runs";
 //const char * PARAM_DIR = "/home/matt/work/masters_project/parameterisations/derived/parameterisations/original_biphasic_86.yml/bp41.ode";
 //const char * PARAM_DIR = "/home/matt/work/masters_project/parameterisations/derived/parameterisations/original_biphasic_86.yml/bp79.ode";
 
-const char * PARAM_DIR = "/home/matt/work/masters_project/parameterisations/partitioned/set2";
+const char * PARAM_DIR = "/home/matt/work/masters_project/parameterisations/partitioned/set3";
 
 vector<string> parameterFiles(const char * dir)
 {
@@ -58,8 +58,8 @@ int main(void)
 	string paramDir = PARAM_DIR;
 
 	ShapePartitionedParams<SIRU3Model> params(paramDir + "/partition1.yml");
-	params.addPartition(new CircularPartition<SIRU3Model>(paramDir + "/partition2.yml", 0.25, 0.25, 0.1));
-	params.addPartition(new CircularPartition<SIRU3Model>(paramDir + "/partition2.yml", 0.75, 0.75, 0.1));
+	params.addPartition(new CircularPartition<SIRU3Model>(paramDir + "/partition2.yml", 0.25, 0.25, 0.1, 0.2));
+	//params.addPartition(new CircularPartition<SIRU3Model>(paramDir + "/partition2.yml", 0.75, 0.75, 0.1));
 
 
 	SimulationRunner<SIRU3Model> runner(params, OUTPUT_PATH);
