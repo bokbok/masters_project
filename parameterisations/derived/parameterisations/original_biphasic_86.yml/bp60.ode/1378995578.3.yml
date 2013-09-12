@@ -1,0 +1,9 @@
+params: {A_ee: 0.6731, A_ei: 0.6731, N_alpha_ee: 4422.1841, N_alpha_ei: 1535.2601,
+  N_beta_ee: 3644.8181, N_beta_ei: 2419.4467, N_beta_ie: 942.7938, N_beta_ii: 503.7428,
+  T_ee: 0.2157, T_ei: 1.7773, T_ie: 1.2674, T_ii: 0.5735, e_ie: 1.0, e_ii: 3.0, fake_laplacian: 0,
+  g_e: 500.0, g_i: 1000.0, gamma_ee: 0.2928, gamma_ei: 0.9854, gamma_ie: 0.3453, gamma_ii: 0.0858,
+  h_e_rest: -74.4595, h_ee_eq: -5.4528, h_ei_eq: -13.033, h_i_rest: -68.0741, h_ie_eq: -85.7041,
+  h_ii_eq: -78.0438, mu_e: -44.9173, mu_i: -45.0415, mus_e: 0.0001, mus_i: 0.0001,
+  p_ee: 2.8641, p_ei: 0.0657, p_ie: 0.0, p_ii: 0.0, pe: 1.0, phi_ie: 0, phi_ii: 0,
+  r_abs: 0.0, s_e_max: 0.4486, s_i_max: 0.1352, sigma_e: 6.2967, sigma_i: 5.8021,
+  tor_e: 107.5064, tor_i: 123.7675, v: 0.9831}
