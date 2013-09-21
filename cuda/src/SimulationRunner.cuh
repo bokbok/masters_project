@@ -16,9 +16,9 @@
 
 const int REPORT_STEPS = 2000;
 const int RENDER_STEPS = 2000;
-const int MESH_SIZE = 100;
+const int MESH_SIZE = 50;
 const double T_SIM = 60;
-const double DELTA_T = 0.000001;
+const double DELTA_T = 0.0000005;
 const double DELTA = 0.1; //make smaller for tighter mesh
 const double RANDOMISE_FRACTION = 0.01;
 
