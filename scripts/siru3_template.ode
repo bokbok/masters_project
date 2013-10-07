@@ -1,0 +1,146 @@
+# Mathew's XPP Implementation of the set of ODEs the equations David has derived as part of his model of electrocortical dynamics.
+# This is now the implementation of the corrected set of equations.
+#
+# Mathew P Dafilis 1997
+#
+# Initial Implementation commenced Tuesday 10 June 1997.
+#
+# User defined functions - enlin and inlin
+#
+t1e(x)=1+exp(-ve*(x-te))
+enlin(x)=(emax*(1/(t1e(x))))
+t1i(x)=1+exp(-vi*(x-ti))
+inlin(x)=(imax*(1/(t1i(x))))
+#some functions for synaptic rate constants
+kg(x)=x/(exp(x)-1)
+kgt(x)=exp(x)*kg(x)
+#
+# The (corrected) ODEs
+#
+he'=(1/taue)*( (her-he) + (((heqee-he)*iee)/abs(heqee-her)) + (((heqie-he)*iie)/abs(heqie-her)))
+hi'=(1/taui)*( (hir-hi) + (((heqei-hi)*iei)/abs(heqei-hir)) + (((heqii-hi)*iii)/abs(heqii-hir)))
+iee'=ieeaux
+ieeaux'=gee2*aee*ce*exp(gee1/gee)*(nbee*enlin(he) + pee + phiee) - (gee1*gee2)*iee - (gee1+gee2)*ieeaux
+
+iie'=iieaux
+iieaux'=gie2*aie*ci*exp(gie1/gie)*(nbie*inlin(hi) + pie) - (gie1*gie2)*iie -(gie1+gie2)*iieaux
+
+iei'=ieiaux
+ieiaux'=gei2*aei*ce*exp(gei1/gei)*(nbei*enlin(he) + pei + phiei) - (gei1*gei2)*iei - (gei1+gei2)*ieiaux
+
+iii'=iiiaux
+iiiaux'=gii2*aii*ci*exp(gii1/gii)*(nbii*inlin(hi) + pii) - (gii1*gii2)*iii -(gii1+gii2)*iiiaux
+
+ce'=mus_e * (1 - ce * (1 + g_e * enlin(he)))
+ci'=mus_i * (1 - ci * (1 + g_i * enlin(hi)))
+
+
+#
+# Augment with time dependent equations for long range cortico-cortical fibres
+#
+phiee'=phieeaux
+phieeaux'=naee*(lambdaee^2)*(vbar^2)*enlin(he)-(2*vbar*lambdaee*phieeaux)-(vbar^2)*(lambdaee^2)*phiee
+phiei'=phieiaux
+phieiaux'=naei*(lambdaei^2)*(vbar^2)*enlin(he)-(2*vbar*lambdaei*phieiaux)-(vbar^2)*(lambdaei^2)*phiei
+#
+#
+# Parameters (all in millivolts, milliseconds, centimetres)
+# (from column 3 table V Bojak and Liley (2005)
+#
+param epse=0.001
+param epsi=0.001
+param thetae=-46
+param thetai=-46
+param her=-68.1355
+param hir=-77.2602
+param heqee=-15.8527
+param heqei=7.4228
+param heqie=-85.9896
+param heqii=-84.5363
+param naee=4994.4860
+param naei=2222.9060
+param nbee=4582.0661
+param nbei=4198.1829
+param nbie=989.5281
+param nbii=531.9419
+param lambdaee=0.2433
+param lambdaei=0.2433
+param vbar=0.1714
+param aee=0.3127
+param aei=0.9426
+param aie=0.4947
+param aii=1.4122
+param gee=0.4393
+param gei=0.2350
+param gie=0.0791
+param gii=0.0782
+param taue=138.3660
+param taui=89.3207
+param te=-47.1364
+param ti=-45.3751
+param rabs=0.0000
+param emax=0.2801
+param imax=0.1228
+param pee=3.6032
+param pei=0.3639
+param pie=0.0000
+param pii=0.0000
+param se=2.6120
+param si=2.8294
+
+param epsilonee=0
+param epsilonei=0
+param epsilonie=0
+param epsilonii=0
+param g_e=0
+param g_i=0
+param mus_e=0
+param mus_i=0
+
+
+# some additional definitions
+ve=sqrt(2)/se
+vi=sqrt(2)/si
+gii1=kg(epsilonii)*gii
+gii2=kgt(epsilonii)*gii
+gie1=kg(epsilonie)*gie
+gie2=kgt(epsilonie)*gie
+
+gei1=kg(epsilonei)*gii
+gei2=kgt(epsilonei)*gii
+gee1=kg(epsilonee)*gie
+gee2=kgt(epsilonee)*gie
+
+
+# Initial conditions
+#
+he(0)=-70
+hi(0)=-70
+iee(0)=0,ieeaux(0)=0
+iie(0)=0,iieaux(0)=0
+iei(0)=0,ieiaux(0)=0
+iii(0)=0,iiiaux(0)=0
+#
+phiee(0)=0,phieeaux(0)=0
+phiei(0)=0,phieiaux(0)=0
+#
+ce(0)=1
+ci(0)=1
+#
+@ MAXSTOR=1000000
+@ BACK=White
+#
+# Additional options - added Tuesday 19 August 1997
+#
+# Integrgee for 10 seconds (i.e 10000 milliseconds)
+#
+@ TOTAL=20000, DT=0.1, BOUND=1000000
+@ XP=T, YP=HE
+@ XLO=0, YLO=-100, XHI=10000, YHI=0
+#
+# AUTO parameters
+@ NMAX=20000, PARMIN=0, PARMAX=1.0, NORMMIN=-1e8, NORMMAX=1e8
+@ AUTOXMIN=0, AUTOXMAX=1.0, AUTOYMIN=-100, AUTOYMAX=-20
+#
+# Done.
+done
