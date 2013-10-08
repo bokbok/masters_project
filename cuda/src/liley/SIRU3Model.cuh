@@ -315,7 +315,7 @@ public:
 		ddt[h_i] = (-(s[h_i] - p[h_i_rest]) + (Y_e_h_i(s[h_i], p) * s[i_ei]) + (Y_i_h_i(s[h_i], p) * (s[i_ii]))) / p[tor_i];
 
 		ddt[C_e] = p[mus_i] * (1 - s[C_e] * (1 + p[g_e] * s_e(s[h_e], p)));
-		ddt[C_i] = p[mus_e] * (1 - s[C_i] * (1 + p[g_i] * s_e(s[h_i], p)));
+		ddt[C_i] = p[mus_e] * (1 - s[C_i] * (1 + p[g_i] * s_i(s[h_i], p)));
 
 	    ddt[i_ee_t] = -(p[_gamma_ee] + p[_gamma_ee_tilde]) * s[i_ee_t] - p[_gamma_ee_tilde2] * s[i_ee] + s[C_e] * p[_T_ee_gamma_ee_e] * (p[N_beta_ee] * s_e(s[h_e], p) + s[phi_ee] + p[p_ee]);
 	    ddt[i_ei_t] = -(p[_gamma_ei] + p[_gamma_ei_tilde]) * s[i_ei_t] - p[_gamma_ei_tilde2] * s[i_ei] + s[C_e] * p[_T_ei_gamma_ei_e] * (p[N_beta_ei] * s_e(s[h_e], p) + s[phi_ei] + p[p_ei]);

@@ -422,7 +422,7 @@ class SIRU2(LileyBase):
 
 class SIRU3(LileyBase):
     C_e_t = 'mus_e * (1 - C_e * (1 + g_e * s_e(h_e)))'
-    C_i_t = 'mus_i * (1 - C_i * (1 + g_i * s_e(h_i)))'
+    C_i_t = 'mus_i * (1 - C_i * (1 + g_i * s_i(h_i)))'
 
     i_ee_tt='-(gamma_ee + gamma_ee) * i_ee_t - (gamma_ee * gamma_ee) * i_ee + (C_e * T_ee) * gamma_ee * exp(1) * (N_beta_ee * s_e(h_e) + phi_ee + p_ee)'
     i_ei_tt='-(gamma_ei + gamma_ei) * i_ei_t - (gamma_ei * gamma_ei) * i_ei + (C_e * T_ei) * gamma_ei * exp(1) * (N_beta_ei * s_e(h_e) + phi_ei + p_ei)'

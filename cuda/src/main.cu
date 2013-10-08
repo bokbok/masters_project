@@ -58,8 +58,8 @@ int main(void)
 	string paramDir = PARAM_DIR;
 
 	ShapePartitionedParams<SIRU3Model> params(paramDir + "/partition1.yml");
-	params.addPartition(new CircularPartition<SIRU3Model>(paramDir + "/partition2.yml", 0.25, 0.25, 0.1, 0.2));
-	params.addPartition(new CircularPartition<SIRU3Model>(paramDir + "/partition3.yml", 0.75, 0.75, 0.1, 0.2));
+	params.addPartition(new CircularPartition<SIRU3Model>(paramDir + "/partition2.yml", 0.25, 0.25, 0.02, 0.2));
+	params.addPartition(new CircularPartition<SIRU3Model>(paramDir + "/partition3.yml", 0.75, 0.75, 0.02, 0.2));
 
 
 	SimulationRunner<SIRU3Model> runner(params, OUTPUT_PATH);
