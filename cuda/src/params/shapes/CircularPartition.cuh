@@ -52,7 +52,7 @@ public:
 	virtual string describe()
 	{
 		char buf[1024];
-		sprintf(buf, "Circular buffer centered at (%f, %f) radius %f (NORMALISED). Parameters from %s", _x, _y, _r, _paramFile.c_str());
+		sprintf(buf, "Circular partition centered at (%f, %f) radius %f (NORMALISED). Parameters from %s", _x, _y, _r, _paramFile.c_str());
 
 		return buf;
 	}

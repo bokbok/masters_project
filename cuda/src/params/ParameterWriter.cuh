@@ -20,13 +20,14 @@ private:
 	ParameterMesh<T> * _parameterMesh;
 	Params<T> * _params;
 	string _outputPath;
-	double _t, _deltaX, _deltaT, _randomiseFraction;
+	double _t, _deltaX, _deltaT, _effectiveDeltaT, _randomiseFraction;
 	int _meshSize;
 
 public:
 	ParameterWriter(double t,
 					int meshSize,
 					double deltaT,
+					double effectiveDeltaT,
 					double deltaX,
 					double randomiseFraction,
 					Params<T> * params,
@@ -39,6 +40,7 @@ public:
 		_outputPath(outputPath),
 		_deltaX(deltaX),
 		_deltaT(deltaT),
+		_effectiveDeltaT(effectiveDeltaT),
 		_randomiseFraction(randomiseFraction)
 	{
 	}
@@ -57,8 +59,10 @@ public:
 		out << "**** Integration Params ****" << endl;
 		out << "Runge-Kutta fourth order" << endl;
 		out << "simulation length = " << _t << endl;
-		out << "delta_t = " << _deltaT << endl;
+		out << "simulation delta_t = " << _deltaT << endl;
+		out << "output file delta_t = " << _effectiveDeltaT << endl;
 		out << "spatial spacing = " << _deltaX << endl;
+		out << "mesh size = " << _meshSize << endl;
 		out << "randomisation = " << _randomiseFraction << endl;
 		out << endl << endl << endl;
 

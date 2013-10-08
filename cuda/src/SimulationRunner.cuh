@@ -79,6 +79,7 @@ public:
 		ParameterWriter<T> paramWriter(T_SIM,
 									   MESH_SIZE,
 									   DELTA_T,
+									   DELTA_T * REPORT_STEPS,
 									   DELTA,
 									   RANDOMISE_FRACTION,
 									   &_params,
