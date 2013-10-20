@@ -21,7 +21,12 @@ def mkdir_p(path):
         else: raise
 
 params = load(file(sys.argv[1], 'r'))
-run_params = params[sys.argv[2]]
+key = 'params'
+
+if len(sys.argv) > 2:
+    key = sys.argv[2]
+
+run_params = params[key]
 
 run_params['fake_laplacian'] = 0
 run_params['e_ee'] = 0
