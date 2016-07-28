@@ -19,11 +19,13 @@ using namespace std;
 #include "SimulationRunner.cuh"
 #include <dirent.h>
 
-const char * OUTPUT_PATH = "/terra/runs";
+const char * OUTPUT_PATH = "/Users/matt/work/study/runs";
 //const char * PARAM_DIR = "/home/matt/work/masters_project/parameterisations/derived/parameterisations/original_biphasic_86.yml/bp41.ode";
 //const char * PARAM_DIR = "/home/matt/work/masters_project/parameterisations/derived/parameterisations/original_biphasic_86.yml/bp79.ode";
 
-const char * PARAM_DIR = "/home/matt/work/masters_project/parameterisations/partitioned/set11";
+const char * PARAM_DIR = "/Users/matt/work/study/masters_project/parameterisations/partitioned/set11";
+
+//const char * PARAM_DIR = "/home/matt/work/masters_project/parameterisations/partitioned/set11";
 
 vector<string> parameterFiles(const char * dir)
 {
@@ -50,8 +52,33 @@ vector<string> parameterFiles(const char * dir)
 	return result;
 }
 
+void reportMemoryStats()
+{
+	// show memory usage of GPU
+
+	size_t free_byte ;
+	size_t total_byte ;
+
+	cudaError_t cuda_status = cudaMemGetInfo( &free_byte, &total_byte ) ;
+
+	if ( cudaSuccess != cuda_status ){
+		printf("Error: cudaMemGetInfo fails, %s \n", cudaGetErrorString(cuda_status) );
+		exit(1);
+	}
+
+
+
+	double free_db = (double)free_byte ;
+	double total_db = (double)total_byte ;
+	double used_db = total_db - free_db ;
+
+	printf("GPU memory usage: used = %f, free = %f MB, total = %f MB\n",
+		used_db/1024.0/1024.0, free_db/1024.0/1024.0, total_db/1024.0/1024.0);
+}
+
 int main(void)
 {
+	reportMemoryStats();
 	setbuf(stdout, NULL);
 	//PartitionedYAMLParams<SIRU3Model> params(parameterFiles(PARAM_DIR));
 

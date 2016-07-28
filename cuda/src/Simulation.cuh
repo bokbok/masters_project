@@ -47,7 +47,7 @@ public:
 		_initialConditions(initialConditions),
 		_icFluctuation(icFluctuation)
 	{
-		printf("Allocating mesh......");
+		printf("Allocating mesh...... %d %d %d", width, height, bufferSize);
 		_mesh = new Mesh<T>(width, height, delta, bufferSize, reportSteps, randomiseInitialConditions(randomiseParams), params);
 		printf("Done......");
 	}

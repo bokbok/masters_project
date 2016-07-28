@@ -12,14 +12,15 @@
 #include "io/BinaryDataStream.cuh"
 #include "io/AsyncDataStream.cuh"
 #include "io/CompositeDataStream.cuh"
-#include "io/visual/FrameRenderingDataStream.cuh"
-#include "io/visual/TraceRenderingDataStream.cuh"
+//#include "io/visual/FrameRenderingDataStream.cuh"
+//#include "io/visual/TraceRenderingDataStream.cuh"
 #include "io/monitor/ConvergenceMonitor.cuh"
 
 #include <map>
 #include <vector>
 
 #include <ctime>
+#include <sys/stat.h>
 
 using namespace std;
 
@@ -83,19 +84,19 @@ public:
 
 	}
 
-	StreamBuilder & RMSFor(int dim, int every, double restVal)
-	{
-		addAsync(new FrameRenderingDataStream(_runPath, _meshSize, _meshSize, dim, every, restVal));
+//	StreamBuilder & RMSFor(int dim, int every, double restVal)
+//	{
+//		addAsync(new FrameRenderingDataStream(_runPath, _meshSize, _meshSize, dim, every, restVal));
+//
+//		return *this;
+//	}
 
-		return *this;
-	}
-
-	StreamBuilder & traceFor(int dim, int every, int spacing, double yMin, double yMax)
-	{
-		addAsync(new TraceRenderingDataStream(_runPath, _meshSize, _meshSize, dim, _meshSize / spacing, every, yMin, yMax));
-
-		return *this;
-	}
+//	StreamBuilder & traceFor(int dim, int every, int spacing, double yMin, double yMax)
+//	{
+//		addAsync(new TraceRenderingDataStream(_runPath, _meshSize, _meshSize, dim, _meshSize / spacing, every, yMin, yMax));
+//
+//		return *this;
+//	}
 
 	StreamBuilder & monitorConvergence()
 	{
