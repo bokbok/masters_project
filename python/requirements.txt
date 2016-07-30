@@ -1,0 +1,4 @@
+pydstool
+numpy
+scipy
+pyyaml
