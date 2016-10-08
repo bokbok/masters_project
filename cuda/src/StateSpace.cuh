@@ -11,6 +11,7 @@
 #include "common.cuh"
 #include <math.h>
 #include <vector>
+#include <sstream>
 
 using namespace std;
 
@@ -169,6 +170,21 @@ public:
 
 		return statenan;
 	}
+
+	__host__
+	string dump()
+	{
+		std::ostringstream res;
+		res << "t: " << _t << "> ";
+		for (int i = 0; i < _numDimensions; i++)
+		{
+			res << _vals[i];
+			res << ", ";
+		}
+
+		return res.str();
+	}
+
 };
 
 #endif /* STATESPACE_CUH_ */

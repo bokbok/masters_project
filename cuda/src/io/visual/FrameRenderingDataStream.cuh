@@ -15,6 +15,10 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
+#include <mgl2/config.h>
+
+#define MGL_HAVE_RVAL   0
+
 #include <mgl2/mgl.h>
 
 #include <vector>

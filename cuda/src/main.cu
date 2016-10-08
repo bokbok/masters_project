@@ -19,11 +19,11 @@ using namespace std;
 #include "SimulationRunner.cuh"
 #include <dirent.h>
 
-const char * OUTPUT_PATH = "/terra/runs";
+const char * OUTPUT_PATH = "/home/matt/runs";
 //const char * PARAM_DIR = "/home/matt/work/masters_project/parameterisations/derived/parameterisations/original_biphasic_86.yml/bp41.ode";
 //const char * PARAM_DIR = "/home/matt/work/masters_project/parameterisations/derived/parameterisations/original_biphasic_86.yml/bp79.ode";
 
-const char * PARAM_DIR = "/home/matt/work/masters_project/parameterisations/partitioned/set11";
+const char * PARAM_DIR = "/home/matt/work/phd/masters_project/parameterisations/partitioned/set11";
 
 vector<string> parameterFiles(const char * dir)
 {
@@ -50,8 +50,24 @@ vector<string> parameterFiles(const char * dir)
 	return result;
 }
 
+void cudaReport()
+{
+	int deviceCount;
+	cudaGetDeviceCount(&deviceCount);
+	int device;
+	for (device = 0; device < deviceCount; ++device) {
+	    cudaDeviceProp deviceProp;
+	    cudaGetDeviceProperties(&deviceProp, device);
+	    printf("Device %d has compute capability %d.%d.\n",
+	           device, deviceProp.major, deviceProp.minor);
+	    printf(deviceProp.name);
+	    printf("\n");
+	}
+}
+
 int main(void)
 {
+	cudaReport();
 	setbuf(stdout, NULL);
 	//PartitionedYAMLParams<SIRU3Model> params(parameterFiles(PARAM_DIR));
 

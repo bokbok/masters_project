@@ -26,6 +26,10 @@ public:
 		{
 			if ((*data)[i].nan())
 			{
+			    printf("%s\n", cudaGetErrorString( cudaGetLastError() ) );
+
+			    cerr << (*data)[i].dump() << endl;
+
 				cerr << "Convergence failed!" << endl;
 				exit(-1);
 			}
